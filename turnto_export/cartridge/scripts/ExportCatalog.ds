@@ -56,7 +56,17 @@ function execute( args : PipelineDictionary ) : Number
 			fileWriter.write("\t");
 			
 			// IMAGEURL			
-			var image : MediaFile = product.getImage("small");
+			var image : MediaFile = product.getImage("large");
+			if (image == null){
+				image = product.getImage("medium");
+			}
+			if (image == null){
+				image = product.getImage("small");
+			}
+			if (image == null){
+				image = product.getImage("swatch");	
+			}
+			
 			if (image != null) {
 				fileWriter.write(image.getAbsURL().toString());
 			}		
