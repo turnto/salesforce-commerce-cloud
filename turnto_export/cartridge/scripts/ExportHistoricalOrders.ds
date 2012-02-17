@@ -79,15 +79,15 @@ function execute( args : PipelineDictionary ) : Number
 				fileWriter.write("\t");
 				
 				//FIRSTNAME			
-				fileWriter.write(billingAddress.getFirstName());
+				fileWriter.write(replaceNull(billingAddress.getFirstName(), ""));
 				fileWriter.write("\t");
 				
 				//LASTNAME
-				fileWriter.write(billingAddress.getLastName());
+				fileWriter.write(replaceNull(billingAddress.getLastName(), ""));
 				fileWriter.write("\t");
 				
 				//SKU
-				fileWriter.write(product.getID());
+				fileWriter.write(replaceNull(product.getID(), ""));
 				fileWriter.write("\t");				
 				
 				//PRICE
@@ -95,7 +95,17 @@ function execute( args : PipelineDictionary ) : Number
 				fileWriter.write("\t");
 				
 				//ITEMIMAGEURL				
-				var image : MediaFile = product.getImage("small");
+				var image : MediaFile = product.getImage("large");
+				if (image == null){
+					image = product.getImage("medium");
+				}
+				if (image == null){
+					image = product.getImage("small");
+				}
+				if (image == null){
+					image = product.getImage("swatch");	
+				}
+				
 				if (image != null) {
 					fileWriter.write(image.getAbsURL().toString());
 				}		
