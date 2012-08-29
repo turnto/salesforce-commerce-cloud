@@ -25,6 +25,8 @@ function execute( args : PipelineDictionary ) : Number
 		turntoDir.mkdir();
 	}
 	
+	Logger.error("Started");
+	
     var fileWriter : FileWriter = new FileWriter(new File(turntoDir.getFullPath() + "/exportOrders.txt"));
     try {
     	fileWriter.writeLine("ORDERID\tORDERDATE\tEMAIL\tITEMTITLE\tITEMURL\tITEMLINEID\tZIP\tFIRSTNAME\tLASTNAME\tSKU\tPRICE\tITEMIMAGEURL\tTEASERSHOWN\tTEASERCLICKED\tDELIVERYDATE");	    	
@@ -120,8 +122,8 @@ function execute( args : PipelineDictionary ) : Number
 				//DELIVERYDATE
 				fileWriter.write("\n");
 			}
-		}
-    } catch(exception) {
+		}		
+    } catch(exception) {    	
     	trace("An exception occurred while attempting to export the catalog.");    	
 		return PIPELET_ERROR;		    
     } finally {
