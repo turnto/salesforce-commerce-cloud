@@ -29,11 +29,11 @@ function execute( args : PipelineDictionary ) : Number
 			
 	if (httpClient.statusCode != 200) {
 		// error
-		Logger.error("Failed to GET Question and Answer data from TurnTo." + httpClient.errorText);
-	}
-	
-	// put the catalog item ugc in the pipeline dictionary
-	args.catItemHtml = httpClient.getText();			  
+		Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);		
+	} else {	
+		// put the catalog item ugc in the pipeline dictionary
+		args.catItemHtml = httpClient.getText();
+	}			  
 
 	return PIPELET_NEXT;
 }
