@@ -6,7 +6,7 @@
     <segment>
       <node>
         <start-node name="GetProductQA" secure="false"/>
-        <node-display x="3" y="1"/>
+        <node-display x="1" y="1"/>
       </node>
       <simple-transition>
         <transition-display>
@@ -50,6 +50,25 @@
           <template buffered="true" dynamic="false" name="product/viewqa"/>
         </interaction-node>
         <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="ShowChatter">
+    <segment>
+      <node>
+        <start-node name="ShowChatter" secure="false"/>
+        <node-display x="5" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="2"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <interaction-node transaction-required="false">
+          <template buffered="true" dynamic="false" name="product/chatterfull"/>
+        </interaction-node>
+        <node-display x="0" y="2"/>
       </node>
     </segment>
   </branch>
