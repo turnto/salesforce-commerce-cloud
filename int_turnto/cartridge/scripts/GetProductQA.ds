@@ -15,24 +15,28 @@ importPackage( dw.object );
 function execute( args : PipelineDictionary ) : Number
 {    
    	var productId = args.CurrentHttpParameterMap.pid.stringValue;
-   	var turntoUrl : String = "http://qa.turntodev.com"; 
+   	var turntoUrl : String = "qa.turntodev.com"; 
    	var siteKey : String = "gTBOQnuCAaPrBKlsite";
 	    
 	// Get the QA data	
 	var url = turntoUrl + '/traServer3/catItemHtml/' + siteKey + "/" + productId;				
 	var httpClient : HTTPClient = new HTTPClient();
-	var message : String;
-	httpClient.open('GET', url);
-	httpClient.send();							
-			
-			
-			
-	if (httpClient.statusCode != 200) {
-		// error
-		Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);		
-	} else {	
-		// put the catalog item ugc in the pipeline dictionary
-		args.catItemHtml = httpClient.getText();
+	try {
+		// Set a timeout for the call to catItemHtml
+		httpClient.setTimeout(7000);
+		var message : String;
+		httpClient.open('GET', url);
+		httpClient.send();													 
+				
+		if (httpClient.statusCode != 200) {
+			// error
+			Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
+		} else {	
+			// put the catalog item ugc in the pipeline dictionary
+			args.catItemHtml = httpClient.getText();
+		}
+	} catch(Exception) {
+		// do nothing	
 	}			  
 
 	return PIPELET_NEXT;
