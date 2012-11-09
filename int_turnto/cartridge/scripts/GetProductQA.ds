@@ -15,29 +15,35 @@ importPackage( dw.object );
 function execute( args : PipelineDictionary ) : Number
 {    
    	var productId = args.CurrentHttpParameterMap.pid.stringValue;
-   	var turntoUrl : String = "qa.turntodev.com"; 
-   	var siteKey : String = "gTBOQnuCAaPrBKlsite";
-	    
-	// Get the QA data	
-	var url = turntoUrl + '/traServer3/catItemHtml/' + siteKey + "/" + productId;				
-	var httpClient : HTTPClient = new HTTPClient();
-	try {
-		// Set a timeout for the call to catItemHtml
-		httpClient.setTimeout(7000);
-		var message : String;
-		httpClient.open('GET', url);
-		httpClient.send();													 
-				
-		if (httpClient.statusCode != 200) {
-			// error
-			Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
-		} else {	
-			// put the catalog item ugc in the pipeline dictionary
-			args.catItemHtml = httpClient.getText();
-		}
-	} catch(Exception) {
-		// do nothing	
-	}			  
+   	
+   	// requires that a custom object has been defined and instantiated it demandware.
+   	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
+   	if (objects){
+	   	var obj : CustomObject = objects.next();   	   	
+	   	var turntoUrl : String = obj.getCustom().pushUrl
+	   	var siteKey : String = obj.getCustom().authKey
+		    
+		// Get the data	
+		var url = turntoUrl + '/traServer3/catItemHtml/' + siteKey + "/" + productId;				
+		var httpClient : HTTPClient = new HTTPClient();
+		try {
+			// Set a timeout for the call to catItemHtml
+			httpClient.setTimeout(7000);
+			var message : String;
+			httpClient.open('GET', url);
+			httpClient.send();													 
+					
+			if (httpClient.statusCode != 200) {
+				// error
+				Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
+			} else {	
+				// put the catalog item ugc in the pipeline dictionary
+				args.catItemHtml = httpClient.getText();
+			}
+		} catch(Exception) {
+			// do nothing	
+		}			
+   	}  
 
 	return PIPELET_NEXT;
 }
