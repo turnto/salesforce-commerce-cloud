@@ -44,6 +44,7 @@
                 //  If layoutMode == "centered" then this is the exact spacing between boxes
                 //  If layoutMode == "justified" this value is used as the minimum spacing
                 ,spacing: "20px"
+                ,maxDaysOld: -1
             }
         }
     </script>
