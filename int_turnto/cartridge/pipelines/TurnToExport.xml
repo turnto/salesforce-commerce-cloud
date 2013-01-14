@@ -64,9 +64,6 @@
           <config-property key="Transactional" value="false"/>
           <config-property key="OnError" value="PIPELET_ERROR"/>
           <config-property key="ScriptFile" value="ExportCatalog.ds"/>
-          <key-binding alias="CurrentJobParameterMap.authKey" key="authKey"/>
-          <key-binding alias="CurrentJobParameterMap.pushUrl" key="pushUrl"/>
-          <key-binding alias="CurrentJobParameterMap.siteKey" key="siteKey"/>
         </pipelet-node>
         <node-display x="0" y="1"/>
         <branch basename="b2" source-connector="error">

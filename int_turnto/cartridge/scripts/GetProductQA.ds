@@ -21,13 +21,13 @@ function execute( args : PipelineDictionary ) : Number
    	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
    	if (objects){
 	   	var obj : CustomObject = objects.next();   	   	
-	   	var turntoUrl : String = obj.getCustom().pushUrl
+	   	var turntoUrl : String = obj.getCustom().url
 	   	var siteKey : String = obj.getCustom().siteKey
 	   	
    		// Get the data	
 		var url = turntoUrl + '/sitedata/' + siteKey + "/" + productId + "/d/catItemHtml";				
 		var httpClient : HTTPClient = new HTTPClient();
-		httpClient.enableCaching(HOUR_IN_SECS);
+		//httpClient.enableCaching(HOUR_IN_SECS);
 		try {
 			// Set a timeout for the call to catItemHtml
 			httpClient.setTimeout(7000);
@@ -38,6 +38,7 @@ function execute( args : PipelineDictionary ) : Number
 			if (httpClient.statusCode != 200) {
 				// error
 				Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
+				args.catItemHtml = "Q&A module is temporarily unavailable";
 			} else {					
 				// put the catalog item ugc in the pipeline dictionary
 				args.catItemHtml = httpClient.getText();
