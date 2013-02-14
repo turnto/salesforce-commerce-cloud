@@ -25,7 +25,7 @@ function execute( args : PipelineDictionary ) : Number
 	   	var siteKey : String = obj.getCustom().siteKey
 	   	
    		// Get the data	
-		var url = turntoUrl + '/sitedata/' + siteKey + "/" + productId + "/d/catItemHtml";				
+		var url = turntoUrl + '/sitedata/' + siteKey + "/" + productId + "/d/catitemhtml";				
 		var httpClient : HTTPClient = new HTTPClient();
 		//httpClient.enableCaching(HOUR_IN_SECS);
 		try {
