@@ -21,7 +21,7 @@ function execute( args : PipelineDictionary ) : Number
    	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
    	if (objects){
 	   	var obj : CustomObject = objects.next();   	   	
-	   	var turntoUrl : String = obj.getCustom().url
+	   	var turntoUrl : String = obj.getCustom().staticURL
 	   	var siteKey : String = obj.getCustom().siteKey
 	   	
    		// Get the data	
