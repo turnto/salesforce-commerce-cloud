@@ -148,10 +148,20 @@ function execute( args : PipelineDictionary ) : Number
 				fileWriter.write("\t");
 				
 				// IMAGEURL					
-				var image : MediaFile = category.getImage();
+				var image : MediaFile = category.getImage("large");
+				if (image == null){
+					image = category.getImage("medium");
+				}
+				if (image == null){
+					image = category.getImage("small");
+				}
+				if (image == null){
+					image = category.getImage("swatch");	
+				}
+				
 				if (image != null) {
 					fileWriter.write(replaceNull(image.getAbsURL().toString(), ""));
-				}		
+				}			
 				fileWriter.write("\t");
 				
 				// TITLE
@@ -209,6 +219,8 @@ function execute( args : PipelineDictionary ) : Number
 			
 			fileWriter.close();	
 			
+			Logger.debug("About to push file to " + turntoUrl + '/feedUpload/postfile');
+			
 			// Push the new file to turnto.com			
 			var file : HTTPRequestPart = new HTTPRequestPart('file', catalogExport);		
 			var siteKeyPart : HTTPRequestPart = new HTTPRequestPart('siteKey', siteKey);
@@ -222,9 +234,13 @@ function execute( args : PipelineDictionary ) : Number
 					
 			if (httpClient.statusCode != 200) {
 				// error
+				Logger.debug("FAILED wrote file to " + turntoUrl + '/feedUpload/postfile');
 				Logger.error("Failed to POST the catalog feed to turnto.com");
+			} else {
+				Logger.debug("Successfull wrote file to " + turntoUrl + '/feedUpload/postfile');
 			}							
 	    } catch(exception) {    	
+	    	Logger.error(e.getMessage());
 	    	trace("An exception occurred while attempting to export the catalog.");
 	    	throw exception;
 			//return PIPELET_ERROR;		    
