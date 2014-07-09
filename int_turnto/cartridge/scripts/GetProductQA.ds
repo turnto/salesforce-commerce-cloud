@@ -21,11 +21,11 @@ function execute( args : PipelineDictionary ) : Number
    	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
    	if (objects){
 	   	var obj : CustomObject = objects.next();   	   	
-	   	var turntoUrl : String = obj.getCustom().staticURL
-	   	var siteKey : String = obj.getCustom().siteKey
+	   	var turntoUrl : String = obj.getCustom().staticURL;
+	   	var siteKey : String = obj.getCustom().siteKey;
 	   	
    		// Get the data	
-		var url = turntoUrl + '/sitedata/' + siteKey + "/" + productId + "/d/catitemhtml";				
+		var url = turntoUrl + '/sitedata/' + siteKey + "/v4_1/" + productId + "/d/catitemhtml";				
 		var httpClient : HTTPClient = new HTTPClient();
 		//httpClient.enableCaching(HOUR_IN_SECS);
 		try {
@@ -44,7 +44,8 @@ function execute( args : PipelineDictionary ) : Number
 				args.catItemHtml = httpClient.getText();
 			}
 		} catch(Exception) {
-			// do nothing	
+ 			// do nothing	
+			args.catItemHtml = "Q&A module is temporarily unavailable";
 		}							
    	}  
 
