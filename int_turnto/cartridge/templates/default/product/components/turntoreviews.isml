@@ -1,0 +1,2 @@
+
+<isinclude url="${URLUtils.url('TurnTo-GetProductReviews') + '?pid=' + pdict.Product.ID}" />
