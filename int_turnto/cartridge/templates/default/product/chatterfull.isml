@@ -19,14 +19,12 @@
 	<iscomment>Add page specific header information here.</iscomment>
 	<script type="text/javascript">
         var turnToConfig = {
-            host: "qa.turntodev.com",
-            staticHost: "qa.turntodev.com",
             siteKey: "gTBOQnuCAaPrBKlsite",
             imageStoreBase:'wac.edgecastcdn.net/001A39/qa',
             useSSL: false,
             allowEscKey:true,
             useSetup:false,
-            setupType:"staticEmbed",
+            setupType:"staticEmbed",            
 
             fullComments: {
                 height: "1000px",

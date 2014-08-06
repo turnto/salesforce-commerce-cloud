@@ -30,7 +30,10 @@ function execute( args : PipelineDictionary ) : Number
     var fileWriter : FileWriter = new FileWriter(new File(turntoDir.getFullPath() + "/exportOrders.txt"));
     try {
     	fileWriter.writeLine("ORDERID\tORDERDATE\tEMAIL\tITEMTITLE\tITEMURL\tITEMLINEID\tZIP\tFIRSTNAME\tLASTNAME\tSKU\tPRICE\tITEMIMAGEURL\tTEASERSHOWN\tTEASERCLICKED\tDELIVERYDATE");	    	
-		var orders : SeekableIterator =  OrderMgr.queryOrders("UUID like '*'", "UUID");			
+		var dateLimit = new Calendar();
+		dateLimit.add(Calendar.YEAR, -2);
+		var orders : SeekableIterator =  OrderMgr.queryOrders("UUID like '*' AND creationDate > " + dw.util.StringUtils.formatCalendar(dateLimit, "yyyy-MM-dd"), "creationDate");
+		//var orders : SeekableIterator =  OrderMgr.queryOrders("UUID like '*'", "creationDate");					
 				
 		while (orders.hasNext()) {	
 			var order : Order = orders.next();

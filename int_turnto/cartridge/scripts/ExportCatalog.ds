@@ -148,8 +148,8 @@ function execute( args : PipelineDictionary ) : Number
 				fileWriter.write("\t");
 				
 				// IMAGEURL					
-				var image : MediaFile = category.getImage("large");
-				if (image == null){
+				var image : MediaFile = category.getImage();
+				/*if (image == null){
 					image = category.getImage("medium");
 				}
 				if (image == null){
@@ -157,7 +157,7 @@ function execute( args : PipelineDictionary ) : Number
 				}
 				if (image == null){
 					image = category.getImage("swatch");	
-				}
+				}*/
 				
 				if (image != null) {
 					fileWriter.write(replaceNull(image.getAbsURL().toString(), ""));
@@ -240,7 +240,7 @@ function execute( args : PipelineDictionary ) : Number
 				Logger.debug("Successfull wrote file to " + turntoUrl + '/feedUpload/postfile');
 			}							
 	    } catch(exception) {    	
-	    	Logger.error(e.getMessage());
+	    	//Logger.error(exception.getMessage());
 	    	trace("An exception occurred while attempting to export the catalog.");
 	    	throw exception;
 			//return PIPELET_ERROR;		    
