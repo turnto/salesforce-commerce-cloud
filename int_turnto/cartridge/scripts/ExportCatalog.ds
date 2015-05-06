@@ -24,6 +24,10 @@ function execute( args : PipelineDictionary ) : Number
 	   	var turntoUrl : String = obj.getCustom().url;
 	   	var siteKey : String = obj.getCustom().siteKey;
 	   	var authKey : String = obj.getCustom().authKey;
+	   	var timeoutMs : Integer = obj.getCustom().jobTimeout;	   	
+	   	if (typeof timeoutMs == 'undefined') {
+			timeoutMs = 120000;
+	   	}
    	
 		// A set to hold categories
 		var foundCategories : Set = new HashSet();
@@ -229,6 +233,7 @@ function execute( args : PipelineDictionary ) : Number
 									
 			var httpClient : HTTPClient = new HTTPClient();
 			var message : String;
+			httpClient.setTimeout(timeoutMs);
 			httpClient.open('POST', turntoUrl + '/feedUpload/postfile');
 			httpClient.sendMultiPart([siteKeyPart, authKeyPart, feedStylePart, file]);							
 					
