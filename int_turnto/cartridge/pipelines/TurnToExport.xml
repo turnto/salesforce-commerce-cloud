@@ -3,6 +3,16 @@
 
 <pipeline type="job">
   <description>Export Jobs</description>
+  <branch basename="_ANONYMOUS_BRANCH_1">
+    <segment>
+      <node>
+        <text-node>
+          <description>ExportHistoricalOrders generates a historical order feed in the TurnTo format.</description>
+        </text-node>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
   <branch basename="ExportHistoricalOrders">
     <segment>
       <node>
@@ -48,11 +58,21 @@
       </node>
     </segment>
   </branch>
+  <branch basename="_ANONYMOUS_BRANCH_3">
+    <segment>
+      <node>
+        <text-node>
+          <description>ExportCatalog generates a catalog feed in the TurnTo format and posts it to turnto.com for processing</description>
+        </text-node>
+        <node-display x="4" y="1"/>
+      </node>
+    </segment>
+  </branch>
   <branch basename="ExportCatalog">
     <segment>
       <node>
         <start-node call-mode="private" name="ExportCatalog" secure="false"/>
-        <node-display x="3" y="1"/>
+        <node-display x="5" y="1"/>
       </node>
       <simple-transition>
         <transition-display>

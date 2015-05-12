@@ -2,10 +2,22 @@
 <?demandware-pipeline version="2.0"?>
 
 <pipeline type="view">
+  <branch basename="_ANONYMOUS_BRANCH_1">
+    <segment>
+      <node>
+        <text-node>
+          <description>GetProductQA makes a server-side call to turnto.com to get the Question and Answer content</description>
+        </text-node>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
   <branch basename="GetProductQA">
     <segment>
       <node>
-        <start-node name="GetProductQA" secure="false"/>
+        <start-node name="GetProductQA" secure="false">
+          <description>Makes a server-side call to turnto.com to get the Question and Answer content</description>
+        </start-node>
         <node-display x="1" y="1"/>
       </node>
       <simple-transition>
@@ -53,6 +65,16 @@
       </node>
     </segment>
   </branch>
+  <branch basename="_ANONYMOUS_BRANCH_3">
+    <segment>
+      <node>
+        <text-node>
+          <description>ShowChatter sets up the TurnTo checkout chatter pinboard with a unique URL</description>
+        </text-node>
+        <node-display x="4" y="1"/>
+      </node>
+    </segment>
+  </branch>
   <branch basename="ShowChatter">
     <segment>
       <node>
@@ -69,6 +91,16 @@
           <template buffered="true" dynamic="false" name="product/chatterfull"/>
         </interaction-node>
         <node-display x="0" y="2"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="_ANONYMOUS_BRANCH_5">
+    <segment>
+      <node>
+        <text-node>
+          <description>GetProductReviews makes a server-side call to turnto.com to get the Reviews content</description>
+        </text-node>
+        <node-display x="0" y="5"/>
       </node>
     </segment>
   </branch>
