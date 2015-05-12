@@ -25,7 +25,6 @@ function execute( args : PipelineDictionary ) : Number
 		turntoDir.mkdir();
 	}
 	
-	Logger.error("Started");
 	
     var fileWriter : FileWriter = new FileWriter(new File(turntoDir.getFullPath() + "/exportOrders.txt"));
     try {
@@ -34,98 +33,104 @@ function execute( args : PipelineDictionary ) : Number
 		dateLimit.add(Calendar.YEAR, -2);
 		var orders : SeekableIterator =  OrderMgr.queryOrders("UUID like '*' AND creationDate > " + dw.util.StringUtils.formatCalendar(dateLimit, "yyyy-MM-dd"), "creationDate");
 		//var orders : SeekableIterator =  OrderMgr.queryOrders("UUID like '*'", "creationDate");					
+		
+		try {				
+			while (orders.hasNext()) {	
+				var order : Order = orders.next();
 				
-		while (orders.hasNext()) {	
-			var order : Order = orders.next();
-			
-			// Get all of the product line items for the order
-			var products : Collection = order.getAllProductLineItems();		
-			
-			for (var i : Number = 0; i < products.size(); i++) {
-				var productLineItem : ProductLineItem = products[i];
-				var product : Product = productLineItem.getProduct();
-				if (product == null){
-					continue;
+				// Get all of the product line items for the order
+				var products : Collection = order.getAllProductLineItems();		
+				
+				for (var i : Number = 0; i < products.size(); i++) {
+					var productLineItem : ProductLineItem = products[i];
+					var product : Product = productLineItem.getProduct();
+					if (product == null){
+						continue;
+					}
+					
+					if (product.isVariant()) {
+						product = product.getVariationModel().getMaster();	
+					}
+													
+					// ORDERID
+					fileWriter.write(order.getOrderNo());
+					fileWriter.write("\t");
+					
+					// ORDERDATE
+					// Format: 2011-08-25 20:50:15
+					var creationDate : Date = order.getCreationDate();
+					var creationStr = dw.util.StringUtils.formatCalendar(new Calendar(creationDate), "yyyy-MM-dd hh:mm:ss");
+					fileWriter.write(creationStr);
+					fileWriter.write("\t");
+					
+					//EMAIL
+					fileWriter.write(order.getCustomerEmail());
+					fileWriter.write("\t");
+					
+					//ITEMTITLE
+					fileWriter.write(replaceNull(product.getName(), ""));
+					fileWriter.write("\t");
+					
+					//ITEMURL
+					fileWriter.write(dw.web.URLUtils.http('Product-Show', 'pid', product.getID()).toString());
+					fileWriter.write("\t");
+					
+					//ITEMLINEID
+					fileWriter.write("\t");				
+					
+					//ZIP
+					var billingAddress : OrderAddress = order.getBillingAddress();
+					fileWriter.write(billingAddress.getPostalCode());
+					fileWriter.write("\t");
+					
+					//FIRSTNAME			
+					fileWriter.write(replaceNull(billingAddress.getFirstName(), ""));
+					fileWriter.write("\t");
+					
+					//LASTNAME
+					fileWriter.write(replaceNull(billingAddress.getLastName(), ""));
+					fileWriter.write("\t");
+					
+					//SKU
+					fileWriter.write(replaceNull(product.getID(), ""));
+					fileWriter.write("\t");				
+					
+					//PRICE
+					fileWriter.write(productLineItem.getAdjustedNetPrice().getValue().toString());
+					fileWriter.write("\t");
+					
+					//ITEMIMAGEURL				
+					var image : MediaFile = product.getImage("large");
+					if (image == null){
+						image = product.getImage("medium");
+					}
+					if (image == null){
+						image = product.getImage("small");
+					}
+					if (image == null){
+						image = product.getImage("swatch");	
+					}
+					
+					if (image != null) {
+						fileWriter.write(image.getAbsURL().toString());
+					}		
+					fileWriter.write("\t");
+					
+					//TEASERSHOWN
+					fileWriter.write("\t");
+					
+					//TEASERCLICKED
+					fileWriter.write("\t");
+					
+					//DELIVERYDATE
+					fileWriter.write("\n");
 				}
-				
-				if (product.isVariant()) {
-					product = product.getVariationModel().getMaster();	
-				}
-												
-				// ORDERID
-				fileWriter.write(order.getOrderNo());
-				fileWriter.write("\t");
-				
-				// ORDERDATE
-				// Format: 2011-08-25 20:50:15
-				var creationDate : Date = order.getCreationDate();
-				var creationStr = dw.util.StringUtils.formatCalendar(new Calendar(creationDate), "yyyy-MM-dd hh:mm:ss");
-				fileWriter.write(creationStr);
-				fileWriter.write("\t");
-				
-				//EMAIL
-				fileWriter.write(order.getCustomerEmail());
-				fileWriter.write("\t");
-				
-				//ITEMTITLE
-				fileWriter.write(replaceNull(product.getName(), ""));
-				fileWriter.write("\t");
-				
-				//ITEMURL
-				fileWriter.write(dw.web.URLUtils.http('Product-Show', 'pid', product.getID()).toString());
-				fileWriter.write("\t");
-				
-				//ITEMLINEID
-				fileWriter.write("\t");				
-				
-				//ZIP
-				var billingAddress : OrderAddress = order.getBillingAddress();
-				fileWriter.write(billingAddress.getPostalCode());
-				fileWriter.write("\t");
-				
-				//FIRSTNAME			
-				fileWriter.write(replaceNull(billingAddress.getFirstName(), ""));
-				fileWriter.write("\t");
-				
-				//LASTNAME
-				fileWriter.write(replaceNull(billingAddress.getLastName(), ""));
-				fileWriter.write("\t");
-				
-				//SKU
-				fileWriter.write(replaceNull(product.getID(), ""));
-				fileWriter.write("\t");				
-				
-				//PRICE
-				fileWriter.write(productLineItem.getAdjustedNetPrice().getValue().toString());
-				fileWriter.write("\t");
-				
-				//ITEMIMAGEURL				
-				var image : MediaFile = product.getImage("large");
-				if (image == null){
-					image = product.getImage("medium");
-				}
-				if (image == null){
-					image = product.getImage("small");
-				}
-				if (image == null){
-					image = product.getImage("swatch");	
-				}
-				
-				if (image != null) {
-					fileWriter.write(image.getAbsURL().toString());
-				}		
-				fileWriter.write("\t");
-				
-				//TEASERSHOWN
-				fileWriter.write("\t");
-				
-				//TEASERCLICKED
-				fileWriter.write("\t");
-				
-				//DELIVERYDATE
-				fileWriter.write("\n");
+			}		
+		} finally {
+			if (orders != null) {
+				orders.close();
 			}
-		}		
+		}
     } catch(exception) {    	
     	trace("An exception occurred while attempting to export the catalog.");    	
 		return PIPELET_ERROR;		    

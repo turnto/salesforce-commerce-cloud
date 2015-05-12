@@ -19,35 +19,45 @@ function execute( args : PipelineDictionary ) : Number
    	   	
    	// requires that a custom object has been defined and instantiated it demandware.
    	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
-   	if (objects){
-	   	var obj : CustomObject = objects.next();   	   	
-	   	var turntoUrl : String = obj.getCustom().staticURL;
-	   	var siteKey : String = obj.getCustom().siteKey;
-	   	
-   		// Get the data	
-		var url = turntoUrl + '/sitedata/' + siteKey + "/v4_2/" + productId + "/d/catitemhtml";				
-		var httpClient : HTTPClient = new HTTPClient();
-		//httpClient.enableCaching(HOUR_IN_SECS);
-		try {
-			// Set a timeout for the call to catItemHtml
-			httpClient.setTimeout(7000);
-			var message : String;
-			httpClient.open('GET', url);
-			httpClient.send();													 
-					
-			if (httpClient.statusCode != 200) {
-				// error
-				Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
+   	try {
+	   	if (objects){
+		   	var obj : CustomObject = objects.next();   	   	
+		   	var turntoUrl : String = obj.getCustom().staticURL;
+		   	var siteKey : String = obj.getCustom().siteKey;
+		   	var timeoutMs : Integer = obj.getCustom().wsTimeout;		   	
+		   	if (timeoutMs == null) {
+		   		timeoutMs = 7000;
+		   	}
+		   	
+	   		// Get the data	
+			var url = turntoUrl + '/sitedata/' + siteKey + "/v4_2/" + productId + "/d/catitemhtml";				
+			var httpClient : HTTPClient = new HTTPClient();
+			//httpClient.enableCaching(HOUR_IN_SECS);
+			try {
+				// Set a timeout for the call to catItemHtml
+				httpClient.setTimeout(timeoutMs);
+				var message : String;
+				httpClient.open('GET', url);
+				httpClient.send();													 
+						
+				if (httpClient.statusCode != 200) {
+					// error
+					Logger.error("Failed to GET Question and Answer data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
+					args.catItemHtml = "Q&A module is temporarily unavailable";
+				} else {					
+					// put the catalog item ugc in the pipeline dictionary
+					args.catItemHtml = httpClient.getText();
+				}
+			} catch(Exception) {
+	 			// do nothing	
 				args.catItemHtml = "Q&A module is temporarily unavailable";
-			} else {					
-				// put the catalog item ugc in the pipeline dictionary
-				args.catItemHtml = httpClient.getText();
-			}
-		} catch(Exception) {
- 			// do nothing	
-			args.catItemHtml = "Q&A module is temporarily unavailable";
-		}							
-   	}  
+			}							
+	   	}  
+   	} finally {
+   		if (objects != null) {
+   			objects.close();
+   		}
+   	}
 
 	return PIPELET_NEXT;
 }
