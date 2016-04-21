@@ -24,13 +24,19 @@ function execute( args : PipelineDictionary ) : Number
 		   	var obj : CustomObject = objects.next();   	   	
 		   	var turntoUrl : String = obj.getCustom().staticURL;
 		   	var siteKey : String = obj.getCustom().siteKey;
-		   	var timeoutMs : Integer = obj.getCustom().wsTimeout;		   	
+		   	var timeoutMs : Integer = obj.getCustom().wsTimeout;
+		   	var version : String = obj.getCustom().version;		   	
+		   	
+		   	if (!version) {
+		   		version = "4.3"	
+		   	}
+		   			   	
 		   	if (timeoutMs == null) {
 		   		timeoutMs = 7000;
 		   	}
 		   	
 	   		// Get the data	
-			var url = turntoUrl + '/sitedata/' + siteKey + "/v4_2/" + productId + "/d/catitemreviewshtml";				
+			var url = turntoUrl + '/sitedata/' + siteKey + "/v" + version.replace('.', '_') + "/" + productId + "/d/catitemreviewshtml";				
 			var httpClient : HTTPClient = new HTTPClient();
 			//httpClient.enableCaching(HOUR_IN_SECS);
 			try {

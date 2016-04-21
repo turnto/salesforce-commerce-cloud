@@ -139,7 +139,14 @@ function execute( args : PipelineDictionary ) : Number
 								fileWriter.write(",");
 							}	
 						}
-						fileWriter.write("\n");														
+						fileWriter.write("\t");			
+									
+						// BRAND
+						if (product.getBrand()) {
+							fileWriter.write(product.getBrand());
+						}
+												
+						fileWriter.write("\n");																				
 					}
 				} finally {
 					if (products != null) {
