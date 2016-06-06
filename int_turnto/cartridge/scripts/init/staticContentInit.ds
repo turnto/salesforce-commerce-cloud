@@ -1,0 +1,36 @@
+importPackage( dw.svc );
+importPackage( dw.net );
+importPackage( dw.io );
+
+
+ServiceRegistry.configure("turnto.http.static.qa.get", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("GET");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    },
+    mockCall : function(svc:HTTPService, client:HTTPClient) {
+        return {
+        	statusCode: 200,
+        	statusMessage: 'Success',
+        	text: '<div id="TurnToContent"></div>'
+        };
+    }
+});
+
+ServiceRegistry.configure("turnto.http.static.reviews.get", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("GET");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    },
+    mockCall : function(svc:HTTPService, client:HTTPClient) {
+        return {
+        	statusCode: 200,
+        	statusMessage: 'Success',
+        	text: '<div id="TurnToReviewsContent"></div>'
+        };
+    }
+});

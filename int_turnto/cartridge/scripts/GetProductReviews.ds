@@ -11,11 +11,18 @@ importPackage( dw.system );
 importPackage( dw.net );
 importPackage( dw.util );
 importPackage( dw.object );
+importPackage( dw.svc );
+importPackage( dw.catalog );
 
 function execute( args : PipelineDictionary ) : Number
 {    
    	var HOUR_IN_SECS : Number = 3600;
    	var productId = args.CurrentHttpParameterMap.pid.stringValue;
+	if(productId != null)
+	{
+		var product = ProductMgr.getProduct(productId)
+		productId = product.isVariant() ? product.masterProduct.ID : product.ID;
+	}
    	   	
    	// requires that a custom object has been defined and instantiated it demandware.
    	var objects : SeekableIterator = CustomObjectMgr.getAllCustomObjects('TurnTo');
@@ -24,40 +31,20 @@ function execute( args : PipelineDictionary ) : Number
 		   	var obj : CustomObject = objects.next();   	   	
 		   	var turntoUrl : String = obj.getCustom().staticURL;
 		   	var siteKey : String = obj.getCustom().siteKey;
-		   	var timeoutMs : Integer = obj.getCustom().wsTimeout;
 		   	var version : String = obj.getCustom().version;		   	
 		   	
 		   	if (!version) {
 		   		version = "4.3"	
 		   	}
-		   			   	
-		   	if (timeoutMs == null) {
-		   		timeoutMs = 7000;
-		   	}
-		   	
-	   		// Get the data	
-			var url = turntoUrl + '/sitedata/' + siteKey + "/v" + version.replace('.', '_') + "/" + productId + "/d/catitemreviewshtml";				
-			var httpClient : HTTPClient = new HTTPClient();
-			//httpClient.enableCaching(HOUR_IN_SECS);
-			try {
-				// Set a timeout for the call to catItemHtml
-				httpClient.setTimeout(timeoutMs);
-				var message : String;
-				httpClient.open('GET', url);
-				httpClient.send();													 
-						
-				if (httpClient.statusCode != 200) {
-					// error
-					Logger.error("Failed to GET reviews data from TurnTo. Url: " + url + ", Error Msg: " + httpClient.errorText);
-					args.catItemReviewsHtml = "Reviews module is temporarily unavailable";
-				} else {					
-					// put the catalog item ugc in the pipeline dictionary
-					args.catItemReviewsHtml = httpClient.getText();
-				}
-			} catch(Exception) {
-	 			// do nothing	
-				args.catItemReviewsHtml = "Reviews module is temporarily unavailable";
-			}				
+			
+			var service:Service = ServiceRegistry.get("turnto.http.static.reviews.get");
+			service.URL += '/sitedata/' + siteKey + "/v" + version.replace('.', '_') + "/" + productId + "/d/catitemreviewshtml";
+			var result:Result = service.call();			
+			if (result.isOk()) {	
+				args.catItemReviewsHtml = result.getObject().toString();		
+			} else {
+				args.catItemReviewsHtml = '<div id="TurnToReviewsContent"></div>';
+			}	
 	   	}  
    	} finally {
    		if (objects != null) {
