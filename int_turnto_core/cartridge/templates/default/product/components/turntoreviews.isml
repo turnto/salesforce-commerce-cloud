@@ -1,0 +1,7 @@
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoReviewsEnable')}">
+	<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoSetupTypeRR') == 'dynamicEmbed'}">
+		<div id="TurnToReviewsContent"></div>
+	<iselse/>
+		<isinclude url="${URLUtils.url('TurnTo-GetProductReviews') + '?pid=' + pdict.Product.ID}" />
+	</isif>
+</isif>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<iscomment>This includes global utilities into the pages</iscomment>
+<isinclude template="util/modules"/>
+
+<iscomment>This page must be cachable. It inherits the caching attributes by the decorated template.</iscomment>
+
+<isset name="pinboardType" value="${!empty(pdict.PinboardType) ? pdict.PinboardType : 'visualContent'}" scope="page"/>
+
+<head>
+	<iscomment>
+		Include all important information globally , e.g. meta-data, link information, and
+		javascript.
+	</iscomment>
+	<isinclude template="components/header/htmlhead"/>
+	
+	<iscomment>Add page specific header information here.</iscomment>
+	<script type="text/javascript"><!--
+        var turnToConfig = {
+            siteKey: "${dw.system.Site.current.preferences.custom.turntoSiteKey}",
+            pinboard: { 
+                contentType: "${pinboardType}"
+            }
+        };
+        (function() {
+        	 var tt = document.createElement('script');
+        	 tt.type = 'text/javascript'; tt.async = true;
+        	 tt.src = document.location.protocol + "//${dw.system.Site.current.preferences.custom.turntoStaticURL}/traServer${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/pinboardjs/" + turnToConfig.siteKey + "/turnto-pinboard.js";
+        	 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tt, s);
+        	 })();
+    //--></script>
+</head>
+
+<body>
+<div id="container" class="">
+	<isinclude template="components/header/header"/>
+	<div id="main">
+		<div id="content">			
+			<div id="TurnToPinboardContent" style="background-color:white;"></div>
+		</div><!-- END: content -->
+		<div class="clear"><!-- FLOAT CLEAR --></div>
+	</div> <!-- END: main -->
+	<isinclude template="components/footer/footer"/>
+</div><!-- END: container -->
+</body>
+</html>

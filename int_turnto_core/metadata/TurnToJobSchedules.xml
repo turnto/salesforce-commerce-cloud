@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schedules xmlns="http://www.demandware.com/xml/impex/schedules/2007-03-31">
+
+    <schedule schedule-id="TurnTo Catalog Export">
+        <description/>
+        <enabled-flag>false</enabled-flag>
+        <priority>0</priority>
+        <execution-scope>site</execution-scope>
+        <pipeline>
+            <name>TurnToFeeds</name>
+            <startnode>ExportCatalog</startnode>
+        </pipeline>
+        <sites>
+            <site site-id="SiteGenesis"/>
+        </sites>
+        <recurrence>
+            <date-from>2016-10-27Z</date-from>
+            <start-time>21:00:00.000Z</start-time>
+            <interval>12h</interval>
+            <day-of-week>
+                <weekday>Sunday</weekday>
+                <weekday>Monday</weekday>
+                <weekday>Tuesday</weekday>
+                <weekday>Wednesday</weekday>
+                <weekday>Thursday</weekday>
+                <weekday>Friday</weekday>
+                <weekday>Saturday</weekday>
+            </day-of-week>
+        </recurrence>
+        <notification>
+            <enabled-flag>false</enabled-flag>
+            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
+        </notification>
+    </schedule>
+
+    <schedule schedule-id="TurnTo Historical Order Export (Ongoing)">
+        <description>Exports all orders placed in the last X days, where X is the value of the "Historical Order Days" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <enabled-flag>false</enabled-flag>
+        <priority>0</priority>
+        <execution-scope>site</execution-scope>
+        <pipeline>
+            <name>TurnToFeeds</name>
+            <startnode>ExportHistoricalOrders</startnode>
+        </pipeline>
+        <sites>
+            <site site-id="SiteGenesis"/>
+        </sites>
+        <recurrence>
+            <date-from>2016-11-23Z</date-from>
+            <start-time>21:01:00.000Z</start-time>
+            <interval>24h</interval>
+            <day-of-week>
+                <weekday>Sunday</weekday>
+                <weekday>Monday</weekday>
+                <weekday>Tuesday</weekday>
+                <weekday>Wednesday</weekday>
+                <weekday>Thursday</weekday>
+                <weekday>Friday</weekday>
+                <weekday>Saturday</weekday>
+            </day-of-week>
+        </recurrence>
+        <notification>
+            <enabled-flag>false</enabled-flag>
+            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
+        </notification>
+    </schedule>
+
+    <schedule schedule-id="TurnTo Historical Order Export (Specific Date)">
+        <description>Exports all orders from X date, where X is the value of the "Historical Order Date" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <enabled-flag>false</enabled-flag>
+        <priority>0</priority>
+        <execution-scope>site</execution-scope>
+        <pipeline>
+            <name>TurnToFeeds</name>
+            <startnode>ExportHistoricalOrdersByDate</startnode>
+        </pipeline>
+        <sites>
+            <site site-id="SiteGenesis"/>
+        </sites>
+        <run-once>2016-11-23T21:06:00.000Z</run-once>
+        <notification>
+            <enabled-flag>false</enabled-flag>
+            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
+        </notification>
+    </schedule>
+
+    <schedule schedule-id="TurnTo Import Average Ratings">
+        <description/>
+        <enabled-flag>false</enabled-flag>
+        <priority>0</priority>
+        <execution-scope>site</execution-scope>
+        <pipeline>
+            <name>TurnToFeeds</name>
+            <startnode>ImportAverageRatings</startnode>
+        </pipeline>
+        <sites>
+            <site site-id="SiteGenesis"/>
+        </sites>
+        <recurrence>
+            <date-from>2015-04-28Z</date-from>
+            <start-time>08:00:00.000Z</start-time>
+            <interval>12h</interval>
+            <day-of-week>
+                <weekday>Sunday</weekday>
+                <weekday>Monday</weekday>
+                <weekday>Tuesday</weekday>
+                <weekday>Wednesday</weekday>
+                <weekday>Thursday</weekday>
+                <weekday>Friday</weekday>
+                <weekday>Saturday</weekday>
+            </day-of-week>
+        </recurrence>
+        <notification>
+            <enabled-flag>false</enabled-flag>
+            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
+        </notification>
+    </schedule>
+
+    <schedule schedule-id="TurnTo Import User Generated Content">
+        <description/>
+        <enabled-flag>false</enabled-flag>
+        <priority>0</priority>
+        <execution-scope>site</execution-scope>
+        <pipeline>
+            <name>TurnToFeeds</name>
+            <startnode>ImportUserGeneratedContent</startnode>
+        </pipeline>
+        <sites>
+            <site site-id="SiteGenesis"/>
+        </sites>
+        <recurrence>
+            <date-from>2015-04-28Z</date-from>
+            <start-time>08:15:00.000Z</start-time>
+            <interval>12h</interval>
+            <day-of-week>
+                <weekday>Sunday</weekday>
+                <weekday>Monday</weekday>
+                <weekday>Tuesday</weekday>
+                <weekday>Wednesday</weekday>
+                <weekday>Thursday</weekday>
+                <weekday>Friday</weekday>
+                <weekday>Saturday</weekday>
+            </day-of-week>
+        </recurrence>
+        <notification>
+            <enabled-flag>false</enabled-flag>
+            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
+        </notification>
+    </schedule>
+
+</schedules>
