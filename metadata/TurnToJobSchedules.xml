@@ -1,151 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schedules xmlns="http://www.demandware.com/xml/impex/schedules/2007-03-31">
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="TurnToExportCatalog" priority="1">
+        <description>Exports and uploads the product catalog in TurnTo XML format to the TurnTo system</description>
+        <flow>
+            <context site-id="SiteGenesis"/>
+            <step step-id="ExportCatalog" type="ExecutePipeline" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExecutePipeline.Pipeline">TurnToFeeds-ExportCatalog</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2016-10-27Z</date-from>
+                    <start-time>04:00:00.000Z</start-time>
+                    <interval>12h</interval>
+                    <day-of-week>
+                        <weekday>Monday</weekday>
+                        <weekday>Thursday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Wednesday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
 
-    <schedule schedule-id="TurnTo Catalog Export">
-        <description/>
-        <enabled-flag>false</enabled-flag>
-        <priority>0</priority>
-        <execution-scope>site</execution-scope>
-        <pipeline>
-            <name>TurnToFeeds</name>
-            <startnode>ExportCatalog</startnode>
-        </pipeline>
-        <sites>
-            <site site-id="SiteGenesis"/>
-        </sites>
-        <recurrence>
-            <date-from>2016-10-27Z</date-from>
-            <start-time>21:00:00.000Z</start-time>
-            <interval>12h</interval>
-            <day-of-week>
-                <weekday>Sunday</weekday>
-                <weekday>Monday</weekday>
-                <weekday>Tuesday</weekday>
-                <weekday>Wednesday</weekday>
-                <weekday>Thursday</weekday>
-                <weekday>Friday</weekday>
-                <weekday>Saturday</weekday>
-            </day-of-week>
-        </recurrence>
-        <notification>
-            <enabled-flag>false</enabled-flag>
-            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
-        </notification>
-    </schedule>
-
-    <schedule schedule-id="TurnTo Historical Order Export (Ongoing)">
+    <job job-id="TurnToHistoricalOrderExportOngoing" priority="0">
         <description>Exports all orders placed in the last X days, where X is the value of the "Historical Order Days" Custom Site Preference in the "TurnTo Feeds" preference group</description>
-        <enabled-flag>false</enabled-flag>
-        <priority>0</priority>
-        <execution-scope>site</execution-scope>
-        <pipeline>
-            <name>TurnToFeeds</name>
-            <startnode>ExportHistoricalOrders</startnode>
-        </pipeline>
-        <sites>
-            <site site-id="SiteGenesis"/>
-        </sites>
-        <recurrence>
-            <date-from>2016-11-23Z</date-from>
-            <start-time>21:01:00.000Z</start-time>
-            <interval>24h</interval>
-            <day-of-week>
-                <weekday>Sunday</weekday>
-                <weekday>Monday</weekday>
-                <weekday>Tuesday</weekday>
-                <weekday>Wednesday</weekday>
-                <weekday>Thursday</weekday>
-                <weekday>Friday</weekday>
-                <weekday>Saturday</weekday>
-            </day-of-week>
-        </recurrence>
-        <notification>
-            <enabled-flag>false</enabled-flag>
-            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
-        </notification>
-    </schedule>
+        <flow>
+            <context site-id="SiteGenesis"/>
+            <step step-id="ExportHistoricalOrders" type="ExecutePipeline" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExecutePipeline.Pipeline">TurnToFeeds-ExportHistoricalOrders</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2017-01-18Z</date-from>
+                    <start-time>22:07:26.000Z</start-time>
+                    <interval>24h</interval>
+                    <day-of-week>
+                        <weekday>Monday</weekday>
+                        <weekday>Thursday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Wednesday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
 
-    <schedule schedule-id="TurnTo Historical Order Export (Specific Date)">
+    <job job-id="TurnToHistoricalOrderExportSpecificDate" priority="0">
         <description>Exports all orders from X date, where X is the value of the "Historical Order Date" Custom Site Preference in the "TurnTo Feeds" preference group</description>
-        <enabled-flag>false</enabled-flag>
-        <priority>0</priority>
-        <execution-scope>site</execution-scope>
-        <pipeline>
-            <name>TurnToFeeds</name>
-            <startnode>ExportHistoricalOrdersByDate</startnode>
-        </pipeline>
-        <sites>
-            <site site-id="SiteGenesis"/>
-        </sites>
-        <run-once>2016-11-23T21:06:00.000Z</run-once>
-        <notification>
-            <enabled-flag>false</enabled-flag>
-            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
-        </notification>
-    </schedule>
+        <flow>
+            <context site-id="SiteGenesis"/>
+            <step step-id="ExportHistoricalOrdersByDate" type="ExecutePipeline" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExecutePipeline.Pipeline">TurnToFeeds-ExportHistoricalOrdersByDate</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2016-10-27Z</date>
+                <time>04:00:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
 
-    <schedule schedule-id="TurnTo Import Average Ratings">
-        <description/>
-        <enabled-flag>false</enabled-flag>
-        <priority>0</priority>
-        <execution-scope>site</execution-scope>
-        <pipeline>
-            <name>TurnToFeeds</name>
-            <startnode>ImportAverageRatings</startnode>
-        </pipeline>
-        <sites>
-            <site site-id="SiteGenesis"/>
-        </sites>
-        <recurrence>
-            <date-from>2015-04-28Z</date-from>
-            <start-time>08:00:00.000Z</start-time>
-            <interval>12h</interval>
-            <day-of-week>
-                <weekday>Sunday</weekday>
-                <weekday>Monday</weekday>
-                <weekday>Tuesday</weekday>
-                <weekday>Wednesday</weekday>
-                <weekday>Thursday</weekday>
-                <weekday>Friday</weekday>
-                <weekday>Saturday</weekday>
-            </day-of-week>
-        </recurrence>
-        <notification>
-            <enabled-flag>false</enabled-flag>
-            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
-        </notification>
-    </schedule>
+    <job job-id="TurnToImportAverageRatings" priority="1">
+        <description>Imports the average rating feed from TurnTo, which is used to show the average stars on the product tiles</description>
+        <flow>
+            <context site-id="SiteGenesis"/>
+            <step step-id="ImportAverageRatings" type="ExecutePipeline" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExecutePipeline.Pipeline">TurnToFeeds-ImportAverageRatings</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2016-10-27Z</date-from>
+                    <start-time>04:00:00.000Z</start-time>
+                    <interval>12M</interval>
+                    <day-of-week>
+                        <weekday>Monday</weekday>
+                        <weekday>Thursday</weekday>
+                        <weekday>Sunday</weekday>
+                        <weekday>Friday</weekday>
+                        <weekday>Saturday</weekday>
+                        <weekday>Tuesday</weekday>
+                        <weekday>Wednesday</weekday>
+                    </day-of-week>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
 
-    <schedule schedule-id="TurnTo Import User Generated Content">
-        <description/>
-        <enabled-flag>false</enabled-flag>
-        <priority>0</priority>
-        <execution-scope>site</execution-scope>
-        <pipeline>
-            <name>TurnToFeeds</name>
-            <startnode>ImportUserGeneratedContent</startnode>
-        </pipeline>
-        <sites>
-            <site site-id="SiteGenesis"/>
-        </sites>
-        <recurrence>
-            <date-from>2015-04-28Z</date-from>
-            <start-time>08:15:00.000Z</start-time>
-            <interval>12h</interval>
-            <day-of-week>
-                <weekday>Sunday</weekday>
-                <weekday>Monday</weekday>
-                <weekday>Tuesday</weekday>
-                <weekday>Wednesday</weekday>
-                <weekday>Thursday</weekday>
-                <weekday>Friday</weekday>
-                <weekday>Saturday</weekday>
-            </day-of-week>
-        </recurrence>
-        <notification>
-            <enabled-flag>false</enabled-flag>
-            <hang-detection-enabled-flag>false</hang-detection-enabled-flag>
-        </notification>
-    </schedule>
+    <job job-id="TurnToImportUserGeneratedContent" priority="0">
+        <description>Import the user generated content XML feed from TurnTo, which can be used to make the content searchable by the storefront</description>
+        <flow>
+            <context site-id="SiteGenesis"/>
+            <step step-id="ImportUserGeneratedContent" type="ExecutePipeline" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExecutePipeline.Pipeline">TurnToFeeds-ImportUserGeneratedContent</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2016-10-27Z</date>
+                <time>04:00:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
 
-</schedules>
+</jobs>
