@@ -26,34 +26,39 @@ function downloadAverageRatings() {
 	var File = require('dw/io/File');
 	var FileWriter = require('dw/io/FileWriter');
 	var ProductMgr = require('dw/catalog/ProductMgr');
-	var HTTPClient = require('dw/net/HTTPClient');
 	var Logger = require('dw/system/Logger');
 	
 	var turntoStaticUrl:String= Site.getCurrent().getCustomPreferenceValue('turntoStaticURL');
    	var siteKey:String= Site.getCurrent().getCustomPreferenceValue('turntoSiteKey');
 	var authKey:String= Site.getCurrent().getCustomPreferenceValue('turntoAuthKey');  
 	
-	var timeoutMs : Integer = Site.getCurrent().getCustomPreferenceValue('turntoTimeout');
-	
 	var url = "http://" + turntoStaticUrl + "/static/export/" + siteKey + "/" + authKey + "/turnto-skuaveragerating.xml";
-	var httpClient : HTTPClient = new HTTPClient();
-	httpClient.setTimeout(timeoutMs);
-	httpClient.open('GET', url);
+	
+	var HTTPService = require('dw/svc/HTTPService');
+	var ServiceRegistry = require('dw/svc/ServiceRegistry');
+	var svc = 'turnto.http.import.ratings.get';
+	var service:HTTPService = ServiceRegistry.get(svc);
+	service.URL = url;
+	
+	// Get the file path where the output will be stored
+	var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
+	// Create a TurnTo directory if one doesn't already exist
+	var turntoDir : File = new File(impexPath + "/TurnTo");
+	if (!turntoDir.exists()) {
+		turntoDir.mkdir();
+	}
 	
 	var file : File = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + "turnto-skuaveragerating.xml");
 	//If the file exists, replace it
 	if (file.exists()) {
 		file.remove();
 	}
-	httpClient.sendAndReceiveToFile(file);
+	service.setOutFile(file);
 	
-	if (httpClient.statusCode == 200) {
-		Logger.debug("Successfully received average rating file from: " + url);
-	} else {
-		Logger.debug("FAILED receiving average rating file from: " + url);
-		Logger.error("Failed to GET the average rating feed from turnto.com");
-		throw exception;
-		
+	var Result = require('dw/svc/Result');
+	var result:Result = service.call();	
+	if (!result.isOk()) {	
+		throw new Error("FAILED receiving average rating file from: " + url);
 	}
 }
 
@@ -68,8 +73,7 @@ function importAverageRatings() {
 	
 	var file : File = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + "turnto-skuaveragerating.xml");
 	if (!file.exists()) {
-		Logger.error("Failed to import the average rating feed from turnto.com. File not found.");
-		throw exception;
+		throw new Error('Failed to import the average rating feed from turnto.com. File not found.');
 	}
 	
 	var fileReader : FileReader = new FileReader(file, "UTF-8");

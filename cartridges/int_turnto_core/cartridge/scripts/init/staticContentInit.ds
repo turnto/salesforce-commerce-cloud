@@ -34,3 +34,39 @@ ServiceRegistry.configure("turnto.http.static.reviews.get", {
         };
     }
 });
+
+ServiceRegistry.configure("turnto.http.import.ratings.get", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("GET");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    }
+});
+
+ServiceRegistry.configure("turnto.http.import.content.get", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("GET");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    }
+});
+
+ServiceRegistry.configure("turnto.http.export.catalog.post", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("POST");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    }
+});
+
+ServiceRegistry.configure("turnto.http.export.orders.post", {
+    createRequest: function(svc:HTTPService, args) {
+        svc.setRequestMethod("POST");
+    },
+    parseResponse : function(svc:HTTPService, client:HTTPClient) {
+        return client.text;        
+    }
+});
