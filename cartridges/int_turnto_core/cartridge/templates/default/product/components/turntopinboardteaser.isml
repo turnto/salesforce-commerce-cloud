@@ -1,5 +1,5 @@
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentsPinboardEnable')}">
-	<isif condition="${!empty(pdict.ProductSearchResult.category)}">
+	<isif condition="${!empty(pdict.ProductSearchResult) && !empty(pdict.ProductSearchResult.category)}">
 		<isif condition="${pdict.ProductSearchResult.category.custom.turntoEnableCCPinboardTeaser}">
 			<script type="text/javascript"><!--
 				turnToConfig.commentsPinboardTeaser = {
