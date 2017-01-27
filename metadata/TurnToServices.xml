@@ -33,7 +33,7 @@
     </service-profile>
 
     <service service-id="turnto.http.export.catalog.post">
-        <service-type>HTTP</service-type>
+        <service-type>GENERIC</service-type>
         <enabled>true</enabled>
         <log-prefix>turnto-export-catalog</log-prefix>
         <comm-log-enabled>false</comm-log-enabled>
@@ -43,7 +43,7 @@
     </service>
 
     <service service-id="turnto.http.export.orders.post">
-        <service-type>HTTP</service-type>
+        <service-type>GENERIC</service-type>
         <enabled>true</enabled>
         <log-prefix>turnto-export-orders</log-prefix>
         <comm-log-enabled>false</comm-log-enabled>

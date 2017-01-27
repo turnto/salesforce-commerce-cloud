@@ -35,14 +35,13 @@
         <branch basename="b2" source-connector="error">
           <transition target-connector="in">
             <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
+              <bend-point relative-to="source" x="1" y="0"/>
             </transition-display>
           </transition>
           <segment>
             <node>
-              <end-node name="ERROR"/>
-              <node-display x="1" y="1"/>
+              <stop-node/>
+              <node-display orientation="horizontal" x="1" y="0"/>
             </node>
           </segment>
         </branch>
@@ -90,14 +89,13 @@
         <branch basename="b2" source-connector="error">
           <transition target-connector="in">
             <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
+              <bend-point relative-to="source" x="1" y="0"/>
             </transition-display>
           </transition>
           <segment>
             <node>
-              <end-node name="ERROR"/>
-              <node-display x="1" y="1"/>
+              <stop-node/>
+              <node-display orientation="horizontal" x="1" y="0"/>
             </node>
           </segment>
         </branch>
@@ -145,14 +143,13 @@
         <branch basename="b2" source-connector="error">
           <transition target-connector="in">
             <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
+              <bend-point relative-to="source" x="1" y="0"/>
             </transition-display>
           </transition>
           <segment>
             <node>
-              <end-node name="ERROR"/>
-              <node-display x="1" y="1"/>
+              <stop-node/>
+              <node-display orientation="horizontal" x="1" y="0"/>
             </node>
           </segment>
         </branch>
@@ -200,14 +197,13 @@
         <branch basename="b2" source-connector="error">
           <transition target-connector="in">
             <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
+              <bend-point relative-to="source" x="1" y="0"/>
             </transition-display>
           </transition>
           <segment>
             <node>
-              <end-node name="ERROR"/>
-              <node-display x="1" y="1"/>
+              <stop-node/>
+              <node-display orientation="horizontal" x="1" y="0"/>
             </node>
           </segment>
         </branch>
@@ -255,14 +251,13 @@
         <branch basename="b2" source-connector="error">
           <transition target-connector="in">
             <transition-display>
-              <bend-point relative-to="source" x="2" y="0"/>
-              <bend-point relative-to="target" x="0" y="-1"/>
+              <bend-point relative-to="source" x="1" y="0"/>
             </transition-display>
           </transition>
           <segment>
             <node>
-              <end-node name="ERROR"/>
-              <node-display x="1" y="1"/>
+              <stop-node/>
+              <node-display orientation="horizontal" x="1" y="0"/>
             </node>
           </segment>
         </branch>

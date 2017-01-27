@@ -54,19 +54,29 @@ ServiceRegistry.configure("turnto.http.import.content.get", {
 });
 
 ServiceRegistry.configure("turnto.http.export.catalog.post", {
-    createRequest: function(svc:HTTPService, args) {
-        svc.setRequestMethod("POST");
-    },
     parseResponse : function(svc:HTTPService, client:HTTPClient) {
         return client.text;        
+    },
+    execute: function(svc:HTTPService, args) {
+    	var url:String= dw.system.Site.getCurrent().getCustomPreferenceValue('turntoURL') + '/feedUpload/postfile';
+    	var client:HTTPClient = new HTTPClient();
+    	client.setTimeout( svc.configuration.profile.timeoutMillis);
+    	client.open("POST", url);
+        client.sendMultiPart( args.toArray() );
+        return client.text;
     }
 });
 
 ServiceRegistry.configure("turnto.http.export.orders.post", {
-    createRequest: function(svc:HTTPService, args) {
-        svc.setRequestMethod("POST");
-    },
     parseResponse : function(svc:HTTPService, client:HTTPClient) {
         return client.text;        
+    },
+    execute: function(svc:HTTPService, args) {
+    	var url:String= dw.system.Site.getCurrent().getCustomPreferenceValue('turntoURL') + '/feedUpload/postfile';
+    	var client:HTTPClient = new HTTPClient();
+    	client.setTimeout( svc.configuration.profile.timeoutMillis);
+    	client.open("POST", url);
+        client.sendMultiPart( args.toArray() );
+        return client.text;
     }
 });

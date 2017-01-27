@@ -290,24 +290,22 @@ function exportCatalog() {
 		var authKeyPart : HTTPRequestPart = new HTTPRequestPart('authKey', authKey);		
 		var feedStylePart : HTTPRequestPart = new HTTPRequestPart('feedStyle', 'tab-style.1');
 								
-		var httpClient : HTTPClient = new HTTPClient();
-		var message : String;
-		httpClient.setTimeout(timeoutMs);
-		httpClient.open('POST', turntoUrl + '/feedUpload/postfile');
-		httpClient.sendMultiPart([siteKeyPart, authKeyPart, feedStylePart, file]);							
-				
-		if (httpClient.statusCode != 200) {
-			// error
-			Logger.debug("FAILED wrote file to " + turntoUrl + '/feedUpload/postfile');
-			Logger.error("Failed to POST the catalog feed to turnto.com");
-		} else {
-			Logger.debug("Successfull wrote file to " + turntoUrl + '/feedUpload/postfile');
+		var Service = require('dw/svc/Service');
+		var ServiceRegistry = require('dw/svc/ServiceRegistry');
+		var svc = 'turnto.http.export.catalog.post';
+		var service:Service = ServiceRegistry.get(svc);
+		service.URL = turntoUrl + '/feedUpload/postfile';
+		
+		var Result = require('dw/svc/Result');
+		var result:Result = service.call([siteKeyPart, authKeyPart, feedStylePart, file]);	
+		if (!result.isOk()) {	
+			throw new Error("FAILED uploading the catalog file to: " + turntoUrl + '/feedUpload/postfile');
 		}							
     } catch(exception) {    	
     	var ex = exception;
     	trace("An exception occurred while attempting to export the catalog.");
     	throw exception;
-		//return PIPELET_ERROR;		    
+		//return PIPELET_ERROR;
 	} finally {
 	    if (fileWriter != null) {
 	    	fileWriter.close();
