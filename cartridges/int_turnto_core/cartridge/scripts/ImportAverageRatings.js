@@ -96,7 +96,7 @@ function importAverageRatings() {
 		 			rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0')
 	     			product.custom.turntoAverageRating = rating;
 	     			product.custom.turntoReviewCount = reviewCount;
-	     			product.custom.turntoRelatedReviewCount = reviewCount;
+	     			product.custom.turntoRelatedReviewCount = relatedReviewCount;
 	     			product.custom.turntoCommentCount = commentCount;
 	     		}
 	     	}
