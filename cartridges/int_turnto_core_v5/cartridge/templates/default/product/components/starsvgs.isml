@@ -1,0 +1,14 @@
+<iscomment>Default Star SVGs markup *the following markup will not be displayed on page, it's simply for use in the teasers.js, 
+		   see documentation if you don't want to use the following SVGs, there are alternative methods
+</iscomment>
+
+<div id="tt-teaser-icons" style="display:none;" width="0" height="0">
+	<svg xmlns="​http://www.w3.org/2000/svg​" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<symbol id="tt-teaser-star--empty" viewBox="0 0 24 24"> <path d="M12 18l-6.4 3.88 1.73-7.33-5.66-4.93L9.09 9 12 2.09 14.91 9l7.42.64-5.63 5 1.72 7.34z" fill="none" xmlns="http://www.w3.org/2000/svg"></path>
+	</symbol>
+	<symbol id="tt-teaser-star--full" viewBox="0 0 24 24"> <path d="M12 18.66l-7.44 4.35 1.98-8.16L0 9.36l8.62-.7L12 .99l3.38 7.67 8.62.7-6.54 5.49 1.98 8.16L12 18.66z" xmlns="http://www.w3.org/2000/svg"></path>
+	</symbol>
+	<symbol id="tt-teaser-star--half" viewBox="0 0 24 24"> <path fill="currentColor" d="M12 2.09L9.09 9l-7.42.62 5.66 4.93-1.72 7.32 1.07-.65L12 17.97V2.09z" xmlns="http://www.w3.org/2000/svg"></path>
+	<path d="M12 2.09L14.91 9l7.42.62-5.66 4.93 1.72 7.32-1.07-.65L12 17.97V2.09z"></path>
+	</symbol>
+</div>

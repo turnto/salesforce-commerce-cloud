@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Category">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="turntoEnableCCPinboardTeaser">
+                <display-name xml:lang="x-default">TurnTo Enable Checkout Comments Pinboard Teaser</display-name>
+                <description xml:lang="x-default">Enables the checkout comments pinboard teaser on the page for this category</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="TurnTo">
+                <display-name xml:lang="x-default">TurnTo</display-name>
+                <attribute attribute-id="turntoEnableCCPinboardTeaser"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="Product">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="turntoAverageRating">
+                <display-name xml:lang="x-default">TurnTo Average Rating</display-name>
+                <description xml:lang="x-default">Average TurnTo rating score for the product</description>
+                <type>string</type>
+                <localizable-flag>true</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentCount">
+                <display-name xml:lang="x-default">TurnTo Comment Count</display-name>
+                <description xml:lang="x-default">Number of comments for the product</description>
+                <type>int</type>
+                <localizable-flag>true</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoDisableCategoryCommentTeaser">
+                <display-name xml:lang="x-default">TurnTo Disable Category Comment Teaser</display-name>
+                <description xml:lang="x-default">Disables the number of buyer comments for this product on the category and search pages</description>
+                <type>boolean</type>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoDisableCategoryReviewTeaser">
+                <display-name xml:lang="x-default">TurnTo Disable Category Review Teaser</display-name>
+                <description xml:lang="x-default">Disables the number of reviews for this product on the category and search pages</description>
+                <type>boolean</type>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoRelatedReviewCount">
+                <display-name xml:lang="x-default">TurnTo Related Review Count</display-name>
+                <description xml:lang="x-default">Number of related reviews for the product</description>
+                <type>int</type>
+                <localizable-flag>true</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoReviewCount">
+                <display-name xml:lang="x-default">TurnTo Review Count</display-name>
+                <description xml:lang="x-default">Number of reviews for the product</description>
+                <type>int</type>
+                <localizable-flag>true</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoUserGeneratedContent">
+                <display-name xml:lang="x-default">TurnTo User Generated Content</display-name>
+                <description xml:lang="x-default">User Generated Content for the product, imported from the feed</description>
+                <type>text</type>
+                <localizable-flag>true</localizable-flag>
+                <site-specific-flag>false</site-specific-flag>
+                <mandatory-flag>false</mandatory-flag>
+                <visible-flag>false</visible-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <order-required-flag>false</order-required-flag>
+                <externally-defined-flag>false</externally-defined-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="TurnTo">
+                <display-name xml:lang="x-default">TurnTo</display-name>
+                <attribute attribute-id="turntoAverageRating"/>
+                <attribute attribute-id="turntoReviewCount"/>
+                <attribute attribute-id="turntoRelatedReviewCount"/>
+                <attribute attribute-id="turntoCommentCount"/>
+                <attribute attribute-id="turntoUserGeneratedContent"/>
+                <attribute attribute-id="turntoDisableCategoryCommentTeaser"/>
+                <attribute attribute-id="turntoDisableCategoryReviewTeaser"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="turnToSSOEnable">
+                <display-name xml:lang="x-default">Enable SSO</display-name>
+                <description xml:lang="x-default">When this is enabled, the user will always need to be logged in to SFCC to interact with TurnTo</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoAuthKey">
+                <type>set-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCategoryCommentTeaserEnable">
+                <display-name xml:lang="x-default">Category Comment Teaser</display-name>
+                <description xml:lang="x-default">Enable the checkout comments teaser below the product name on product category pages
+				</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCategoryReviewTeaserEnable">
+                <display-name xml:lang="x-default">Category Review Teaser</display-name>
+                <description xml:lang="x-default">Enable Review Teaser on the Category and Search Pages</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentsCaptureEnable">
+                <display-name xml:lang="x-default">Checkout Comments Capture Widget (on Order Confirmation)</display-name>
+                <description xml:lang="x-default">When enabled, pops an overlay on the order confirmation page asking customers why they decided to buy each item they purchased</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentsPDPEnable">
+                <display-name xml:lang="x-default">Checkout Comments Display Widget (on PDP)</display-name>
+                <description xml:lang="x-default">Enable the Checkout Comments PDP Display Widget</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentsPinboardEnable">
+                <display-name xml:lang="x-default">Checkout Comments Pinboard</display-name>
+                <description xml:lang="x-default">Enables the Checkout Comments Pinboard</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentsPinboardPromoButtonURL">
+                <display-name xml:lang="x-default">Checkout Comments Pinboard Teaser - Promo Button URL</display-name>
+                <description xml:lang="x-default">The URL to go to when clicking the promo box button.</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCssOverwrites">
+                <display-name xml:lang="x-default">CSS Overwrites</display-name>
+                <description xml:lang="x-default">Allows you to customize widget colors, fonts, font sizes, line-heights, padding, etc. using CSS overwrites</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoHistoricalOrderDate">
+                <display-name xml:lang="x-default">Historical Order Date</display-name>
+                <description xml:lang="x-default">For the specific date transaction feed, export all orders created on X date</description>
+                <type>date</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoHistoricalOrderDays">
+                <display-name xml:lang="x-default">Historical Order Days</display-name>
+                <description xml:lang="x-default">For the ongoing transaction feed, export all orders created in the past X days</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>3</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoJSFeed">
+                <display-name xml:lang="x-default">Javascript Feed (on Order Confirmation) </display-name>
+                <description xml:lang="x-default">Enables the collection of real-time order data on the order confirmation page</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoMobileLandingTitle">
+                <type>set-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoOrderConfFlowPauseSeconds">
+                <display-name xml:lang="x-default">Order Confirmation Flow Pause</display-name>
+                <description xml:lang="x-default">The number of seconds to pause before launching the Comment Capture widget</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>3</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoQAEnable">
+                <display-name xml:lang="x-default">Q&amp;A</display-name>
+                <description xml:lang="x-default">Enable the TurnTo Question &amp; Answers feature</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoReviewsEnable">
+                <display-name xml:lang="x-default">Reviews</display-name>
+                <description xml:lang="x-default">Enable Reviews in Teaser and Widget on Product Detail Page</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoSetupTypeQA">
+                <display-name xml:lang="x-default">Setup Type Q&amp;A</display-name>
+                <description xml:lang="x-default">Type of presentation used for TurnTo Q&amp;A functionality. Static Embed is recommended for SEO benefits.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Static Embed</display>
+                        <value>staticEmbed</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Dynamic Embed</display>
+                        <value>dynamicEmbed</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoSetupTypeRR">
+                <display-name xml:lang="x-default">Setup Type Ratings &amp; Reviews</display-name>
+                <description xml:lang="x-default">Type of presentation used for TurnTo Reviews functionality. Static Embed is recommended for SEO benefits.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Static Embed</display>
+                        <value>staticEmbed</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Dynamic Embed</display>
+                        <value>dynamicEmbed</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoSiteKey">
+                <type>set-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoStaticURL">
+                <display-name xml:lang="x-default">Static URL</display-name>
+                <description xml:lang="x-default">Should not be changed, unless instructed by TurnTo</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>static.www.turnto.com</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoTimeout">
+                <display-name xml:lang="x-default">Web Services Timeout</display-name>
+                <description xml:lang="x-default">in milliseconds</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>4000</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoURL">
+                <display-name xml:lang="x-default">URL</display-name>
+                <description xml:lang="x-default">Should not be changed, unless instructed by TurnTo</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>www.turnto.com</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoUseVariants">
+                <display-name xml:lang="x-default">Use Variants</display-name>
+                <description xml:lang="x-default">Include product variants in the catalog feed and show the reviews for individual variants on the product details page.  Reviews for other variants will be shown as related reviews.</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoVersionNumber">
+                <display-name xml:lang="x-default">TurnTo Code Version</display-name>
+                <description xml:lang="x-default">Should not be changed, unless instructed by TurnTo</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>4.3</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoVisualGalleryEnable">
+                <display-name xml:lang="x-default">Visual Content Gallery Row Widget</display-name>
+                <description xml:lang="x-default">Enables the PDP Gallery Row Widget</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoVisualPinboardEnable">
+                <display-name xml:lang="x-default">Visual Content Pinboard</display-name>
+                <description xml:lang="x-default">Enables the Visual Content Pinboard</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCountryRestriction">
+                <display-name xml:lang="x-default">TurnTo Country Restriction</display-name>
+                <description xml:lang="x-default">List of Country Code where some feature will be disabled</description>
+                <type>set-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+			<attribute-definition attribute-id="turnToDisablePostOfContent">
+                <display-name xml:lang="x-default">Disable Post of Content (Geo Restriction Feature)</display-name>
+                <description xml:lang="x-default">Disable Posting of Content (Geo Restriction Feature)</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turnToDisableMobilLandingPage">
+                <display-name xml:lang="x-default">Disable Mobile Landing Page (Geo Restriction Feature)</display-name>
+                <description xml:lang="x-default">Disable Mobile Landing Page (Geo Restriction Feature)</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turnToDisableSSO">
+                <display-name xml:lang="x-default">Disable Single Sign On (Geo Restriction Feature)</display-name>
+                <description xml:lang="x-default">Disable Single Sign On (Geo Restriction Feature)</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="TurnToGeneralSettings">
+                <display-name xml:lang="x-default">TurnTo General Settings
+				</display-name>
+                <attribute attribute-id="turntoAuthKey"/>
+                <attribute attribute-id="turntoSiteKey"/>
+                <attribute attribute-id="turntoVersionNumber"/>
+                <attribute attribute-id="turntoStaticURL"/>
+                <attribute attribute-id="turntoURL"/>
+                <attribute attribute-id="turntoTimeout"/>
+                <attribute attribute-id="turntoCssOverwrites"/>
+                <attribute attribute-id="turntoUseVariants"/>
+                <attribute attribute-id="turntoMobileLandingTitle"/>
+                <attribute attribute-id="turntoCountryRestriction"/>
+				<attribute attribute-id="turnToDisablePostOfContent"/>
+				<attribute attribute-id="turnToDisableMobilLandingPage"/>
+				<attribute attribute-id="turnToDisableSSO"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToCheckoutComments">
+                <display-name xml:lang="x-default">TurnTo Checkout Comments
+				</display-name>
+                <attribute attribute-id="turntoCommentsCaptureEnable"/>
+                <attribute attribute-id="turntoOrderConfFlowPauseSeconds"/>
+                <attribute attribute-id="turntoCommentsPDPEnable"/>
+                <attribute attribute-id="turntoCategoryCommentTeaserEnable"/>
+                <attribute attribute-id="turntoCommentsPinboardEnable"/>
+                <attribute attribute-id="turntoCommentsPinboardPromoButtonURL"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToQA">
+                <display-name xml:lang="x-default">TurnTo Q&amp;A</display-name>
+                <attribute attribute-id="turntoQAEnable"/>
+                <attribute attribute-id="turntoSetupTypeQA"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToReviews">
+                <display-name xml:lang="x-default">TurnTo Reviews</display-name>
+                <attribute attribute-id="turntoReviewsEnable"/>
+                <attribute attribute-id="turntoSetupTypeRR"/>
+                <attribute attribute-id="turntoCategoryReviewTeaserEnable"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToVisualContent">
+                <display-name xml:lang="x-default">TurnTo Visual Content
+				</display-name>
+                <attribute attribute-id="turntoVisualGalleryEnable"/>
+                <attribute attribute-id="turntoVisualPinboardEnable"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToFeeds">
+                <display-name xml:lang="x-default">TurnTo Feeds
+				</display-name>
+                <attribute attribute-id="turntoJSFeed"/>
+                <attribute attribute-id="turntoHistoricalOrderDays"/>
+                <attribute attribute-id="turntoHistoricalOrderDate"/>
+            </attribute-group>
+            <attribute-group group-id="TurnToSSO">
+                <display-name xml:lang="x-default">TurnTo Single Sign On (SSO)
+                </display-name>
+                <attribute attribute-id="turnToSSOEnable"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

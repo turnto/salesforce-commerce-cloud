@@ -1,0 +1,15 @@
+<iscomment>This is a copy of the pid rating template from the app_storefront_base cartridge, but it includes the custom TurnTo teaser template include</iscomment>
+
+<div class="product-number-rating clearfix">
+    <!-- Product Number -->
+    <div class="product-number hidden-xs-down pull-left">
+        <isinclude template="product/components/productNumber" />
+    </div>
+
+    <!-- Product Rating -->
+    <div class="ratings pull-right">
+        <isset name="isQuickView" value="${false}" scope="page"/>
+        <iscomment>TurnTo Teasers</iscomment>
+        <isinclude template="product/components/turntoteasers"/>
+    </div>
+</div>
