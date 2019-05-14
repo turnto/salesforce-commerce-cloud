@@ -17,9 +17,7 @@ var ServiceFactory = require('int_turnto_core_v5/cartridge/scripts/util/ServiceF
 var products;
 var product;
 var tempProduct;
-var allowedLocales = TurnToHelper.getAllowedLocales();
 var hashMapOfFileWriters;
-var useVariants = ServiceFactory.getUseVariantsPreference();
  
 //function is executed only ONCE
 function beforeStep( parameters, stepExecution )
@@ -27,7 +25,8 @@ function beforeStep( parameters, stepExecution )
 	try {
 		//instantiate new hash map to store the locale file writers
 		hashMapOfFileWriters = new HashMap();
-	
+		var allowedLocales = TurnToHelper.getAllowedLocales();
+
 		for each(var currentLocale in allowedLocales) {
 			//Discover locales and prep a data file for each locale. Query products. 
 			//Get the file path where the output will be stored
@@ -70,6 +69,7 @@ function getTotalCount( parameters, stepExecution )
 function read( parameters, stepExecution )
 {
 	try {
+		var useVariants = ServiceFactory.getUseVariantsPreference();
 		//Return next product
 		if( products.hasNext() ) {
 			tempProduct = products.next();

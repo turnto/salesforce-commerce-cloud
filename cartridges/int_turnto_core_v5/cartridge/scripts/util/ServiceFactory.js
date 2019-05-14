@@ -46,7 +46,7 @@ var ServiceFactory = {
 	 * @desc returns the use variants custom site preference
 	 */
 	getUseVariantsPreference: function () {
-		return Site.getCurrent().getCustomPreferenceValue('turntoUseVariants');
+		return dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants');
 	},
 
 	/**

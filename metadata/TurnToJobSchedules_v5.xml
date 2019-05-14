@@ -8,7 +8,7 @@
             <step step-id="TurnToExportCatalogFeed" type="custom.TurnToExportCatalogFeed" enforce-restart="false">
                 <description/>
                 <parameters>
-                    <parameter name="ExportFileName">/exportCatalog.txt</parameter>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
                     <parameter name="IsDisabled">false</parameter>
                 </parameters>
             </step>
@@ -20,7 +20,7 @@
                 <parameters>
                     <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
                     <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
-                    <parameter name="ExportFileName">/exportCatalog.txt</parameter>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
                     <parameter name="NoFileFoundStatus">ERROR</parameter>
                     <parameter name="IsDisabled">false</parameter>
                 </parameters>
@@ -68,7 +68,7 @@
             <step step-id="TurnToExportOrderFeedOngoing" type="custom.TurnToExportOrderFeedOngoing" enforce-restart="false">
                 <description/>
                 <parameters>
-                    <parameter name="ExportFileName">/exportOrders.txt</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
                 </parameters>
             </step>
         </flow>
@@ -79,7 +79,7 @@
                 <parameters>
                     <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
                     <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
-                    <parameter name="ExportFileName">/exportOrders.txt</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
                     <parameter name="NoFileFoundStatus">ERROR</parameter>
                 </parameters>
             </step>
@@ -101,7 +101,7 @@
             <step step-id="TurnToExportOrderFeedSpecificDate" type="custom.TurnToExportOrderFeedSpecificDate" enforce-restart="false">
                 <description/>
                 <parameters>
-                    <parameter name="ExportFileName">/exportOrders.txt</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
                 </parameters>
             </step>
         </flow>
@@ -112,7 +112,7 @@
                 <parameters>
                     <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
                     <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
-                    <parameter name="ExportFileName">/exportOrders.txt</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
                     <parameter name="NoFileFoundStatus">ERROR</parameter>
                 </parameters>
             </step>

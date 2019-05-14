@@ -95,8 +95,7 @@ var TurnToHelper = {
 	 * @returns {List} allowed locales
 	 */
 	getAllowedLocales: function() {
-		//loop through site enabled locales to generate a catalog export for each locale
-		return Site.getCurrent().getAllowedLocales();
+		//loop through site enabled locales to generate a catalog export for each locale		
 		var siteAllowedLocales = Site.getCurrent().getAllowedLocales();
 		var adjustedAllowedLocales = [];
 		
