@@ -206,7 +206,9 @@ function process( product, parameters, stepExecution )
 			//ASIN
 			asin = '';
 		}
-		
+
+		var allowedLocales = TurnToHelper.getAllowedLocales();
+
 		//Iterate all locales, generate and return a simple mapping object with locale 
 		//and formatted output such as ```{ "en_us": "Row data for English US", ...}``` 
 		for each(var currentLocale in allowedLocales) {
@@ -263,6 +265,7 @@ function process( product, parameters, stepExecution )
 function write( json, parameters, stepExecution )
 {
 	try {
+		var allowedLocales = TurnToHelper.getAllowedLocales();
 		//Iterate chunks, with each chunk being a mapping object from the process step. 
 		//Iterate mapped locales and write formatted data to applicable files.
 		for each(var currentLocale in allowedLocales) {
@@ -294,6 +297,7 @@ function write( json, parameters, stepExecution )
 //function is executed only ONCE
 function afterStep( success, parameters, stepExecution )
 {
+	var allowedLocales = TurnToHelper.getAllowedLocales();
 	try {
 		//loop through all the locales and close each corresponding file writer
 		for each(var currentLocale in allowedLocales) {
