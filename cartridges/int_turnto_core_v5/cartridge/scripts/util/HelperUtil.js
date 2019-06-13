@@ -8,28 +8,34 @@
 /* API Includes */
 var Site = require('dw/system/Site');
 var System = require('dw/system/System');
+var HashMap = require('dw/util/HashMap');
+var Logger = require('dw/system/Logger');
 
 var TurnToHelper = {
 		
 	/**
 	 * @function
 	 * @name getLocalizedTurnToPreferenceValue
-	 * @param preferenceName The name of the localized TurnTo SitePreference to retrieve
+	 * @param preferenceName can be turntoAuthKey or turntoSiteKey
 	 * @param locale The locale in which to retrieve a value. If not matching locale is returned, the default is used
 	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
 	 */
-	getLocalizedTurnToPreferenceValue: function( preferenceName, locale ) {
-		var localizedValues : dw.util.Collection = Site.getCurrent().getCustomPreferenceValue( preferenceName );
-		var preferenceValue : String = null;
-		for each( var entry : String in localizedValues ) {
-			var entryLocale : String = entry.split( ":" )[0];
-			var entryValue : String = entry.split( ":" )[1];
-			if( entryLocale == locale ) {
-				preferenceValue = entryValue;
-				break;
-			} else if( entryLocale == 'default' && preferenceValue == null ) {
-				preferenceValue = entryValue;
+	getLocalizedTurnToPreferenceValue: function(locale ) {
+		var preferenceValue = {};
+		var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+		try {
+			for each(var obj in hashMapOfKeys.entrySet()) {
+				if (obj.value.locales.indexOf(locale) != -1) {
+					preferenceValue = {
+							turntoSiteKey: JSON.parse(obj.key),
+							turntoAuthKey: obj.value.authKey,
+							domain: obj.value.domain || TurnToHelper.getDefaultDataCenterUrl()
+					};
+					break;
+				}
 			}
+		} catch (e) {
+			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
 		}
 		return preferenceValue;
 	},
@@ -41,7 +47,7 @@ var TurnToHelper = {
 	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
 	 */
 	getLocalizedSitePreferenceFromRequestLocale: function( preferenceName ) {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(preferenceName, request.httpLocale);
+		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.httpLocale);
 	},
 	
 	/**
@@ -123,6 +129,23 @@ var TurnToHelper = {
 
 	/**
 	 * @function
+	 * @name getHashMapOfKeys
+	 * @description Function to get map of TurnTo keys with locales, authKey from custom prefernce
+	 * @returns {String} - Return map of TurnTo keys with locales, authKey
+	 */
+	getHashMapOfKeys: function () {
+		var TurnToSiteAuthKey = Site.getCurrent().getCustomPreferenceValue('TurnToSiteAuthKeyJSON');
+		var rg = new RegExp('(\n|\t)', 'gm');
+		var result = JSON.parse(TurnToSiteAuthKey.replace(rg, ''));
+		var hashMapOfKeys = new HashMap();
+		for (var key in result) {
+			hashMapOfKeys.put(JSON.stringify(key), result[key]);
+		}
+		return hashMapOfKeys;
+	},
+
+	/**
+	 * @function
 	 * @name getPageID
 	 * @description Retrieve Page ID from current URL
 	 * @returns {string} page ID
@@ -147,6 +170,43 @@ var TurnToHelper = {
 		}
 		
 		return pageID
+	},
+
+	/**
+	 * @function
+	 * @name getDataCenterUrl
+	 * @param preferenceName The name of the localized TurnTo SitePreference to retrieve
+	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
+	 */
+	getDataCenterUrl: function (preferenceName) {
+		var localizedValues : dw.util.Collection = Site.getCurrent().getCustomPreferenceValue(preferenceName);
+		var locale : String = request.httpLocale;
+		var preferenceValue : String = null;
+		for each( var entry : String in localizedValues ) {
+			var entryLocale : String = entry.split( ":" )[0];
+			var entryUrl : String = entry.split( ":" )[2];
+			if( entryLocale == locale ) {
+				preferenceValue = entryUrl;
+				break;
+			}
+		}
+		return preferenceValue ? preferenceValue : TurnToHelper.getDefaultDataCenterUrl();
+	},
+	
+	/**
+	 * @function
+	 * @return {String} default url for TurnTo
+	 */
+	getDefaultDataCenterUrl: function () {
+		return Site.getCurrent().getCustomPreferenceValue('defaultDataCenterUrl');
+	},
+
+	/**
+	 * @name getLogger
+	 * @desc returns the logger
+	 */
+	getLogger: function () {
+		return Logger.getLogger('TurnToHelperUtil');
 	}
 
 }

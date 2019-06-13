@@ -19,7 +19,6 @@
 						{
 							//siteKey: ${siteKey},
 							title: '${item.productName.replace(/'/g, "\\'")}', 
-							//TODO url not correct
 							url:'${item.url}', 
 							sku:'${item.id}',
 						}<isif condition="${!itemStatus.last}">,</isif>

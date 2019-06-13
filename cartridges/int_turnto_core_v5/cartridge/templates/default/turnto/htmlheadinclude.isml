@@ -3,7 +3,7 @@
 <iscomment>Global Import of the TurnTo Helper and Site Key Variable</iscomment>
 <isscript>
 	var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
-	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale('turntoSiteKey');
+	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
 </isscript>
 
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCssOverwrites')}">
