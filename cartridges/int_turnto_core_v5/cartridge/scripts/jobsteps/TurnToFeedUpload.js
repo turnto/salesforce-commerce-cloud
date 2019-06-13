@@ -61,10 +61,12 @@ var run = function run() {
 		}
 
 		//Loop through all allowed locales per site
-		for each(var currentLocale in TurnToHelper.getAllowedLocales()) {
-
+		var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+		for each(var obj in hashMapOfKeys.entrySet()) {
+			var locales = obj.value.locales;
 			// Initialize a export file
-			var exportFile : File = new File(turntoDir.getFullPath() + "/" + currentLocale + '/' + exportFileName + '_' + currentLocale + '_' + Site.getCurrent().ID +'.txt');
+			var folderAndFilePatternName = locales.replace(',', '_');
+			var exportFile : File = new File(turntoDir.getFullPath() + "/" + folderAndFilePatternName + '/' + exportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID +'.txt');
 
 			if (!exportFile.exists()) {
 				switch (noFilesFoundStatus) {
@@ -76,16 +78,17 @@ var run = function run() {
 			}
 
 			//Localized siteKey and authKey, need to download per locale, added to the content body of the service request
-			var siteKey : String = TurnToHelper.getLocalizedTurnToPreferenceValue('turntoSiteKey', currentLocale);
-			var authKey : String = TurnToHelper.getLocalizedTurnToPreferenceValue('turntoAuthKey', currentLocale);
-
+			var siteKey : String = JSON.parse(obj.key);
+			var authKey : String = obj.value.authKey;
+			var domain : String = 'www.' + obj.value.domain;
+			
 			//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
-			if(empty(siteKey) || empty(authKey)) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED Site and/or Auth key is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + exportFile.name);
+			if(empty(siteKey) || empty(authKey) || empty(domain)) {
+				return new Status(Status.ERROR, 'ERROR', 'FAILED Site and/or Auth key or domain is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + exportFile.name  + ' domain -> ' + domain);
 			}
 			
 			//FeedUploadService
-			var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, currentLocale, exportFile);
+			var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, exportFile, siteKey, authKey, domain);
 			
 			//false is returned if a site or auth key is missing for the current locale
 			if(!requestDataContainer) {
@@ -96,7 +99,7 @@ var run = function run() {
 			var feedUploadResult = FeedUploadService.call(requestDataContainer);
 		
 			if (!feedUploadResult.isOk()) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name : ' + xmlName);
+				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name : ' + exportFile.fullPath + '\nerror:' + feedUploadResult.errorMessage);
 			}
 		}
 	} catch (exception) {
