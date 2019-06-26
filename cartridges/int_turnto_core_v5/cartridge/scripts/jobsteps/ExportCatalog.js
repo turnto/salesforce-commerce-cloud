@@ -18,43 +18,37 @@ var products;
 var product;
 var tempProduct;
 var hashMapOfFileWriters;
-var hashMapOfKeys;
-
+ 
 //function is executed only ONCE
 function beforeStep( parameters, stepExecution )
 {
 	try {
-		if (parameters.isDisabled) {
-			return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
-		}
-
 		//instantiate new hash map to store the locale file writers
 		hashMapOfFileWriters = new HashMap();
-		hashMapOfKeys = new HashMap();
+		var allowedLocales = TurnToHelper.getAllowedLocales();
 
-		hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
-		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
-		for each(var key in hashMapOfKeys) {
-			var locales = key.locales;
+		for each(var currentLocale in allowedLocales) {
 			//Discover locales and prep a data file for each locale. Query products. 
 			//Get the file path where the output will be stored
-			var folderAndFilePatternName = locales.replace(',', '_');
-			var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + folderAndFilePatternName);
+			var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
 			//retrieve fileWriter for current Locale
+			var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + currentLocale);
 			if (!turntoDir.exists()) {
 				turntoDir.mkdirs();
 			}
-			// Initialize a file writer for output with the current key
-			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + '/' + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
+			// Initialize a file writer for output with the current locale
+			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + '/' + parameters.ExportFileName + '_' + currentLocale + '_' + Site.getCurrent().ID + '.txt');
 			catalogExportFileWrite.createNewFile();
-
+			
 			var currentFileWriter : FileWriter = new FileWriter(catalogExportFileWrite);
-
+	
 			//write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
-			hashMapOfFileWriters.put(locales, currentFileWriter);
+	
+			//add the file writer to the hashmap with the key value being the current locale
+			hashMapOfFileWriters.put(currentLocale,currentFileWriter);
 		}
-
+	
 		//query all site products
 		products = catalog.ProductMgr.queryAllSiteProductsSorted();
 	} catch (e) {
@@ -126,7 +120,7 @@ function process( product, parameters, stepExecution )
 	
 		// CATEGORYPATHJSON
 		var categoryPathJSON = '';
-		if (product.getPrimaryCategory() != null) {
+		if (!empty(product.getPrimaryCategory())) {
 			var primaryCategoryID = product.getPrimaryCategory().getID();
 			var currentCategory = product.getPrimaryCategory();
 			var categoryArray = new Array();
@@ -154,31 +148,31 @@ function process( product, parameters, stepExecution )
 		
 		if (product.isMaster()) {
 			//Comma-separated variants for GTINs
-			var mpn = "";
-			var isbn = "";
-			var upc = "";
-			var ean = "";
-			var jan = "";
-			var asin = "";
+			var mpn = " ";
+			var isbn = " ";
+			var upc = " ";
+			var ean = " ";
+			var jan = " ";
+			var asin = " ";
 	
 			for (var i=0; i<product.variants.length;i++) {
 				var variant = product.variants[i];
 				// MPN
-				if (variant.getManufacturerSKU()) {
+				if (!empty(variant.getManufacturerSKU())) {
 					mpn+=variant.getManufacturerSKU();
 					if(i != product.variants.length-1) {
 						mpn+=",";
 					}
 				}
 				// UPC
-				if (variant.getUPC()) {
+				if (!empty(variant.getUPC())) {
 					upc+=variant.getUPC();
 					if(i != product.variants.length-1) {
 						upc+=",";
 					}
 				}
 				// EAN
-				if (variant.getEAN()) {
+				if (!empty(variant.getEAN())) {
 					ean+=variant.getEAN();
 					if(i != product.variants.length-1) {
 						ean+=",";
@@ -189,7 +183,7 @@ function process( product, parameters, stepExecution )
 		} else {
 	
 			// MPN
-			if (product.getManufacturerSKU()) {
+			if (!empty(product.getManufacturerSKU())) {
 				mpn = product.getManufacturerSKU();
 			}
 	
@@ -197,12 +191,12 @@ function process( product, parameters, stepExecution )
 			isbn = '';
 	
 			// UPC
-			if (product.getUPC()) {
+			if (!empty(product.getUPC())) {
 				upc = product.getUPC();
 			}
 	
 			// EAN
-			if (product.getEAN()) {
+			if (!empty(product.getEAN())) {
 				ean = product.getEAN();
 			}
 	
@@ -213,53 +207,37 @@ function process( product, parameters, stepExecution )
 			asin = '';
 		}
 
+		var allowedLocales = TurnToHelper.getAllowedLocales();
+
 		//Iterate all locales, generate and return a simple mapping object with locale 
 		//and formatted output such as ```{ "en_us": "Row data for English US", ...}``` 
-		
-		for each(var key in  hashMapOfKeys.values()) {
-			var locales = key.locales;
+		for each(var currentLocale in allowedLocales) {
+	
+			//set the request to the current locale so localized attributes will be used
+			request.setLocale(currentLocale);
+	
 			//CATEGORY
 			//Leaving blank because CATEGORYPATHJSON is populated
-
+	
 			//KEYWORDS
 			var keywords = '';
 			if (product.getPageKeywords()) {
 				keywords = product.getPageKeywords();
 			}
-
-			// add locales specific data
-			var localeData = {};
-			var localesArray = []
-			if(locales.indexOf(',') != -1) {
-				localesArray = locales.split( "," );
-			} else {
-				localesArray.push(locales)
-			}
-			for each (var l in localesArray) {
-				request.setLocale(l);
-				var url = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
-				var item = {
-						title:			TurnToHelper.replaceNull(product.getName(), ""),
-						itemUrl:		url,
-						mobileItemUrl:	url
-				}
-				localeData[l] = item;
-			}
-			var defaultLocale = Site.getCurrent().getDefaultLocale();
-			request.setLocale(defaultLocale);
+	
 			//build locale JSON
 			var localejson = {
 					sku : 				TurnToHelper.replaceNull(product.getID(), ""),
-					imageurl:			"",
-					title:				TurnToHelper.replaceNull(product.getName(), ""),
+					imageUrl : 			TurnToHelper.replaceNull(imageURL, ""),
+					title : 			TurnToHelper.replaceNull(product.getName(), ""),
 					price : 			TurnToHelper.replaceNull(priceStr, ""),
 					currency : 			TurnToHelper.replaceNull(price.getCurrencyCode(), ""),
 					active : 			product.getAvailabilityModel().isOrderable() ? "Y" : "N",
-					itemurl:			URLUtils.http('Product-Show', 'pid', product.getID()).toString(),
+					itemUrl : 			URLUtils.http('Product-Show', 'pid', product.getID()).toString(),
 					category : 			'', //Leaving blank because CATEGORYPATHJSON is populated
 					keywords : 			TurnToHelper.replaceNull(keywords, ""),
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
-					virtualparentcode : product.isVariant() ? product.masterProduct.ID : product.getID(),
+					virtualparentcode : product.isMaster() ? product.getID() : product.masterProduct.ID,
 					categorypathjson :	TurnToHelper.replaceNull(categoryPathJSON, ""),
 					members :			TurnToHelper.replaceNull(bundledProductsArray, ""),
 					brand :				product.getBrand() ? product.getBrand() : '',
@@ -269,11 +247,11 @@ function process( product, parameters, stepExecution )
 					ean :				TurnToHelper.replaceNull(ean, ""),
 					jan :				TurnToHelper.replaceNull(jan, ""),
 					asin :				TurnToHelper.replaceNull(asin, ""),
-					mobileitemurl:		"",
-					localedata: 		JSON.stringify(localeData)
+					mobileItemUrl : URLUtils.http('Product-Show', 'pid', product.getID()).toString()
 				};
-
-			json[locales] = localejson;
+	
+			//add localeJSON to full JSON
+			json[currentLocale] = localejson;
 		}
 	} catch (e) {
 		Logger.error('ExportCatalog.js has failed on the process step with the following error: ' + e.message);
@@ -287,10 +265,10 @@ function process( product, parameters, stepExecution )
 function write( json, parameters, stepExecution )
 {
 	try {
+		var allowedLocales = TurnToHelper.getAllowedLocales();
 		//Iterate chunks, with each chunk being a mapping object from the process step. 
 		//Iterate mapped locales and write formatted data to applicable files.
-		for each(var keyValue in hashMapOfKeys.values()) {
-			var currentLocale = keyValue.locales
+		for each(var currentLocale in allowedLocales) {
 			//retrieve the current file writer
 			var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
 	
@@ -319,12 +297,12 @@ function write( json, parameters, stepExecution )
 //function is executed only ONCE
 function afterStep( success, parameters, stepExecution )
 {
+	var allowedLocales = TurnToHelper.getAllowedLocales();
 	try {
 		//loop through all the locales and close each corresponding file writer
-		for each(var key in hashMapOfKeys.values()) {
-			var locales = key.locales;
+		for each(var currentLocale in allowedLocales) {
 			//retrieve the current file writer
-			var currLocaleFileWriter = hashMapOfFileWriters.get(locales);
+			var currLocaleFileWriter = hashMapOfFileWriters.get(currentLocale);
 	
 			if(!empty(currLocaleFileWriter)) {
 				currLocaleFileWriter.close();

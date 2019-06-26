@@ -30,7 +30,7 @@ var ServiceFactory = {
 	 * @desc returns the site key custom site preference using the parameter locale
 	 */
 	getLocalizedSiteKeyPreference: function (currentLocale) {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).turntoSiteKey;
+		return TurnToHelper.getLocalizedTurnToPreferenceValue('turntoSiteKey', currentLocale);
 	},
 	
 	/**
@@ -38,7 +38,7 @@ var ServiceFactory = {
 	 * @desc returns the auth key custom site preference using the parameter locale
 	 */
 	getLocalizedAuthKeyPreference: function (currentLocale) {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).turntoAuthKey;
+		return TurnToHelper.getLocalizedTurnToPreferenceValue('turntoAuthKey', currentLocale);
 	},
 
 	/**
@@ -116,7 +116,7 @@ var ServiceFactory = {
 		
 		//Distinguish two different download URLs (Example for UGC http://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml)
 		//"/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-		var url = "http://www." + ServiceFactory.getStaticURLPreference() + "/static/export/" + siteKey + "/" + authKey + xmlName;
+		var url = "http://" + ServiceFactory.getStaticURLPreference() + "/static/export/" + siteKey + "/" + authKey + xmlName;
 
 		var requestDataContainer = {
 			requestMethod: 'GET',
@@ -134,10 +134,13 @@ var ServiceFactory = {
 	 * @param {String} currentLocale
 	 * @param {String} file
 	 */
-	buildFeedUploadRequestContainer: function (postFileLocation, file, siteKey, authKey, domain) {
+	buildFeedUploadRequestContainer: function (postFileLocation, currentLocale, file) {
+
+		var siteKey = ServiceFactory.getLocalizedSiteKeyPreference(currentLocale);
+		var authKey = ServiceFactory.getLocalizedAuthKeyPreference(currentLocale);
 
 		//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
-		if(empty(siteKey) || empty(authKey) || empty(domain)) {
+		if(empty(siteKey) || empty(authKey)) {
 			return false;
 		}
 
@@ -148,7 +151,7 @@ var ServiceFactory = {
 		arrayOfRequestParts.push(new dw.net.HTTPRequestPart('authKey', authKey));
 		arrayOfRequestParts.push(new dw.net.HTTPRequestPart('feedStyle', 'tab-style.1'));
 
-		var url = "http://" + domain + postFileLocation;
+		var url = "http://" + ServiceFactory.getURLPreference() + postFileLocation;
 
 		var requestDataContainer = {
 			requestMethod: 'POST',

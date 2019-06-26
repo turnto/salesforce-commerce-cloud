@@ -6,8 +6,7 @@
 
 <iscomment>Global Site Key Variable for client side</iscomment>
 <script type="text/javascript">
-	var siteKey = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}";
-	var turntoUrl = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain}";
+	var siteKey = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale('turntoSiteKey')}";
 </script>
 
 <isscript>

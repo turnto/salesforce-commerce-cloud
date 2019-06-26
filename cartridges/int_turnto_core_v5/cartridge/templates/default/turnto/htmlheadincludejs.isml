@@ -119,4 +119,4 @@
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push( arguments)};
 </script>
 
-<script src="https://widgets.${turntoUrl}/v5/widgets/${siteKey}/js/turnto.js" async></script>
+<script src="https://widgets.turnto.com/v5/widgets/${siteKey}/js/turnto.js" async></script>

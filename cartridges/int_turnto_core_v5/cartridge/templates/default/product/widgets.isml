@@ -1,18 +1,14 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoReviewsSummaryEnabled')}">
-	<iscomment>TurnTo Reviews Summary
-			   NOTE: both of the following two divs are not required, you can remove both, have just one or have both. See the documentation for details on each one and what they display.
-	</iscomment>
-	<div id="tt-reviews-summary"​></div>
-	<div id="tt-reviews-list"​></div>
-</isif>
+<iscomment>TurnTo Reviews Summary
+		   NOTE: both of the following two divs are not required, you can remove both, have just one or have both. See the documentation for details on each one and what they display.
+</iscomment>
+<div id="tt-reviews-summary"​></div>
+<div id="tt-reviews-list"​></div>
 
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoQAEnabled')}">
-	<iscomment>TurnTo Questions & Answers (Q&A) Summary
-			   NOTE: both of the following two divs are not required, you can remove both, have just one or have both. See the documentation for details on each one and what they display.
-	</iscomment>
-	<div id="tt-instant-answers-widget"​></div>
-	<div id="tt-qa-list"​></div>
-</isif>
+<iscomment>TurnTo Questions & Answers (Q&A) Summary
+		   NOTE: both of the following two divs are not required, you can remove both, have just one or have both. See the documentation for details on each one and what they display.
+</iscomment>
+<div id="tt-instant-answers-widget"​></div>
+<div id="tt-qa-list"​></div>
 
 <iscomment>TurnTo set variant product SKU</iscomment>
 <isinclude template="product/components/setVariantSKU" />

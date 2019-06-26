@@ -12,7 +12,7 @@
  */
 function loadTeaserCounts(sku) {
 	var xhr = new XMLHttpRequest();
-	var ugcCountsUrl = 'https://cdn-ws.' + turntoUrl +'/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
+	var ugcCountsUrl = 'https://cdn-ws.turnto.com/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
 	xhr.open('GET', ugcCountsUrl, true); 
 	xhr.addEventListener('load', function() {
 		/*sample return JSON
