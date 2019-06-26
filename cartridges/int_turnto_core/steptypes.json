@@ -1,0 +1,372 @@
+{
+	"step-types": {
+		"script-module-step": [{
+				"@type-id": "custom.TurnToFeedDownload",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/TurnToFeedDownload.js",
+				"description": "Download files from the TurnTo SFTP to the local IMPEX.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "XMLName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "Target XML File Name '/turnto-skuaveragerating.xml' or '/turnto-ugc.xml'"
+						},
+						{
+							"@name": "NoFileFoundStatus",
+							"@type": "string",
+							"@required": true,
+							"@trim": true,
+							"enum-values": {
+								"value": [
+									"OK",
+									"ERROR"
+								]
+							},
+							"description": "No files found exit code"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToFeedUpload",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/TurnToFeedUpload.js",
+				"description": "Uploads files from the local IMPEX to the TurnTo SFTP.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "ServiceID",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "Service ID 'turnto.http.import.ratings.get' or 'turnto.http.import.content.get'"
+						},
+						{
+							"@name": "PostFileLocation",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "Location to post file on the SFTP"
+						},
+						{
+							"@name": "ExportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "Name of locally stored file"
+						},
+						{
+							"@name": "NoFileFoundStatus",
+							"@type": "string",
+							"@required": true,
+							"@trim": true,
+							"enum-values": {
+								"value": [
+									"OK",
+									"ERROR"
+								]
+							},
+							"description": "No files found exit code"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToExportOrderFeedOngoing",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ExportHistoricalOrders.js",
+				"description": "Exports order data from one or more site locales to the local IMPEX.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "ExportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be exported to TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToExportOrderFeedSpecificDate",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ExportHistoricalOrdersByDate.js",
+				"description": "Exports order data from a specific date from one or more site locales to the local IMPEX.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "ExportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be exported to TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToImportRatingsFeed",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ImportAverageRatings.js",
+				"description": "Imports product average star ratings from a TurnTo feed.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "ImportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be imported from TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToImportUGCFeed",
+				"@supports-site-context": true,
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ImportUserGeneratedContent.js",
+				"description": "Imports product average star ratings from a TurnTo feed.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [{
+							"@name": "ImportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be imported from TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			}
+		],
+		"chunk-script-module-step": [{
+				"@type-id": "custom.TurnToExportCatalogFeed",
+				"@supports-parallel-execution": "false",
+				"@supports-site-context": "true",
+				"@supports-organization-context": "false",
+				"description": "Exports catalog from one or more site locales to the local IMPEX.",
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ExportCatalog.js",
+				"before-step-function": "beforeStep",
+				"total-count-function": "getTotalCount",
+				"before-chunk-function": "",
+				"read-function": "read",
+				"process-function": "process",
+				"write-function": "write",
+				"after-chunk-function": "",
+				"after-step-function": "afterStep",
+				"chunk-size": 10,
+				"transactional": "true",
+				"parameters": {
+					"parameter": [{
+							"@name": "ExportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be exported to TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when the step finished successfully."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToResetData",
+				"@supports-parallel-execution": "false",
+				"@supports-site-context": "true",
+				"@supports-organization-context": "false",
+				"description": "Exports catalog from one or more site locales to the local IMPEX.",
+				"module": "int_turnto_core/cartridge/scripts/jobsteps/ResetData.js",
+				"before-step-function": "beforeStep",
+				"total-count-function": "getTotalCount",
+				"before-chunk-function": "",
+				"read-function": "read",
+				"process-function": "process",
+				"write-function": "write",
+				"after-chunk-function": "",
+				"after-step-function": "",
+				"chunk-size": 10,
+				"transactional": "true",
+				"parameters": {
+					"parameter": [{
+							"@name": "DataType",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "Reset data type, must be either 'ratings' or 'ugc'"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns a OK status",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true
+						}
+					]
+				},
+				"status-codes": {
+					"status": [{
+							"@code": "ERROR",
+							"description": "Used when the step failed with an error."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when the step finished successfully."
+						}
+					]
+				}
+			}
+		]
+	}
+}

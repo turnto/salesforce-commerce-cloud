@@ -1,0 +1,12 @@
+<div class="product-number-rating clearfix">
+    <!-- Product Number -->
+    <div class="product-number hidden-xs-down pull-left">
+        <isinclude template="product/components/productNumber" />
+    </div>
+
+    <!-- Product Rating -->
+    <div class="ratings pull-right">
+        <isset name="isQuickView" value="${false}" scope="page"/>
+        <isinclude template="product/components/turntoteasers"/>
+    </div>
+</div>

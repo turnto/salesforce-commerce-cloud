@@ -1,0 +1,33 @@
+<meta charset=UTF-8>
+
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<isif condition="${dw.system.System.getInstanceType() != dw.system.System.PRODUCTION_SYSTEM}">
+    <title>${pdict.CurrentPageMetaData.title} | ${Resource.msg('global.site.name', 'version', null)} | ${Resource.msg('global.version.number', 'version', null)}</title>
+<iselse/>
+  <title><isprint value="${pdict.CurrentPageMetaData.title}" encoding="off" /></title>
+</isif>
+
+<link href="${URLUtils.staticURL('/images/favicon.ico')}" rel="shortcut icon" />
+
+<meta name="description" content=" <isif condition="${!empty(pdict.CurrentPageMetaData.description)}">${pdict.CurrentPageMetaData.description}</isif> ${Resource.msg('global.storename','locale',null)}"/>
+<meta name="keywords" content=" <isif condition="${!empty(pdict.CurrentPageMetaData.keywords)}">${pdict.CurrentPageMetaData.keywords}</isif> ${Resource.msg('global.storename','locale',null)}"/>
+
+<script type="text/javascript">
+    // Picture element HTML5 shiv
+    document.createElement( "picture" );
+</script>
+
+<iscomment>TurnTo JS/CSS Includes</iscomment>
+<isinclude template="turnto/pageassets"/>
+
+<link rel="stylesheet" href="${URLUtils.staticURL('/css/global.css')}" />
+<isloop items="${ require('*/cartridge/scripts/assets.js').styles }" var="style">
+    <link rel="stylesheet" href="${style}" />
+</isloop>
+
+<isif condition="${'GoogleVerificationTag' in dw.system.Site.current.preferences.custom && dw.system.Site.current.preferences.custom.GoogleVerificationTag!=''}">
+    <meta name="google-site-verification" content="<isprint value="${dw.system.Site.current.preferences.custom.GoogleVerificationTag}"/>" />
+</isif>

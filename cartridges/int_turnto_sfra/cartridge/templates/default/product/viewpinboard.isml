@@ -1,0 +1,23 @@
+<isdecorate template="common/layout/page">
+	<isset name="pinboardType" value="${!empty(pdict.PinboardType) ? pdict.PinboardType : 'visualContent'}" scope="page"/>
+
+	<iscomment>Add page specific header information here.</iscomment>
+	<script type="text/javascript">
+		var turnToConfig = {
+			siteKey: siteKey,
+			pinboard: { 
+				contentType: "${pinboardType}"
+			}
+		};
+		(function() {
+			var tt = document.createElement('script');
+			tt.type = 'text/javascript'; tt.async = true;
+			tt.src = document.location.protocol + "//${dw.system.Site.current.preferences.custom.turntoStaticURL}/traServer${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/pinboardjs/" + siteKey + "/turnto-pinboard.js";
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tt, s);
+		})();
+	</script>
+
+	<div id="content">
+		<div id="TurnToPinboardContent" style="background-color:white;"></div>
+	</div><!-- END: content -->
+</isdecorate>

@@ -1,0 +1,46 @@
+<iscomment>Include TurnTo - Do a local include of this file at the bottom of confirmation.isml</iscomment>
+<script type="text/javascript">
+  	var TurnToCommentsCaptureEnable = ${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentsCaptureEnable') ? true : false};
+  	
+  	var turnToEmbedCommentCapture = false;
+    if (navigator.userAgent.match(/(iPhone|Android|BlackBerry|IEMobile)/)) {
+        turnToEmbedCommentCapture = true;
+    }
+  
+  	var turnToConfig = {
+    	siteKey: "${dw.system.Site.current.preferences.custom.turntoSiteKey}",
+    	localProxyUrl: "${URLUtils.absStatic('/tra/turntoproxy.html')}",
+    	floatingTeaserStyle: 2,
+    	orderConfFlowPauseSeconds: ${dw.system.Site.current.preferences.custom.turntoOrderConfFlowPauseSeconds},
+    	postPurchaseFlow: TurnToCommentsCaptureEnable,
+    	commentCaptureShowUsername: true,
+    	embedCommentCapture: turnToEmbedCommentCapture
+	};
+  
+  	if(turnToEmbedCommentCapture){ 
+	    var mainElement = document.getElementById("main");
+	    if(mainElement != null){
+	    	var commentCapture = document.createElement('div');
+	    	commentCapture.id = "TTcommentCapture";
+	    	mainElement.insertBefore(commentCapture, null);
+	    } else {
+  			document.write('<div id="TTcommentCapture"></div>');
+	    }
+	}
+</script>
+
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
+	<script type="text/javascript" src="//${dw.system.Site.current.preferences.custom.turntoStaticURL}/tra${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/turntoFeed.js"></script>
+</isif>
+
+<script type="text/javascript" src="//${dw.system.Site.current.preferences.custom.turntoStaticURL}/traServer${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/trajs/${dw.system.Site.current.preferences.custom.turntoSiteKey}/tra.js"></script>
+
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
+	<script>
+  		TurnToFeed.addFeedPurchaseOrder({orderId:'${pdict.Order.getOrderNo()}',email:'${pdict.Order.getCustomerEmail()}',postalCode: '${pdict.Order.getBillingAddress().getPostalCode()}',firstName: '${pdict.Order.getBillingAddress().getFirstName()}', lastName: '${pdict.Order.getBillingAddress().getLastName()}', deliveryDate: '${dw.util.StringUtils.formatCalendar(new dw.util.Calendar(pdict.Order.getCreationDate()), "yyyy-MM-dd hh:mm:ss")}' });
+  		<isloop items="${pdict.Order.getProductLineItems()}" var="item">
+      		TurnToFeed.addFeedLineItem({title: '${item.getProduct().getName().replace(/'/g, "\\'")}', url: '${dw.web.URLUtils.http('Product-Show', 'pid', item.getProduct().getID()).toString()}',sku:'${item.getProduct().isVariant() ? item.getProduct().getVariationModel().getMaster().getID() : item.getProduct().getID()}', price:'${item.getAdjustedNetPrice().getValue().toString()}',itemImageUrl:'${item.getProduct().getImage("small") != null ? item.getProduct().getImage("small").getAbsURL().toString() : ""}' });
+  		</isloop>
+  		TurnToFeed.sendFeed();
+	</script>
+</isif>

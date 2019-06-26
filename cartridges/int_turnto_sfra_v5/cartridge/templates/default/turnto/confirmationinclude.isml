@@ -1,0 +1,45 @@
+<iscomment>Include TurnTo - Do a local include of this file at the bottom of confirmation.isml</iscomment>
+<iscomment>TurnTo Javascript Order Feed</iscomment>
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
+	<script type="text/javascript">
+		//use the site key only if client has multiple stores (i.e. sites in BM) 
+		//*uncomment the following line and the siteKey attribute of the order data items JSON below if client has multiple stores*
+		//var siteKey = ${siteKey};
+		
+		TurnToCmd('feed.send', {
+			orderId: '${pdict.order.orderNumber}',
+			email: '${pdict.order.orderEmail}',
+			postalCode: '${pdict.order.billing.billingAddress.address.postalCode}',
+			firstName: '${pdict.order.billing.billingAddress.address.firstName}',
+			lastName: '${pdict.order.billing.billingAddress.address.lastName}',
+			nickName: '',
+			items: [
+				<isloop items="${pdict.order.shipping}" var="shippingModel">
+					<isloop items="${shippingModel.productLineItems.items}" var="item" status="itemStatus">
+						{
+							//siteKey: ${siteKey},
+							title: '${item.productName.replace(/'/g, "\\'")}', 
+							url:'${item.url}', 
+							sku:'${item.id}',
+						}<isif condition="${!itemStatus.last}">,</isif>
+					</isloop>
+				</isloop>
+			]
+		});
+	</script>
+</isif>
+
+<iscomment>TurnTo Top Comment Include</iscomment>
+<isscript>
+	var topCommentSkus = '';
+	for each(var shippingModel in pdict.order.shipping) {
+		for each(var item in shippingModel.productLineItems.items) {
+			topCommentSkus += item.id;
+		}
+	} 
+	topCommentSkus.join(',');
+</isscript>
+<isinclude template="product/components/turntotopcomment"/>
+
+<iscomment>TurnTo Top Comment Capture</iscomment>
+<isinclude template="checkout/turntocommentcapture"/>

@@ -1,0 +1,4 @@
+<iscomment>TurnTo Widgets</iscomment>
+<isinclude template="product/components/turntoqa"/>
+<isinclude template="product/components/turntoreviews"/>
+<isinclude template="product/components/turntocomments"/>

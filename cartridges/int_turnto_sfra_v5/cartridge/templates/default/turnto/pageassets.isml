@@ -1,0 +1,17 @@
+<iscomment>This template includes teasers JS because it is located in a separate template than htmlheadinclude due to how the assets JS logic renders the JS files at certain parsing points</iscomment>
+
+<isscript>
+	var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
+</isscript>
+
+<iscomment>Global Site Key Variable for client side</iscomment>
+<script type="text/javascript">
+	var siteKey = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}";
+	var turntoUrl = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain}";
+</script>
+
+<isscript>
+	var assets = require('*/cartridge/scripts/assets.js');
+	assets.addJs('/js/teasers.js');
+	assets.addJs('/js/teasersproductgrid.js');
+</isscript>

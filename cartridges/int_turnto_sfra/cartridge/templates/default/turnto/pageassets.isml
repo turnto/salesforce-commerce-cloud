@@ -1,0 +1,34 @@
+<iscomment>This template includes JS and CSS files that are essential for TurnTo to function; they are located in a separate template than htmlheadinclude due to how the assets JS logic renders the JS and CSS files at certain parsing points</iscomment>
+
+<isscript>
+	var assets = require('*/cartridge/scripts/assets');
+
+	if (dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCssOverwrites')) {
+		assets.addCss('/css/turnto.css');
+	}
+
+	assets.addJs('/js/login.js');
+
+	//the following logic is only for the PDP
+	if (!empty(pdict.product)) {
+		var TTpid;
+		var product = pdict.product;
+		var apiProduct = product.raw;
+		var useVariants : Boolean = dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
+
+		if (product.productType == 'master' && apiProduct.getVariationModel() != null && useVariants) {
+			<!-- returns the default variant or an arbitrary variant if a default is not defined. -->
+			TTpid = apiProduct.getVariationModel().defaultVariant.ID;
+		} else if (product.productType == 'variant') {
+			TTpid = useVariants ? product.id : apiProduct.masterProduct.ID;
+		} else {
+			TTpid = product.id;
+		}
+
+		var TurnToHelper = require('int_turnto_core/cartridge/scripts/util/HelperUtil');
+		var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
+
+		var jsURL = ('https://' + dw.system.Site.current.preferences.custom.turntoStaticURL + '/sitedata/' + siteKey + '/v' + dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_') + '/' + TTpid + '/d/itemjs');
+		assets.addJs(jsURL);
+	}
+</isscript>

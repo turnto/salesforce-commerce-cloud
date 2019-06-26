@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="TurnToExportCatalog" priority="1">
+        <description>Exports and uploads the product catalog in TurnTo XML format to the TurnTo system</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToExportCatalogFeed" type="custom.TurnToExportCatalogFeed" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules>
+            <on-running runtime-threshold="10m" enabled="true">
+                <mark-job-as-hanging/>
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-running>
+            <on-retry enabled="true">
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-retry>
+            <on-exit status="ERROR" enabled="true">
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-exit>
+        </rules>
+        <triggers>
+            <run-once enabled="true">
+                <date>2018-09-20Z</date>
+                <time>15:55:59.000Z</time>
+                <rules>
+                    <on-exit status="ERROR">
+                        <disable-trigger/>
+                    </on-exit>
+                </rules>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="TurnToHistoricalOrderExportOngoing" priority="0">
+        <description>Exports all orders placed in the last X days, where X is the value of the "Historical Order Days" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToExportOrderFeedOngoing" type="custom.TurnToExportOrderFeedOngoing" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportOrders</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="true">
+                <date>2018-09-20Z</date>
+                <time>15:56:49.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="TurnToHistoricalOrderExportSpecificDate" priority="0">
+        <description>Exports all orders from X date, where X is the value of the "Historical Order Date" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToExportOrderFeedSpecificDate" type="custom.TurnToExportOrderFeedSpecificDate" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportOrders</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="ExportFileName">exportOrders</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="true">
+                <date>2016-10-27Z</date>
+                <time>04:00:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="TurnToImportAverageRatings" priority="1">
+        <description>Imports the average rating feed from TurnTo, which is used to show the average stars on the product tiles</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToFeedDownload" type="custom.TurnToFeedDownload" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="XMLName">/turnto-skuaveragerating.xml</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToResetData" type="custom.TurnToResetData" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="DataType">ratings</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToImportRatingsFeed" type="custom.TurnToImportRatingsFeed" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImportFileName">turnto-skuaveragerating.xml</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules>
+            <on-running runtime-threshold="60m" enabled="true">
+                <mark-job-as-hanging/>
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-running>
+            <on-retry enabled="true">
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-retry>
+            <on-exit status="ERROR" enabled="true">
+                <send-mail>
+                    <from>noreply@test.com</from>
+                    <to>testuser@test.com</to>
+                </send-mail>
+            </on-exit>
+        </rules>
+        <triggers>
+            <run-once enabled="true">
+                <date>2018-09-20Z</date>
+                <time>15:57:10.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="TurnToImportUserGeneratedContent" priority="0">
+        <description>Import the user generated content XML feed from TurnTo, which can be used to make the content searchable by the storefront</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToFeedDownload" type="custom.TurnToFeedDownload" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="XMLName">/turnto-ugc.xml</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToResetData" type="custom.TurnToResetData" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="DataType">ugc</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="TurnToImportUGCFeed" type="custom.TurnToImportUGCFeed" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImportFileName">turnto-ugc.xml</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="true">
+                <date>2016-10-27Z</date>
+                <time>04:00:00.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+</jobs>

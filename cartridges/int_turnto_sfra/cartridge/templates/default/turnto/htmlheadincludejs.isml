@@ -1,0 +1,50 @@
+<isscript>
+	var TurnToHelper = require('int_turnto_core/cartridge/scripts/util/HelperUtil');
+	var isContentPostingDisabled = TurnToHelper.isPostingContentDisabled();
+</isscript>
+<script type="text/javascript">
+	var isContentPostingDisabled = ${isContentPostingDisabled};
+	if(document.location.href.indexOf('orderconfirmation') < 0){
+		var turnToConfig = {
+			siteKey: "${siteKey}",
+			localProxyUrl:"${request.getHttpHost()}",
+			eventHandlers: {
+	             reviewsTeaserRender: function() {
+	            	if (isContentPostingDisabled) {
+		            	var writeReviewElement = document.getElementById('writeReview');
+		            	if (writeReviewElement) {
+		            		writeReviewElement.parentNode.removeChild(writeReviewElement);
+		            	}
+		            	var askQuestionElement =  document.querySelector('.TurnToItemTeaser');
+		            	if (askQuestionElement) {
+		            		askQuestionElement.parentNode.removeChild(askQuestionElement);
+		            	}
+		            	
+		            	var targetNode = document.querySelector('.page');
+		            	
+		            	// Options for the observer (which mutations to observe)
+		            	var config = { attributes: true, childList: true, subtree: true };
+		            	
+		            	// Callback function to execute when mutations are observed
+		            	var callback = function(mutationsList, observer) {
+	
+		            	    var writeReviewFirstElement = document.querySelector('.TTwriteReview a');
+		            	    if (writeReviewFirstElement) {
+			            		writeReviewFirstElement.parentNode.removeChild(writeReviewFirstElement);
+			            	}
+							
+		            	    var writeQAElement = document.getElementById('TT4instAnswNext');
+		            	    if (writeQAElement) {
+		            	    	writeQAElement.parentNode.removeChild(writeQAElement);
+			            	}
+		            	};
+		            	
+		            	// Create an observer instance linked to the callback function
+		            	var observer = new MutationObserver(callback);
+		            	observer.observe(targetNode, config);
+	            	}
+	             }  
+			}
+		};
+	}
+</script>

@@ -1,0 +1,52 @@
+<iscomment>Core login file to be used for pipelines and controllers implementation, SFRA cartridge will override this if used</iscomment>
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+
+<div class="login-box login-account">
+
+	<div class="login-box-content returning-customers clearfix">
+
+		<isif condition="${!pdict.CurrentSession.customer.externallyAuthenticated}">
+
+			<form action="${URLUtils.httpsContinue()}" method="post" class="clearfix" id="${pdict.CurrentForms.login.htmlName}">
+
+				<iscomment>Login Unsuccessful Error Message</iscomment>
+				<isif condition="${pdict.TempCustomer != null && pdict.TempCustomer.profile != null && pdict.TempCustomer.profile.credentials.locked}">
+					<div class="error-form">${Resource.msg('account.login.logininclude.locked','account',null)}</div>
+				<iselseif condition="${pdict.TempCustomer != null && pdict.TempCustomer.profile != null && (pdict.TempCustomer.profile.credentials.remainingLoginAttempts == 1)}">
+					<div class="error-form">${Resource.msg('account.login.logininclude.willbelocked','account',null)}</div>
+				<iselseif condition="${!empty(pdict.RegistrationStatus) && pdict.RegistrationStatus != false && pdict.RegistrationStatus.code == 'CustomerAlreadyExistError'}">
+					<div class="error-form">${Resource.msg('account.login.logininclude.loginfberror','account',null)}</div>
+				<iselseif condition="${!pdict.CurrentForms.login.loginsucceeded.valid}">
+					<isif condition="${session.custom.isLegacy}">
+						<div class="error-form legacy-error"><isprint value="${Resource.msg('account.login.logininclude.legacycustomer','account',null)}"/></div>
+					<iselse/>
+						<div class="error-form">${Resource.msg('account.login.logininclude.loginerror','account',null)}</div>
+					</isif>
+				</isif>
+
+				<fieldset>
+					<isinputfield formfield="${pdict.CurrentForms.login.username}" rowclass="username" type="input" dynamicname="true" requiredtext="${Resource.msg('login.username.missing-error','forms',null)}"/>
+					<isscript>
+						var attributes = {
+							autocomplete: "off"
+						};
+					</isscript>
+					<isinputfield formfield="${pdict.CurrentForms.login.password}" rowclass="password" type="password" dynamicname="true" requiredtext="${Resource.msg('login.password.missing-error','forms',null)}" attributes="${attributes}"/>
+
+					<div class="form-row form-row-button">
+						<button type="submit" value="${Resource.msg('global.login','locale',null)}" name="${pdict.CurrentForms.login.login.htmlName}">
+							${Resource.msg('account.login','account',null)}
+						</button>
+					</div>
+					<isinputfield formfield="${pdict.CurrentForms.login.rememberme}" type="checkbox" rowclass="label-inline login-rememberme"/>
+
+					<input type="hidden" name="${dw.web.CSRFProtection.getTokenName()}" value="${dw.web.CSRFProtection.generateToken()}"/>
+
+				</fieldset>
+
+			</form>
+		</isif>
+
+	</div>
+
+</div>

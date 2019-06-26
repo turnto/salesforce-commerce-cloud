@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<iscomment>This page must be cachable. It inherits the caching attributes by the decorated template.</iscomment>
+
+	<head>
+		<iscomment>
+			Include all important information globally , e.g. meta-data, link information, and
+			javascript.
+		</iscomment>
+		<isinclude template="components/header/htmlhead"/>
+
+		<iscomment>Add page specific header information here.</iscomment>
+		<script type="text/javascript">
+			var turnToConfig = {
+				siteKey: "${siteKey}",
+				imageStoreBase:'wac.edgecastcdn.net/001A39/qa',
+				useSSL: false,
+				allowEscKey:true,
+				useSetup:false,
+				setupType:"staticEmbed",
+	
+				fullComments: {
+					height: "1000px",
+					width: "1000px"
+					,titleMaxLength: 60
+					,nameMaxLength: 20
+					,boxWidth: "212px"
+					,limit:100
+
+					// "centered" or "justified"
+					,layoutMode: "justified"
+
+					//Always used for vertical spacing.
+					//For horizontal spacing:
+					//If layoutMode == "centered" then this is the exact spacing between boxes
+					//If layoutMode == "justified" this value is used as the minimum spacing
+					,spacing: "20px"
+					,maxDaysOld: -1
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="container" class="">
+			<isinclude template="components/header/header"/>
+			<div id="main">
+				<div id="content">
+					<div id="TurnToFullComments" style="width:1000px;height:1000px;background-color:white;"></div>
+			</div><!-- END: content -->
+			<div class="clear"><!-- FLOAT CLEAR --></div>
+		</div> <!-- END: main -->
+			<isinclude template="components/footer/footer"/>
+		</div><!-- END: container -->
+	</body>
+</html>

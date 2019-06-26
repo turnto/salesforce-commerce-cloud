@@ -1,0 +1,170 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "../utilities/shapes";
+@import "../utilities/responsiveUtils";
+@import "../utilities/swatch";
+
+.product-detail .swatch-circle {
+    // $white will be replaced by color image background in ISML
+    @include swatch(2.5em, $white);
+}
+
+.product-detail [disabled] .swatch-circle,
+.product-detail .swatch-circle.unselectable {
+    cursor: not-allowed;
+
+    &.color-value.selected::after {
+        background-color: $gray-700;
+    }
+}
+
+label.color ~ a:hover {
+    // Removes weird dash after the swatch circle on hover.
+    text-decoration: none;
+}
+
+.description-and-detail {
+    margin-top: 2em;
+
+    @include media-breakpoint-only(xs) {
+        margin-top: 0;
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        > div:last-child {
+            margin-bottom: 1em;
+        }
+    }
+
+    .description {
+
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 2em;
+        }
+    }
+
+    .content {
+
+        @include media-breakpoint-only(xs) {
+            margin-top: 1em;
+        }
+    }
+}
+
+.social-icons {
+    font-size: 1.875em;
+
+    @include media-breakpoint-down(md) {
+        font-size: 1.5625em;
+    }
+}
+
+.social-container {
+    padding-top: 0.9375em;
+    text-align: center;
+}
+
+label.availability {
+    padding-right: 0.3125em;
+}
+
+@include media-breakpoint-up(sm) {
+    .product-number-rating {
+        border-bottom: 1px solid $hr-border-color;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .product-number-rating {
+        border-top: 1px solid $hr-border-color;
+    }
+}
+
+@include media-breakpoint-only(sm) {
+    .product-name {
+        border-bottom: 1px solid $hr-border-color;
+    }
+}
+
+.ratings {
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 0.625em;
+    }
+
+    @include media-breakpoint-only(xs) {
+        background-color: $white;
+        margin-top: -1.875em; /* 30/16 */
+        margin-right: -0.9375em; /* 15/16 */
+        padding: 0.1875em; /* 3/16 */
+    }
+}
+
+.product-number {
+    color: $product-number-grey;
+    font-size: 0.875em;
+    padding-bottom: 0.938em;
+    padding-top: 0.938em;
+}
+
+.promotions {
+    font-weight: normal;
+    text-align: center;
+    color: $danger;
+    height: 85%;
+
+    .callout {
+        font-size: 1.25em;
+        padding-bottom: 1.25rem;
+        padding-top: 1.25rem;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 1.375em;
+        }
+    }
+}
+
+.product-breadcrumb .breadcrumb {
+    border-bottom: none;
+    margin-left: -1rem;
+    margin-bottom: 0;
+
+    @include media-breakpoint-down(md) {
+        border-top: 1px solid $grey3;
+    }
+}
+
+.price {
+    font-size: 1.5rem;
+}
+
+.product-options {
+    margin-top: 1.25em;
+
+    .quantity {
+        bottom: 0;
+        min-width: 6.25em;
+        padding-left: 0.938em;
+        padding-right: 0.938em;
+        position: absolute;
+        right: 0;
+    }
+}
+
+.size-chart {
+    .size-chart-collapsible {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s;
+        transition-timing-function: cubic-bezier(0, 1, 0, 1);
+
+        &.active {
+            max-height: 100%;
+            transition-timing-function: ease-in-out;
+        }
+    }
+}

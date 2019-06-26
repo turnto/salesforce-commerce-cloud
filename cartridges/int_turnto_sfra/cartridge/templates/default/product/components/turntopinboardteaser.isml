@@ -1,0 +1,28 @@
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentsPinboardEnable')}">
+	<isif condition="${!empty(pdict.category)}">
+		<isif condition="${pdict.category.custom.turntoEnableCCPinboardTeaser}">
+			<script type="text/javascript"><!--
+				turnToConfig.commentsPinboardTeaser = {
+					skus : ['${pdict.category.ID}'],
+					maxDaysOld : -1,
+					promoButtonUrl: '${dw.system.Site.current.preferences.custom.turntoCommentsPinboardPromoButtonURL}'
+				};
+				(function() {
+					var pinboard = document.createElement('script'); pinboard.type = 'text/javascript'; pinboard.async = true;
+					pinboard.src = document.location.protocol + "//${dw.system.Site.current.preferences.custom.turntoStaticURL}/traServer${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/pinboardteaserjs/" + turnToConfig.siteKey + "/turnto-pinboard-teaser.js/en_US";
+					var ps = document.getElementsByTagName('script')[0]; ps.parentNode.insertBefore(pinboard, ps);
+				})();
+			//--></script>
+		</isif>
+	<iselse/>
+		<script type="text/javascript"><!--
+			turnToConfig.commentsPinboardTeaser = {maxDaysOld : -1, promoButtonUrl: '${dw.system.Site.current.preferences.custom.turntoCommentsPinboardPromoButtonURL}'};
+			(function() {
+				var pinboard = document.createElement('script'); pinboard.type = 'text/javascript'; pinboard.async = true;
+				pinboard.src = document.location.protocol + "//${dw.system.Site.current.preferences.custom.turntoStaticURL}/traServer${dw.system.Site.current.preferences.custom.turntoVersionNumber.replace('.', '_')}/pinboardteaserjs/" + turnToConfig.siteKey + "/turnto-pinboard-teaser.js/en_US";
+				var ps = document.getElementsByTagName('script')[0]; ps.parentNode.insertBefore(pinboard, ps);
+			})();
+		//--></script>
+	</isif>
+	<div id="TurnToCommentsPinboardTeaser"></div>
+</isif>

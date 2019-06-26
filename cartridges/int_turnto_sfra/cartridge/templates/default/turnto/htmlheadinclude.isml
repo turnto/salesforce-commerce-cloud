@@ -1,0 +1,37 @@
+<iscomment>Include TurnTo SFRA - Do a local include of this file at the bottom of htmlhead.isml</iscomment>
+<iscomment>pageassets.isml includes the remaining JS and CSS files</iscomment>
+
+<isscript>
+	var TTpid;
+	if (!empty(pdict.product)) {
+		var product = pdict.product;
+		var apiProduct = product.raw;
+		var useVariants : Boolean = dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
+		if (product.productType == 'master' && apiProduct.getVariationModel() != null && useVariants) {
+			<!-- returns the default variant or an arbitrary variant if a default is not defined. -->
+			TTpid = apiProduct.getVariationModel().defaultVariant.ID;
+		} else if (product.productType == 'variant') {
+			TTpid = useVariants ? product.id : apiProduct.masterProduct.ID;
+		} else {
+			TTpid = product.id;
+		}
+	}
+	var TurnToHelper = require('int_turnto_core/cartridge/scripts/util/HelperUtil');
+	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
+</isscript>
+
+<iscomment>Global Site Key Variable for client side</iscomment>
+<script type="text/javascript">
+	var siteKey = "${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}";
+</script>
+
+<isif condition="${!empty(TTpid)}">
+
+	<isinclude template="turnto/htmlheadincludejs"/>
+
+<iselse/>
+
+	<isinclude template="turnto/htmlheadincludejssecond"/>
+
+</isif>
+

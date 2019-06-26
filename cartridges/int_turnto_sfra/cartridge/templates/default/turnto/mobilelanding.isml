@@ -1,0 +1,35 @@
+<!DOCTYPE  HTML  PUBLIC  "-­//W3C//DTD  HTML  4.01//EN"  "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<isscript>
+			var TurnToHelper = require('int_turnto_core/cartridge/scripts/util/HelperUtil');
+			var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
+		</isscript>
+		
+		<title>
+			${!empty(dw.system.Site.getCurrent().getCustomPreferenceValue('turntoMobileLandingTitle')) ? TurnToHelper.getLocalizedSitePreferenceFromRequestLocale('turntoMobileLandingTitle') : 'Mobile Landing Page Title'}
+		</title>
+		
+		<meta name="viewport" content="width=device-width,  initial-scale=1.0, maximum-scale=1.0,  user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<script type="text/javascript">
+			var turnToConfig  = {
+				siteKey:  "${siteKey}",
+				setupType:"mobileTT"
+			};
+		</script>
+
+		<isscript>
+			var assets = require('*/cartridge/scripts/assets');
+			assets.addJs('//static.www.turnto.com/tra4_3/mobile-landing.js');
+		</isscript>
+		
+		<isinclude template="/common/scripts" />
+
+	</head>
+	<body>
+		<div id="mobileTT-content"></div>
+	</body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+    <service-credential service-credential-id="turnto-jobs">
+        <url>http://www.turnto.com</url>
+        <user-id/>
+        <password encrypted="true" encryption-type="common.export">v8/xgBz9y9y5iUWDXMra8/up61mw7vmkWo7Hr5HyPlU=</password>
+    </service-credential>
+
+    <service-credential service-credential-id="turnto-static">
+        <url>http://static.www.turnto.com</url>
+        <user-id/>
+        <password encrypted="true" encryption-type="common.export">HZ/9Pl1YeqE5ZhyjdN5TcUE8wmMVOZCngVf2mCYYI+Q=</password>
+    </service-credential>
+
+    <service-profile service-profile-id="turnto-jobs">
+        <timeout-millis>40000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="turnto-static">
+        <timeout-millis>4000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service service-id="turnto.http.export.catalog.post">
+        <service-type>GENERIC</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-export-catalog</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-jobs</profile-id>
+        <credential-id>turnto-jobs</credential-id>
+    </service>
+
+    <service service-id="turnto.http.export.orders.post">
+        <service-type>GENERIC</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-export-orders</log-prefix>
+        <comm-log-enabled>true</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-jobs</profile-id>
+        <credential-id>turnto-jobs</credential-id>
+    </service>
+
+    <service service-id="turnto.http.import.get">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-import</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-jobs</profile-id>
+        <credential-id>turnto-jobs</credential-id>
+    </service>
+
+    <service service-id="turnto.http.static.qa.get">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-static-qa</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-static</profile-id>
+        <credential-id>turnto-static</credential-id>
+    </service>
+
+    <service service-id="turnto.http.static.reviews.get">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-static-reviews</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>false</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-static</profile-id>
+        <credential-id>turnto-static</credential-id>
+    </service>
+
+    <service service-id="turnto.http.upload.get">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>turnto-upload</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>true</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>turnto-jobs</profile-id>
+        <credential-id>turnto-jobs</credential-id>
+    </service>
+
+</services>

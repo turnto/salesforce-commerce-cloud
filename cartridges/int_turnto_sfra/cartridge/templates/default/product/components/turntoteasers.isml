@@ -1,0 +1,14 @@
+<isif condition="${!isQuickView}">
+    <div id="product-teasers">
+    	<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoReviewsEnable')}">
+    		<span class="TurnToReviewsTeaser"></span>
+    	</isif>
+    	<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoQAEnable')}">
+    		<span class="TurnToItemTeaser"></span>
+    	</isif>
+    </div>
+<iselse/>
+	<isset name="product" value="${pdict.product}" scope="page"/>
+	<isset name="productUrl" value="${URLUtils.url('Product-Show', 'pid', product.id, 'cgid', pdict.CurrentHttpParameterMap.cgid)}" scope="page"/>
+	<isinclude template="product/components/turntoteasersproducttile"/>
+</isif>

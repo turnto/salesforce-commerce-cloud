@@ -1,0 +1,6 @@
+<div class="row tile-body-footer">
+    <div class="ratings col-xs-12 col-sm-6">
+        <isset name="isQuickView" value="${true}" scope="page"/>
+        <isinclude template="product/components/turntoteasers"/>
+    </div>
+</div>

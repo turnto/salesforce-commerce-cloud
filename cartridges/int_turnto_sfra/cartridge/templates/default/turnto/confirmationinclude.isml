@@ -1,0 +1,47 @@
+<iscomment>Include TurnTo - Do a local include of this file at the bottom of confirmation.isml</iscomment>
+<script type="text/javascript">
+	var TurnToCommentsCaptureEnable = ${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentsCaptureEnable') ? true : false};
+
+	var turnToEmbedCommentCapture = false;
+	if (navigator.userAgent.match(/(iPhone|Android|BlackBerry|IEMobile)/)) {
+		turnToEmbedCommentCapture = true;
+	}
+
+	var turnToConfig = {
+		siteKey: "${siteKey}",
+		localProxyUrl: "${request.getHttpHost()}",
+		floatingTeaserStyle: 2,
+		orderConfFlowPauseSeconds: ${dw.system.Site.current.preferences.custom.turntoOrderConfFlowPauseSeconds},
+		postPurchaseFlow: TurnToCommentsCaptureEnable,
+		commentCaptureShowUsername: true,
+		embedCommentCapture: turnToEmbedCommentCapture
+	};
+
+	if (turnToEmbedCommentCapture) {
+		var mainElement = document.getElementById("main");
+		if(mainElement != null){
+			var commentCapture = document.createElement('div');
+			commentCapture.id = "TTcommentCapture";
+			mainElement.insertBefore(commentCapture, null);
+		} else {
+			document.write('<div id="TTcommentCapture"></div>');
+		}
+	}
+</script>
+
+<iscomment>Confirmation TurnTo Feed JS</iscomment>
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
+	<script>
+		window.onload = function () { 
+			if (document.location.href.indexOf('Order-Confirm') > 0) {
+				TurnToFeed.addFeedPurchaseOrder({orderId:'${pdict.order.orderNumber}',email:'${pdict.order.orderEmail}',postalCode: '${pdict.order.billing.billingAddress.address.postalCode}',firstName: '${pdict.order.billing.billingAddress.address.firstName}', lastName: '${pdict.order.billing.billingAddress.address.lastName}', deliveryDate: '${dw.util.StringUtils.formatCalendar(new dw.util.Calendar(pdict.order.creationDate), "yyyy-MM-dd hh:mm:ss")}' });
+				<isloop items="${pdict.order.shipping}" var="shippingModel">
+					<isloop items="${shippingModel.productLineItems.items}" var="item">
+						TurnToFeed.addFeedLineItem({title: '${item.productName.replace(/'/g, "\\'")}', url: '${dw.web.URLUtils.http('Product-Show', 'pid', item.id).toString()}',sku:'${item.type == 'variant' && dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') != true ? item.getProduct().getVariationModel().getMaster().getID() : item.id}', price:'${item.priceTotal.nonAdjustedPrice}',itemImageUrl:'${item.getProduct().getImage("small", 0) != null ? item.getProduct().getImage("small", 0).getAbsURL().toString() : ""}' });
+					</isloop>
+				</isloop>
+				TurnToFeed.sendFeed();
+			}
+		}
+	</script>
+</isif>

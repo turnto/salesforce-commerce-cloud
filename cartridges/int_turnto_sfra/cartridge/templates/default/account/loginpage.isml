@@ -1,0 +1,42 @@
+<div class="container login-page">
+	<div class="row justify-content-center equal-height">
+		<div class="col-sm-8 col-md-6">
+			<div class="card">
+				<div class="card-body">
+					<div class="login-form-nav">
+						<div class="tab-content">
+							<div class="tab-pane ${pdict.navTabValue === 'login' ? 'active' : ''}" id="login" role="tabpanel">
+								<isinclude template="account/components/loginForm" />
+							</div>
+							<div class="error"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<isscript>
+	var TurnToHelper = require('int_turnto_core/cartridge/scripts/util/HelperUtil');
+	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
+</isscript>
+
+<script type="text/javascript">
+	var turnToConfig = {
+		siteKey: "${siteKey}",
+		setupType: "overlay"
+	};
+	(function() {
+		var tt = document.createElement('script'); tt.type = 'text/javascript'; tt.async = true;
+		tt.src = document.location.protocol + "//static.www.turnto.com/traServer4_3/trajs/" + "${siteKey}" + "/tra.js";
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tt, s);
+	})();
+</script>
+
+<isscript>
+	var assets = require('*/cartridge/scripts/assets.js');
+	assets.addJs('/js/login/loginpageiframe.js');
+</isscript>
+
+<isinclude template="/common/scripts" />

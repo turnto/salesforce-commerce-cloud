@@ -1,0 +1,24 @@
+{
+    "hooks": [
+        {
+            "name": "dw.order.calculate",
+            "script": "./cartridge/scripts/hooks/cart/calculate.js"
+        },
+        {
+            "name": "dw.order.calculateShipping",
+            "script": "./cartridge/scripts/hooks/cart/calculate.js"
+        },
+        {
+            "name": "dw.order.calculateTax",
+            "script": "./cartridge/scripts/hooks/cart/calculate.js"
+        },
+        {
+            "name": "app.payment.processor.default",
+            "script": "./cartridge/scripts/hooks/payment/processor/default"
+        },
+        {
+            "name": "app.payment.processor.basic_credit",
+            "script": "./cartridge/scripts/hooks/payment/processor/basic_credit"
+        }
+    ]
+}
