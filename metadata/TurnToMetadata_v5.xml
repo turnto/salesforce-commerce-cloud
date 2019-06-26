@@ -120,6 +120,55 @@
 
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
+			<attribute-definition attribute-id="turntoChatterEnabled">
+                <display-name xml:lang="en-US">Turnto Chatter Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turntoTeasersEnabled">
+                <display-name xml:lang="en-US">Turnto Teasers Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turntoPinboardEnabled">
+                <display-name xml:lang="en-US">Turnto Pinboard Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turntoQAEnabled">
+                <display-name xml:lang="en-US">TurnTo Questions &amp; Answers Summary</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turntoReviewsSummaryEnabled">
+                <display-name xml:lang="en-US">Turnto Reviews Summary Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="isTurntoVCPinboardEnabled">
+                <display-name xml:lang="en-US">Enabled Turnto Pinboard</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="isTurntoVCGalleryEnabled">
+                <display-name xml:lang="en-US">Enable Turnto Gallery</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
             <attribute-definition attribute-id="turntoCssOverwrites">
                <display-name xml:lang="x-default">CSS Overwrites</display-name>
                <description xml:lang="x-default">Allows you to customize widget colors, fonts, font sizes, line-heights, padding, etc. using CSS overwrites</description>
@@ -146,6 +195,13 @@
             <attribute-definition attribute-id="turntoJSFeed">
                 <display-name xml:lang="x-default">Javascript Feed (on Order Confirmation) </display-name>
                 <description xml:lang="x-default">Enables the collection of real-time order data on the order confirmation page</description>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="turntoTopCommentEnabled">
+                <display-name xml:lang="en-US">Turnto TopComment Enabled</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -208,7 +264,16 @@
                 <attribute attribute-id="turntoHistoricalOrderDays"/>
                 <attribute attribute-id="turntoHistoricalOrderDate"/>
             </attribute-group>
-			
+			<attribute-group group-id="TurnTo Widget Toggles">
+                <attribute attribute-id="turntoTopCommentEnabled"/>
+                <attribute attribute-id="turntoReviewsSummaryEnabled"/>
+                <attribute attribute-id="turntoQAEnabled"/>
+                <attribute attribute-id="turntoTeasersEnabled"/>
+                <attribute attribute-id="turntoChatterEnabled"/>
+                <attribute attribute-id="isTurntoVCPinboardEnabled"/>
+				<attribute attribute-id="turntoPinboardEnabled"/>
+				<attribute attribute-id="isTurntoVCGalleryEnabled"/>
+            </attribute-group>
         </group-definitions>
     </type-extension>
 </metadata>
