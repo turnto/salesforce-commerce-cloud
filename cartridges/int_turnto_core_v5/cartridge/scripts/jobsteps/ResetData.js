@@ -51,20 +51,23 @@ function process( product, parameters, stepExecution ) {
 
 		//set the request to the current locale so localized attributes will be used
 		request.setLocale(currentLocale);
-
-		txn.begin();
-
-		//dataType is either "ratings" or "ugc"
-		if(parameters.DataType == 'ratings') {
-			product.custom.turntoAverageRating = '';
-			product.custom.turntoReviewCount = 0;
-			product.custom.turntoRelatedReviewCount = 0;
-			product.custom.turntoCommentCount = 0;
-		} else {
-			product.custom.turntoUserGeneratedContent = '';
+		try {
+			txn.begin();
+	
+			//dataType is either "ratings" or "ugc"
+			if(parameters.DataType == 'ratings') {
+				product.custom.turntoAverageRating = '';
+				product.custom.turntoReviewCount = 0;
+				product.custom.turntoRelatedReviewCount = 0;
+				product.custom.turntoCommentCount = 0;
+			} else {
+				product.custom.turntoUserGeneratedContent = '';
+			}
+	
+			txn.commit();
+		} catch(e) {
+			Logger.error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
 		}
-
-		txn.commit();
 	}
 	return;
 }
