@@ -52,6 +52,9 @@
                 <isinclude template="product/components/addToCartGlobal" />
             </div>
         </div>
+
+        <iscomment>TurnTo Visual Content Gallery Row</iscomment>
+        <isinclude template="product/components/turntovcgallery"/>
         
         <iscomment>TurnTo Widgets</iscomment>
         <isinclude template="product/widgets"/>

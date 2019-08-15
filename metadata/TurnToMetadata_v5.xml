@@ -120,8 +120,8 @@
 
     <type-extension type-id="SitePreferences">
         <custom-attribute-definitions>
-			<attribute-definition attribute-id="turntoChatterEnabled">
-                <display-name xml:lang="en-US">Turnto Chatter Enabled</display-name>
+			<attribute-definition attribute-id="turntoCommentDisplayEnabled">
+                <display-name xml:lang="en-US">Turnto Comment Display Enabled</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -148,22 +148,43 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
-			<attribute-definition attribute-id="turntoReviewsSummaryEnabled">
-                <display-name xml:lang="en-US">Turnto Reviews Summary Enabled</display-name>
+			<attribute-definition attribute-id="turntoReviewsEnabled">
+                <display-name xml:lang="en-US">Turnto Reviews Enabled</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
-			<attribute-definition attribute-id="isTurntoVCPinboardEnabled">
-                <display-name xml:lang="en-US">Enabled Turnto Pinboard</display-name>
+			<attribute-definition attribute-id="turntoVCPinboardEnabled">
+                <display-name xml:lang="en-US">Turnto Pinboard Enabled</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
-			<attribute-definition attribute-id="isTurntoVCGalleryEnabled">
-                <display-name xml:lang="en-US">Enable Turnto Gallery</display-name>
+			<attribute-definition attribute-id="turntoVCGalleryEnabled">
+                <display-name xml:lang="en-US">Turnto Gallery Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCCPinboardEnabled">
+                <display-name xml:lang="en-US">Turnto Checkout Comments Pinboard Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCCPinboardTeaserEnabled">
+                <display-name xml:lang="en-US">Turnto Checkout Comments Pinboard Teaser Enabled</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="turntoCommentCaptureEnabled">
+                <display-name xml:lang="en-US">Turnto Comment Capture Enabled</display-name>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
@@ -266,13 +287,16 @@
             </attribute-group>
 			<attribute-group group-id="TurnTo Widget Toggles">
                 <attribute attribute-id="turntoTopCommentEnabled"/>
-                <attribute attribute-id="turntoReviewsSummaryEnabled"/>
+                <attribute attribute-id="turntoReviewsEnabled"/>
                 <attribute attribute-id="turntoQAEnabled"/>
                 <attribute attribute-id="turntoTeasersEnabled"/>
-                <attribute attribute-id="turntoChatterEnabled"/>
-                <attribute attribute-id="isTurntoVCPinboardEnabled"/>
+                <attribute attribute-id="turntoCommentDisplayEnabled"/>
+                <attribute attribute-id="turntoVCPinboardEnabled"/>
 				<attribute attribute-id="turntoPinboardEnabled"/>
-				<attribute attribute-id="isTurntoVCGalleryEnabled"/>
+				<attribute attribute-id="turntoVCGalleryEnabled"/>
+                <attribute attribute-id="turntoCCPinboardEnabled"/>
+                <attribute attribute-id="turntoCCPinboardTeaserEnabled"/>
+                <attribute attribute-id="turntoCommentCaptureEnabled"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

@@ -85,6 +85,13 @@
                         <!-- Product Availability -->
                         <isinclude template="product/components/productAvailability" />
 
+                        <iscomment>TurnTo Top Comment Include</iscomment>
+                        <isscript>
+                            var topCommentSkus = product.id;
+                        </isscript>
+                        <isinclude template="product/components/turntotopcomment"/>
+
+                        
                         <!-- Applicable Promotions -->
                         <div class="col-md-10 col-12 promotions">
                             <isinclude template="product/components/promotions" />
@@ -117,14 +124,14 @@
                 <isslot id="product-recommendations-m" description="Recommended products" context="global" />
             </div>
             
+            <iscomment>TurnTo Visual Content Gallery Row</iscomment>
+            <isinclude template="product/components/turntovcgallery"/>
+
             <iscomment>TurnTo Widgets</iscomment>
         	<isinclude template="product/widgets"/>
-        	
-        	<iscomment>TurnTo Top Comment Include</iscomment>
-			<isscript>
-				var topCommentSkus = product.id;
-			</isscript>
-			<isinclude template="product/components/turntotopcomment"/>
+
+            <iscomment>TurnTo JS Include</iscomment>
+            <isinclude template="turnto/pageassets"/>
         	
         </div>  
     </isobject>

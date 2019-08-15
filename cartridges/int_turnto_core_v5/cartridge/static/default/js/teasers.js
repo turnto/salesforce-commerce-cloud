@@ -1,18 +1,26 @@
 /**
  * @name teaser.js
  * @description helper script to retrieve reviews and comments and render them on a page
+ * @note this script is identical to the core teasers.js script, but it is needed in this particular directory for proper webpack compilation
  */
 
 /**
  * @function
- * @description The ​loadTeaserCounts​ function first loads the UGC counts maintained by TurnTo and then calls the ​populateTeaser​ function.
+ * @description The loadTeaserCounts function first loads the UGC counts maintained by TurnTo and then calls the ​populateTeaser​ function.
  * @name loadTeaserCounts
- * @param {String} sku the product ID
+ * @param {String} sku the product ID 
  */
 function loadTeaserCounts(sku) {
 	var xhr = new XMLHttpRequest();
-	var ugcCountsUrl = 'https://cdn-ws.turnto.com/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
-	xhr.open('GET', ugcCountsUrl, true); 
+	var turntoUrl = $('span.turntoUrl').text();
+	var siteKey = $('span.siteKey').text();
+
+	if(turntoUrl.length == 0 || siteKey.length == 0) {
+		return;
+	}
+	
+	var ugcCountsUrl = 'https://cdn-ws.' + turntoUrl +'/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
+	xhr.open('GET', ugcCountsUrl, true);
 	xhr.addEventListener('load', function() {
 		/*sample return JSON
 			{
@@ -60,7 +68,7 @@ function populateTeaser(counts) {
 	}
 	document.getElementById('tt-teaser').appendChild(fragment);
 	// add event listener to handle click to open the write a review screen 
-	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) { 
+	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) {
 		TurnToCmd('reviewsList.writeReview');
 	});
 }
@@ -86,7 +94,7 @@ function createTeaserElement(tag, className, text) {
 /**
  * @function
  * @name generateWriteReview
- * @description This function is called by the ​populateTeaser​ function to simply create a ‘Write a Review’ link. The click event handler for this element is added in the ​populateTeaser​ function after the teaser has been rendered on the page.
+ * @description This function is called by the populateTeaser function to simply create a ‘Write a Review’ link. The click event handler for this element is added in the ​populateTeaser​ function after the teaser has been rendered on the page.
  * @param {String} text value to be added to the element
  * @return {Object} DOM object
  */
@@ -97,7 +105,7 @@ function generateWriteReview(text) {
 /**
  * @function
  * @name generateReadComments
- * @description This function is called by the ​populateTeaser​ function to generate the link that will move to the place in the page where the Checkout Comments are located by placing the name of the Checkout Comments div id in the href.
+ * @description This function is called by the populateTeaser function to generate the link that will move to the place in the page where the Checkout Comments are located by placing the name of the Checkout Comments div id in the href.
  * @param {Number} numComments
  * @return {Object} el DOM object
  */
@@ -105,15 +113,14 @@ function generateReadComments(numComments) {
 	// Populate the 'x Buyer Comments' text with the number of comments and set
 	var text = numComments + ' Buyer Comment' + (numComments > 1 ? 's' : '');
 	var el = createTeaserElement('a', 'TTteaser__read-comments', text);
-	//HASH in front of tt-chatter-widget breaks page, had to delete to render page
-	//el.setAttribute('href', '#tt-chatter-widget');
+	el.setAttribute('href', '#tt-chatter-widget');
 	return el; 
 }
 
 /**
  * @function
  * @name generateReadReviews
- * @description This function is called by the ​populateTeaser​ function to generate the link that will move to the place in the page where the reviews list is located by placing the name of the reviews list div id in the href.
+ * @description This function is called by the populateTeaser function to generate the link that will move to the place in the page where the reviews list is located by placing the name of the reviews list div id in the href.
  * @param {Number} numReviews
  * @return {Object} el DOM object
  */
@@ -121,23 +128,21 @@ function generateReadReviews(numReviews) {
 	// Populate the 'Read x Reviews' text with the number of reviews and set
 	var text = 'Read ' + numReviews + ' Review' + (numReviews > 1 ? 's' : '');
 	var el = createTeaserElement('a', 'TTteaser__read-reviews', text);
-	//HASH in front of tt-reviews-list breaks page, had to delete to render page
-	//el.setAttribute('href', '#tt-reviews-list'); 
+	el.setAttribute('href', '#tt-reviews-list'); 
 	return el;
 }
 
 /**
  * @function
  * @name generateTeaserStar
- * @description The ​generateTeaserStars​ function creates an SVG element that references one of three possible stars (full, half or empty). The SVGs must be defined at the top of the body of the page.
+ * @description The generateTeaserStars function creates an SVG element that references one of three possible stars (full, half or empty). The SVGs must be defined at the top of the body of the page.
  * @param {String} starType
  * @return {Object} el DOM object
  */
 function generateTeaserStar(starType) { 
 	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
 	svgEl.setAttribute('class', 'TTteaser__icon--' + starType); 
-	useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
-	//HASH in front of tt-teaser-start breaks page, had to delete to render page
+	var useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
 	useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#tt-teaser-star--' + starType);
 	svgEl.appendChild(useEl);
 	var el = createTeaserElement('span', 'TTteaser__star'); 
@@ -148,7 +153,7 @@ function generateTeaserStar(starType) {
 /**
  * @function
  * @name generateTeaserStars
- * @description The ​generateTeaserStars​ function is called by the ​populateTeaser​ function to create the review stars.
+ * @description The generateTeaserStars function is called by the ​populateTeaser​ function to create the review stars.
  * @param {String} rating
  * @return {Object} el DOM object
  */
@@ -168,3 +173,11 @@ function generateTeaserStars(rating) {
 	}
 	return el;
 }
+
+/* Javascript to load on page load*/
+$(document).ready(function () {
+	//PDP teasers only
+	if( $('span[itemprop="productID"]').text().length ) {
+		loadTeaserCounts($('span[itemprop="productID"]').text());
+	}
+});

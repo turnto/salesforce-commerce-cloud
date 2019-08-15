@@ -66,31 +66,19 @@ var TurnToHelper = {
 	 * @return {Boolean} true if the locale contains both auth and site keys; false if it does not contain an auth key, site key or both
 	 */
 	hasSiteAndAuthKeyPerLocale: function( locale ) {
-		var localizedSiteKeyValues : dw.util.Collection = Site.getCurrent().getCustomPreferenceValue('turntoSiteKey');
-		var localizedAuthKeyValues : dw.util.Collection = Site.getCurrent().getCustomPreferenceValue('turntoAuthKey');
+		var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
 	
-		var hasSiteKey,hasAuthKey;
-		hasSiteKey = hasAuthKey = false;
-		
-		for each( var siteKey : String in localizedSiteKeyValues ) {
-			var entryLocale : String = siteKey.split( ":" )[0];
-			var entryValue : String = siteKey.split( ":" )[1];
-			if( entryLocale == locale ) {
-				hasSiteKey = true;
-				break;
+		try {
+			for each(var obj in hashMapOfKeys.entrySet()) {
+				if (obj.value.locales.indexOf(locale) != -1 && 'authKey' in obj.value && obj.value.authKey) {
+					return true;
+				}
 			}
+		} catch (e) {
+			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
 		}
-		
-		for each( var authKey : String in localizedAuthKeyValues ) {
-			var entryLocale : String = authKey.split( ":" )[0];
-			var entryValue : String = authKey.split( ":" )[1];
-			if( entryLocale == locale ) {
-				hasAuthKey = true;
-				break;
-			}
-		}
-		
-		return hasSiteKey && hasAuthKey;
+
+		return false;
 	},
 	
 	/**
@@ -163,8 +151,13 @@ var TurnToHelper = {
 			pageID = 'order-confirmation-page';
 		} else if (currentPage.indexOf('Search') > -1) {
 			pageID = 'search-page';
-		} else if (new RegExp('^.*Cart|Checkout|Shipping|Billing|Summary').test(currentPage)) {
-			pageID = 'checkout-page';
+		} else if (currentPage.indexOf('Page') > -1) {
+			// Special case here as this could be any content page as well.
+			if ( Site.getCurrent().getCustomPreferenceValue('turntoVCPinboardEnabled')) {
+				pageID = 'pinboard-page';
+			} else {
+				pageID = 'non-defined-page';
+			}			
 		} else {
 			pageID = 'non-defined-page';
 		}

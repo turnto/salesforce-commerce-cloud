@@ -33,7 +33,7 @@ var run = function run() {
 
 	try {
 		var args = arguments[0];
-
+		var error = false;
 		if (args.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
@@ -96,10 +96,15 @@ var run = function run() {
 				while (contentIter.hasNext()) {
 					var prodsku = contentIter.next();
 					var product = ProductMgr.getProduct(prodsku);
-					if (product != null) {
-						txn.begin();
-						product.custom.turntoUserGeneratedContent = contentMap.get(prodsku);
-						txn.commit();
+					try {
+						if (product != null) {
+							txn.begin();
+							product.custom.turntoUserGeneratedContent = contentMap.get(prodsku);
+							txn.commit();
+						}
+					} catch (e) {
+						var error = true;
+						Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
 					}
 				}
 			} finally {
@@ -122,7 +127,11 @@ var run = function run() {
 			fileReader.close();
 		}
 	}
-	return new Status(Status.OK, 'OK', 'Import User Generated Content was successful.');
+	if (error) {
+		return new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import ONE or MORE user generated content, please see prior error messages for details of individual product update errors.');
+	} else {
+		return new Status(Status.OK, 'OK', 'Import User Generated Content was successful.');
+	}
 }
 
 exports.Run = run;

@@ -19,6 +19,7 @@ var product;
 var tempProduct;
 var hashMapOfFileWriters;
 var hashMapOfKeys;
+var allowedLocales;
 
 //function is executed only ONCE
 function beforeStep( parameters, stepExecution )
@@ -28,22 +29,39 @@ function beforeStep( parameters, stepExecution )
 			return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
 		}
 
+		hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+		allowedLocales = TurnToHelper.getAllowedLocales();
+
 		//instantiate new hash map to store the locale file writers
 		hashMapOfFileWriters = new HashMap();
-		hashMapOfKeys = new HashMap();
 
-		hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
 		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
 		for each(var key in hashMapOfKeys) {
-			var locales = key.locales;
-			//Discover locales and prep a data file for each locale. Query products. 
-			//Get the file path where the output will be stored
-			var folderAndFilePatternName = locales.replace(',', '_');
-			var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + folderAndFilePatternName);
-			//retrieve fileWriter for current Locale
+			// create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
+			var locales = key.locales.replace(' ', '').split(',');
+			var isAllowedLocale =  true;
+
+			for each(var locale in locales) {
+				// check if locale is allowed on the site, if it is noit allowed, marked the variable as false and break out of the loop to continue to the next key
+				if(allowedLocales.indexOf(locale) <= -1) {
+					isAllowedLocale = false;
+					break;
+				}
+			}
+
+			//if the one or more locales are not allowed then continue to the next key and do not create a file writer
+			if(!isAllowedLocale) {
+				continue;
+			}
+
+			// create a folder with one or more locales
+			var folderAndFilePatternName = locales.join().replace(',', '_');
+			var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + locale);
+
 			if (!turntoDir.exists()) {
 				turntoDir.mkdirs();
 			}
+
 			// Initialize a file writer for output with the current key
 			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + '/' + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
 			catalogExportFileWrite.createNewFile();
@@ -52,7 +70,7 @@ function beforeStep( parameters, stepExecution )
 
 			//write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
-			hashMapOfFileWriters.put(locales, currentFileWriter);
+			hashMapOfFileWriters.put(key.locales, currentFileWriter);
 		}
 
 		//query all site products
@@ -293,6 +311,10 @@ function write( json, parameters, stepExecution )
 			var currentLocale = keyValue.locales
 			//retrieve the current file writer
 			var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
+
+			if(!localeFileWriter) {
+				continue;
+			}
 	
 			//each JSON Object "jsonObj" is a reference to a product
 			for each(var jsonObj in json) {

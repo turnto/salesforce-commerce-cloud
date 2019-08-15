@@ -7,7 +7,7 @@
  *
  *   ServiceID: String The service ID to use to connect to the remote server.
  *   PostFileLocation : String location to post file on the SFTP
- *   ExportFileName : String name of the file stored locally
+ *   FilePattern : String regular Expression of Files to Upload
  *   NoFileFoundStatus: String The status to fire when no files are found in the local directory.
  *   IsDisabled : Boolean Mark the step as disabled. This will skip the step and returns a OK status
  */
@@ -41,12 +41,12 @@ var run = function run() {
 		// Load input Parameters
 		var serviceID = args.ServiceID;
 		var postFileLocation = args.PostFileLocation;
-		var exportFileName = args.ExportFileName;
+		var filePattern = args.FilePattern;
 		var noFilesFoundStatus = args.NoFileFoundStatus;
 
 		// Test mandatory parameters
-		if (empty(serviceID) || empty(postFileLocation) || empty(exportFileName)) {
-			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Service ID = (' + serviceID + ') Post File Location = (' + postFileLocation + ') Export File Name = (' + exportFileName + ')');
+		if (empty(serviceID) || empty(postFileLocation) || empty(filePattern)) {
+			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Service ID = (' + serviceID + ') Post File Location = (' + postFileLocation + ') FilePattern = (' + filePattern + ')');
 		}
 
 		var turntoUrl = TurnToHelper.getURLSitePreference();
@@ -60,46 +60,73 @@ var run = function run() {
 			turntoDir.mkdirs();
 		}
 
-		//Loop through all allowed locales per site
-		var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
-		for each(var obj in hashMapOfKeys.entrySet()) {
-			var locales = obj.value.locales;
-			// Initialize a export file
-			var folderAndFilePatternName = locales.replace(',', '_');
-			var exportFile : File = new File(turntoDir.getFullPath() + "/" + folderAndFilePatternName + '/' + exportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID +'.txt');
+		// Retrieve HashMap of Keys which contain auth and site keys
+		var siteAndAuthKeys = TurnToHelper.getHashMapOfKeys();
 
-			if (!exportFile.exists()) {
+		//Loop through all allowed locales per site
+		var allowedLocales = TurnToHelper.getAllowedLocales();
+		for each(var locale in allowedLocales) {
+			// List all files in the specific locale folder
+			var exportFiles : File = new File(turntoDir.getFullPath() + "/" + locale);
+			exportFiles = exportFiles.listFiles();
+
+			// filter out files which match the file pattern
+			var filteredExportFiles = exportFiles.clone();
+			for each(var file in exportFiles) {
+				if(file.getName().match(filePattern) == null) {
+					filteredExportFiles.remove(file);
+					continue;
+				} else {
+					//Localized siteKey and authKey, need to download per locale, added to the content body of the service request
+					for each(var obj in siteAndAuthKeys.entrySet()) {
+						if(obj.value.locales.indexOf(locale) > -1) {
+							var siteKey : String = JSON.parse(obj.key);
+							var authKey : String = obj.value.authKey;
+							var domain : String = 'www.' + obj.value.domain;
+							break;
+						}
+					}
+					
+					//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
+					if(empty(siteKey) || empty(authKey) || empty(domain)) {
+						Logger.error('FAILED Site and/or Auth key or domain is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + file.name  + ' domain -> ' + domain);
+						continue;
+					}
+					
+					//FeedUploadService
+					var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain);
+					Logger.info('Post file location: ' + postFileLocation);
+					Logger.info('Export file: ' + file);
+					
+					//call service, returns success or error
+					var feedUploadResult = FeedUploadService.call(requestDataContainer);
+
+					if (feedUploadResult.error) { 
+						Logger.error('Feed upload service error: ' + feedUploadResult.error + ' ' + feedUploadResult.errorMessage);
+					}
+				
+					if (!feedUploadResult.isOk()) {
+						return new Status(Status.ERROR, 'ERROR', 'FAILED uploading file with XML file name : ' + file.fullPath + '\nerror:' + feedUploadResult.errorMessage);
+					} else {
+						// Archive file
+						var archiveFile = new File(turntoDir.fullPath + File.SEPARATOR + 'Archive');
+
+						if (!archiveFile.exists()) {
+							archiveFile.mkdirs();
+						}
+						var theArchiveFile = new File(archiveFile.fullPath + File.SEPARATOR + file.getName());
+						file.renameTo(theArchiveFile);
+					}
+				}
+			};
+
+			if (filteredExportFiles.size() == 0) {
 				switch (noFilesFoundStatus) {
 				case 'ERROR':
-					return new Status(Status.ERROR, 'ERROR', 'FAILED No file existed with name: ' + exportFile.name);
+					return new Status(Status.ERROR, 'ERROR', 'FAILED No files existed with file pattern: ' + filePattern);
 				default:
-					return new Status(Status.OK, 'NO_FILE_FOUND', 'OK No file existed with name: ' + exportFile.name);
+					continue;
 				}
-			}
-
-			//Localized siteKey and authKey, need to download per locale, added to the content body of the service request
-			var siteKey : String = JSON.parse(obj.key);
-			var authKey : String = obj.value.authKey;
-			var domain : String = 'www.' + obj.value.domain;
-			
-			//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
-			if(empty(siteKey) || empty(authKey) || empty(domain)) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED Site and/or Auth key or domain is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + exportFile.name  + ' domain -> ' + domain);
-			}
-			
-			//FeedUploadService
-			var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, exportFile, siteKey, authKey, domain);
-			
-			//false is returned if a site or auth key is missing for the current locale
-			if(!requestDataContainer) {
-				continue;
-			}
-			
-			//call service, returns success or error
-			var feedUploadResult = FeedUploadService.call(requestDataContainer);
-		
-			if (!feedUploadResult.isOk()) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name : ' + exportFile.fullPath + '\nerror:' + feedUploadResult.errorMessage);
 			}
 		}
 	} catch (exception) {

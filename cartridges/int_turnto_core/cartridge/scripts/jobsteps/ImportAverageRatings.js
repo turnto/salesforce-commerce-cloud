@@ -31,7 +31,7 @@ var run = function run() {
 
 	try {
 		var args = arguments[0];
-
+		var error = false;
 		if (args.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
@@ -64,18 +64,19 @@ var run = function run() {
 					if (xmlStreamReader.next() == XMLStreamConstants.START_ELEMENT) {
 						var localElementName : String = xmlStreamReader.getLocalName();
 						if (localElementName == "product") {
-							var productNode : XML = xmlStreamReader.readXMLObject();
-							var product = ProductMgr.getProduct(productNode.attribute('sku'));
-							if(product != null) {
-								var reviewCount = parseInt(productNode.attribute("review_count"));
-								var relatedReviewCount = parseInt(productNode.attribute("related_review_count"));
-								var commentCount = parseInt(productNode.attribute("comment_count"));
-								//Round the rating to the nearest 0.5
-								var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
-								rating = rating.toString();
-								var decimal = parseInt(rating.substring(2, 3))
-								rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0')
-								try {
+							try {
+								var productNode : XML = xmlStreamReader.readXMLObject();
+								var product = ProductMgr.getProduct(productNode.attribute('sku'));
+								if(product != null) {
+									var reviewCount = parseInt(productNode.attribute("review_count"));
+									var relatedReviewCount = parseInt(productNode.attribute("related_review_count"));
+									var commentCount = parseInt(productNode.attribute("comment_count"));
+									//Round the rating to the nearest 0.5
+									var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
+									rating = rating.toString();
+									var decimal = parseInt(rating.substring(2, 3))
+									rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0')
+								
 									txn.begin();
 	
 									product.custom.turntoAverageRating = rating;
@@ -85,8 +86,8 @@ var run = function run() {
 	
 									txn.commit();
 								} catch ( e ) {
-									Logger.error('Error occurred:  ' + e.stack + '  Error: ' + e.message );
-									return new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import average ratings. Error message: ' + e.message + 'for Product ID:' + product.ID);
+									error = true;
+									Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
 								}
 	
 							}
@@ -113,7 +114,11 @@ var run = function run() {
 			fileReader.close();
 		}
 	}
-	return new Status(Status.OK, 'OK', 'Import Average Ratings was successful.');
+	if (error) {
+		return new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import ONE or MORE average ratings, please see prior error messages for details of individual product update errors.');
+	} else {
+		return new Status(Status.OK, 'OK', 'Import Average Ratings was successful.');
+	}
 }
 
 exports.Run = run;

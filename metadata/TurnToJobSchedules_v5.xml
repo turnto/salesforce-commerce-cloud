@@ -4,8 +4,8 @@
         <description>Exports and uploads the product catalog in TurnTo XML format to the TurnTo system</description>
         <parameters/>
         <flow>
-            <context site-id="RefArch"/>
-            <step step-id="TurnToExportCatalogFeed" type="custom.TurnToExportCatalogFeed" enforce-restart="false">
+            <context site-id="RefArch_v5"/>
+            <step step-id="TurnToExportCatalogFeed" type="custom.TurnToExportCatalogFeed_v5" enforce-restart="false">
                 <description/>
                 <parameters>
                     <parameter name="ExportFileName">exportCatalog</parameter>
@@ -14,7 +14,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -49,13 +49,42 @@
         </rules>
         <triggers>
             <run-once enabled="true">
-                <date>2018-09-20Z</date>
-                <time>15:55:59.000Z</time>
-                <rules>
-                    <on-exit status="ERROR">
-                        <disable-trigger/>
-                    </on-exit>
-                </rules>
+                <date>2019-07-01Z</date>
+                <time>12:41:22.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="TurnToExportCatalogV5" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch_v5"/>
+            <step step-id="TurnToExportCatalogFeed_v5" type="custom.TurnToExportCatalogFeed_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArch_v5"/>
+            <step step-id="TurnToFeedUpload_v5" type="custom.TurnToFeedUpload_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
+                    <parameter name="NoFileFoundStatus">ERROR</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="false">
+                <date>2019-07-24Z</date>
+                <time>15:05:02.000Z</time>
             </run-once>
         </triggers>
     </job>
@@ -64,7 +93,7 @@
         <description>Exports all orders placed in the last X days, where X is the value of the "Historical Order Days" Custom Site Preference in the "TurnTo Feeds" preference group</description>
         <parameters/>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToExportOrderFeedOngoing" type="custom.TurnToExportOrderFeedOngoing" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -73,7 +102,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -97,7 +126,7 @@
         <description>Exports all orders from X date, where X is the value of the "Historical Order Date" Custom Site Preference in the "TurnTo Feeds" preference group</description>
         <parameters/>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToExportOrderFeedSpecificDate" type="custom.TurnToExportOrderFeedSpecificDate" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -106,7 +135,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToFeedUpload" type="custom.TurnToFeedUpload" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -130,7 +159,7 @@
         <description>Imports the average rating feed from TurnTo, which is used to show the average stars on the product tiles</description>
         <parameters/>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToFeedDownload" type="custom.TurnToFeedDownload" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -140,7 +169,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToResetData" type="custom.TurnToResetData" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -150,7 +179,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToImportRatingsFeed" type="custom.TurnToImportRatingsFeed" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -192,7 +221,7 @@
         <description>Import the user generated content XML feed from TurnTo, which can be used to make the content searchable by the storefront</description>
         <parameters/>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToFeedDownload" type="custom.TurnToFeedDownload" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -202,7 +231,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToResetData" type="custom.TurnToResetData" enforce-restart="false">
                 <description/>
                 <parameters>
@@ -211,7 +240,7 @@
             </step>
         </flow>
         <flow>
-            <context site-id="RefArch"/>
+            <context site-id="RefArch_v5"/>
             <step step-id="TurnToImportUGCFeed" type="custom.TurnToImportUGCFeed" enforce-restart="false">
                 <description/>
                 <parameters>

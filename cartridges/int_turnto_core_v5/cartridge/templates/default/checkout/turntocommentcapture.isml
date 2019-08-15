@@ -1,2 +1,4 @@
-<iscomment>TurnTo Comment Capture For Order Confirmation Page</iscomment>
-<div id=”tt-comment-capture”></div>
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentCaptureEnabled')}">
+    <iscomment>TurnTo Comment Capture For Order Confirmation Page</iscomment>
+    <div id=”tt-comment-capture”></div>
+</isif>

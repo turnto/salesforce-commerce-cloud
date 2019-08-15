@@ -32,7 +32,7 @@ function createTeaserElement(tag, className, text) {
 function generateTeaserStar(starType) { 
 	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
 	svgEl.setAttribute('class', 'TTteaser__icon--' + starType); 
-	useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
+	var useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
 	useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#tt-teaser-star--' + starType);
 	svgEl.appendChild(useEl);
 	var el = createTeaserElement('span', 'TTteaser__star'); 

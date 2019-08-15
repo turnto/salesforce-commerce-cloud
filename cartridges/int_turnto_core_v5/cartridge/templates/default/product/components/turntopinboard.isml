@@ -1,4 +1,4 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoPinboardEnabled')}">
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCCPinboardEnabled')}">
 	<iscomment>TurnTo Comments Pinboard v5</iscomment>
 	
 	<div id="tt-comments-pinboard-widget"></div>

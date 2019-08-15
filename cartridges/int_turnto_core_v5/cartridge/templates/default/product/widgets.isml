@@ -1,4 +1,4 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoReviewsSummaryEnabled')}">
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoReviewsEnabled')}">
 	<iscomment>TurnTo Reviews Summary
 			   NOTE: both of the following two divs are not required, you can remove both, have just one or have both. See the documentation for details on each one and what they display.
 	</iscomment>

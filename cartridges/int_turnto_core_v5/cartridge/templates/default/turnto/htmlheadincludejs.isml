@@ -11,9 +11,13 @@
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'HelperUtil.js', function 'getPageID'
 	if('${pageID}' == 'pdp-page') {
-		var turnToConfig = {
+			var turnToConfig = {
 				locale: "${request.getLocale()}",
-				pageId: "pdp-page"
+				pageId: "pdp-page",
+				gallery: {
+					// Add one or more SKUs as an array.
+					// skus: []
+				}
 				/*optional top comments feature, refer to "v5 Top Comment Widget"
 				topComments: {
 					// tags: [],
@@ -25,96 +29,36 @@
 					}
 				*/
 		};
-	} else if ('${pageID}' == 'checkout-page') {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "checkout-page"
-				/*commentsPinboard: {
-					//skus, tags and brands are optional properties within turnToCOnfig that constrain the content displayed to a specific SKU(s), product category(ies), brands(s), and / or tag(s).
-					//allows you to filter displayed content by one or more SKU(s) and/or category(ies);
-					//must be set as an array, e.g. skus: ['category1','sku1','sku2']
-					skus: [],
-					//allows you to filter displayed content by one or more tag codes(s);
-					tags: [],
-					//allows you to filter displayed content by one or more brand(s);
-					//must be set as an array, e.g. brandsL ['brand1']
-					brands: []
-					//optional onFinish configuration option that can be used to trigger an event record in your analytics package after the widget has finished loading.
-					//onFinishL function() {}
-				}
-				optional top comments feature, refer to "v5 Top Comment Widget"
-					topComments: {
-						// tags: [],
-						// onFinish: function() {}
-					}
-				*/
-		}
 	} else if ('${pageID}' == 'order-confirmation-page') {
 			var turnToConfig = {
 					locale: "en_US",
 					pageId: "order-confirmation-page"
-					/*optional top comments feature, refer to "v5 Top Comment Widget"
-					topComments: {
-						// tags: [],
-						// onFinish: function() {}
-					}*/
-					
 			}
 	} else if ('${pageID}' == 'search-page') {
 		var turnToConfig = {
 				locale: "${request.getLocale()}",
-				pageId: "search-page"
-				/*commentsPinboard: {
-					//skus, tags and brands are optional properties within turnToConfig that constrain the content displayed to a specific SKU(s), product category(ies), brands(s), and / or tag(s).
-					//allows you to filter displayed content by one or more SKU(s) and/or category(ies);
-					//must be set as an array, e.g. skus: ['category1','sku1','sku2']
-					skus: [],
-					//allows you to filter displayed content by one or more tag codes(s);
-					tags: [],
-					//allows you to filter displayed content by one or more brand(s);
-					//must be set as an array, e.g. brandsL ['brand1']
-					brands: []
-					//optional onFinish configuration option that can be used to trigger an event record in your analytics package after the widget has finished loading.
-					//onFinishL function() {}
-				}
+				pageId: "search-page",
 				commentsPinboardTeaser: {
-					//promoButtonUrl: ""
-			        //skus: [],
-			        // tags: [],
-			        // brands: [],
-			        // onFinish: function(){}
-			    }
-				optional top comments feature, refer to "v5 Top Comment Widget"
-					topComments: {
-						// tags: [],
-						// onFinish: function() {}
-					}
-				*/
+					// promoButtonUrl: ""
+					// skus: [],
+					// tags: [],
+					// brands: [],
+					// onFinish: function(){}
+				}
 		}
+	} else if ('${pageID}' == 'pinboard-page') {
+		var turnToConfig = {
+			locale: "${request.getLocale()}",
+			pageId: "vc-pinboard-page",
+			vcPinboard: {
+				// Add SKUs, tags, brands, or any combination.
+			}
+		};
 	} else {
 		var turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "non-defined-page"
-				/*commentsPinboard: {
-					//skus, tags and brands are optional properties within turnToCOnfig that constrain the content displayed to a specific SKU(s), product category(ies), brands(s), and / or tag(s).
-					//allows you to filter displayed content by one or more SKU(s) and/or category(ies);
-					//must be set as an array, e.g. skus: ['category1','sku1','sku2']
-					skus: [],
-					//allows you to filter displayed content by one or more tag codes(s);
-					tags: [],
-					//allows you to filter displayed content by one or more brand(s);
-					//must be set as an array, e.g. brandsL ['brand1']
-					brands: []
-					//optional onFinish configuration option that can be used to trigger an event record in your analytics package after the widget has finished loading.
-					//onFinishL function() {}
-				}
-				commentsPinboardTeaser: {
-			        //skus: []
-			        // tags: [],
-			        // brands: [],
-			        // onFinish: function(){}
-			    }*/
-		}
+		};
 	}
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push( arguments)};
 </script>

@@ -68,7 +68,7 @@ var run = function run() {
 				}
 
 				//Initialize a file writer for output
-				var orderExportFile : File = new File(turntoDir.getFullPath() + '/' + exportFileName + '_' + currentLocale + '_' + Site.getCurrent().ID +'.txt');
+				var orderExportFile : File = new File(turntoDir.getFullPath() + '/' + exportFileName + '_orderdate_' + historicalOrderDate.toDateString() + '_' + currentLocale + '_' + Site.getCurrent().ID + '.txt');
 
 				var fileWriter : FileWriter = new FileWriter(orderExportFile);
 

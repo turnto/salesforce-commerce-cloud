@@ -4,7 +4,7 @@
 <isinclude template="util/modules"/>
 
 <isscript>
-	var StringHelpers = require('~/cartridge/scripts/util/StringHelpers');
+	var StringHelpers = require('*/cartridge/scripts/util/StringHelpers');
 </isscript>
 
 <iscomment>NOTE: Removes Refinements if NO Products are found</iscomment>

@@ -1,5 +1,3 @@
-<iscomment>Copy of product content from the base cartridge, but with the added TurnTo teasers template include</iscomment>
-
 <isif condition="${pdict.resetAttributes}">
 	<isscript>
 		var ProductUtils = require('~/cartridge/scripts/product/ProductUtils.js');
@@ -54,7 +52,6 @@
 	</iscomment>
 
 	<isif condition="${!isQuickView}">
-
 		<isinclude template="product/components/turntoteasers"/>
 	</isif>
 
@@ -103,6 +100,12 @@
 
 			<h2 class="visually-hidden">Add to cart options</h2>
 			<isinclude template="product/components/options"/>
+
+			<iscomment>TurnTo Top Comment Include</iscomment>
+			<isscript>
+				var topCommentSkus = productNumber;
+			</isscript>
+			<isinclude template="product/components/turntotopcomment"/>
 
 			<iscomment>
 				product promotions

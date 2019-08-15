@@ -140,7 +140,7 @@ function generateReadReviews(numReviews) {
 function generateTeaserStar(starType) { 
 	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
 	svgEl.setAttribute('class', 'TTteaser__icon--' + starType); 
-	useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
+	var useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
 	useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#tt-teaser-star--' + starType);
 	svgEl.appendChild(useEl);
 	var el = createTeaserElement('span', 'TTteaser__star'); 
@@ -216,7 +216,7 @@ function generateReadComments(numComments) {
 /* Javascript to load on page load*/
 $(document).ready(function () {
 	//PDP teasers only
-	if( $('.product-id').length ) {
-		loadTeaserCounts($('.product-id').text());
+	if( $('span[itemprop="productID"]').text().length ) {
+		loadTeaserCounts($('span[itemprop="productID"]').text());
 	}
 });

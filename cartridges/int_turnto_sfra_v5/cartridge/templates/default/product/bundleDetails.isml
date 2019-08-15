@@ -71,6 +71,12 @@
                 <isinclude template="product/components/availability" />
             </div>
 
+            <iscomment>TurnTo Top Comment Include</iscomment>
+            <isscript>
+                var topCommentSkus = product.id;
+            </isscript>
+            <isinclude template="product/components/turntotopcomment"/>
+
             <div class="col-12 prices-add-to-cart-actions">
                 <!-- Prices -->
                 <div class="prices">
@@ -91,6 +97,9 @@
         <div class="recommendations">
             <isslot id="product-recommendations-m" description="Recommended products" context="global" />
         </div>
+
+        <iscomment>TurnTo Visual Content Gallery Row</iscomment>
+        <isinclude template="product/components/turntovcgallery"/>
         
         <iscomment>TurnTo Widgets</iscomment>
         <isinclude template="product/widgets"/>

@@ -5,5 +5,5 @@
 			   Note: Due to the possibility of this template being include on multiple pages, the SKU is left blank as the product SKU can vary based on pages
 	</iscomment>
 	
-	<div id="tt-top-comment" data-ttsku="${topCommentSkus}"​></div>
+	<div class="tt-top-comment" data-ttsku="${topCommentSkus}"​></div>
 </isif>
