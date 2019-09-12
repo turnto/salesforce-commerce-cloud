@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?demandware-pipeline version="2.0"?>
+
+<pipeline type="process">
+  <branch basename="ABTests">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="ABTests" secure="false"/>
+        <node-display x="1" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportABTests" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in2" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Catalog">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Catalog" secure="false"/>
+        <node-display x="3" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <pipelet-node pipelet-name="ExportCatalog" pipelet-set-identifier="bc_api">
+          <key-binding alias="Catalog" key="Catalog"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="Categories" key="Categories"/>
+          <key-binding alias="ExportProducts" key="ExportProducts"/>
+          <key-binding alias="ExportCategories" key="ExportCategories"/>
+          <key-binding alias="ExportSubCategories" key="ExportSubCategories"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="ExportCategoryAssignements" key="ExportCategoryAssignments"/>
+          <key-binding alias="ExportRecommendations" key="ExportRecommendations"/>
+          <key-binding alias="ExportProductOptions" key="ExportProductOptions"/>
+          <key-binding alias="ExportVariationAttributes" key="ExportVariationAttributes"/>
+          <key-binding alias="Products" key="Products"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Content">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Content" secure="false"/>
+        <node-display x="5" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportContent" pipelet-set-identifier="bc_api">
+          <key-binding alias="Library" key="Library"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="Folders" key="Folders"/>
+          <key-binding alias="ExportContent" key="ExportContent"/>
+          <key-binding alias="ExportFolders" key="ExportFolders"/>
+          <key-binding alias="ExportSubFolders" key="ExportSubFolders"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="CouponCodes">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="CouponCodes" secure="false"/>
+        <node-display x="1" y="6"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCouponCodes" pipelet-set-identifier="bc_api">
+          <key-binding alias="Coupon" key="Coupon"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="StartFrom" key="StartFrom"/>
+          <key-binding alias="NumberOfCodes" key="NumberOfCodes"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Coupons">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Coupons" secure="false"/>
+        <node-display x="3" y="6"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCoupons" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="Coupons" key="Coupons"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="CustomerGroups">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="CustomerGroups" secure="false"/>
+        <node-display x="5" y="6"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCustomerGroups" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="CustomerGroups" key="CustomerGroups"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="CustomerList">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="CustomerList" secure="false"/>
+        <node-display x="1" y="11"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCustomerList" pipelet-set-identifier="bc_api">
+          <key-binding alias="CustomerList" key="CustomerList"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="Customers" key="Customers"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Customers">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Customers" secure="false"/>
+        <node-display x="3" y="11"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCustomers" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="Customers" key="Customers"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in2" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="CustomObjects">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="CustomObjects" secure="false"/>
+        <node-display x="5" y="11"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportCustomObjects" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="CustomObjects" key="CustomObjects"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="GiftCertificates">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="GiftCertificates" secure="false"/>
+        <node-display x="1" y="16"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportGiftCertificates" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="GiftCertificates" key="GiftCertificates"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="InventoryLists">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="InventoryLists" secure="false"/>
+        <node-display x="3" y="16"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportInventoryLists" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="InventoryLists" key="InventoryLists"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="MetaData">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="MetaData" secure="false"/>
+        <node-display x="5" y="16"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportMetaData" pipelet-set-identifier="bc_api">
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="ExportSystemTypes" key="ExportSystemTypes"/>
+          <key-binding alias="ExportCustomTypes" key="ExportCustomTypes"/>
+          <key-binding alias="ExportCustomPreferences" key="ExportCustomPreferences"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="SystemTypes" key="SystemTypes"/>
+          <key-binding alias="CustomTypes" key="CustomTypes"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Orders">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Orders" secure="false"/>
+        <node-display x="1" y="21"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <pipelet-node pipelet-name="ExportOrders" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="Orders" key="Orders"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="EncryptionAlgorithm" key="EncryptionAlgorithm"/>
+          <key-binding alias="EncryptionKey" key="EncryptionKey"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="UpdateExportStatus" key="UpdateExportStatus"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="PriceAdjustmentLimits">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="PriceAdjustmentLimits" secure="false"/>
+        <node-display x="3" y="21"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportPriceAdjustmentLimits" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Pricebooks">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Pricebooks" secure="false"/>
+        <node-display x="5" y="21"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <pipelet-node pipelet-name="ExportPriceBooks" pipelet-set-identifier="bc_api">
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="PriceBooks" key="PriceBooks"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="ProductLists">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="ProductLists" secure="false"/>
+        <node-display x="1" y="26"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportProductLists" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ProductLists" key="ProductLists"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Promotions">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Promotions" secure="false"/>
+        <node-display x="3" y="26"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportPromotions" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="ShippingMethods">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="ShippingMethods" secure="false"/>
+        <node-display x="5" y="26"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportShippingMethods" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ShippingMethods" key="ShippingMethods"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Slots">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Slots" secure="false"/>
+        <node-display x="1" y="31"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportSlots" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in2" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="SourceCodes">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="SourceCodes" secure="false"/>
+        <node-display x="3" y="31"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportSourceCodes" pipelet-set-identifier="bc_api">
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="SourceCodeGroups" key="SourceCodeGroups"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+  <branch basename="Stores">
+    <segment>
+      <node>
+        <start-node call-mode="private" name="Stores" secure="false"/>
+        <node-display x="5" y="31"/>
+      </node>
+      <simple-transition>
+        <transition-display>
+          <bend-point relative-to="source" x="0" y="1"/>
+        </transition-display>
+      </simple-transition>
+      <node>
+        <pipelet-node pipelet-name="ExportStores" pipelet-set-identifier="bc_api">
+          <key-binding alias="ExportFile" key="ExportFile"/>
+          <key-binding alias="OverwriteExportFile" key="OverwriteExportFile"/>
+          <key-binding alias="Stores" key="Stores"/>
+          <key-binding alias="ErrorCode" key="ErrorCode"/>
+          <key-binding alias="ErrorMsg" key="ErrorMsg"/>
+          <key-binding alias="LogFileName" key="LogFileName"/>
+          <key-binding alias="Status" key="Status"/>
+        </pipelet-node>
+        <node-display x="0" y="1"/>
+        <branch basename="b2" source-connector="error">
+          <transition target-connector="in1" target-path="./+1">
+            <transition-display>
+              <bend-point relative-to="source" x="1" y="0"/>
+              <bend-point relative-to="target" x="1" y="0"/>
+            </transition-display>
+          </transition>
+        </branch>
+      </node>
+      <transition target-connector="in1" target-path="./+1"/>
+    </segment>
+    <segment>
+      <node>
+        <join-node/>
+        <node-display x="0" y="1"/>
+      </node>
+      <simple-transition/>
+      <node>
+        <end-node/>
+        <node-display x="0" y="1"/>
+      </node>
+    </segment>
+  </branch>
+</pipeline>

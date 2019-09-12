@@ -7,7 +7,7 @@
         assets.addCss('/css/search.css');
     </isscript>
 
-	<isinclude template="product/components/turntopinboard"/>
+	<isinclude template="product/components/turntoPinboard"/>
 	
     <isslot
         id="cat-landing-slotbanner-m"
@@ -18,7 +18,7 @@
 
     <div class="container">
         <div class="secondary-content">
-        	<isinclude template="product/components/turntopinboard"/>
+        	<isinclude template="product/components/turntoPinboard"/>
             <isslot id="cat-landing-slotbottom-m" context="category" description="First slot below the Category Banner" context-object="${pdict.category}"/>
             <isslot id="cat-landing-slotbottom2-m" context="category" description="Second slot below the Category Banner" context-object="${pdict.category}"/>
         </div>

@@ -10,7 +10,7 @@ var Site = require('dw/system/Site');
 var ProductMgr = require('dw/catalog/ProductMgr');
 
 /*Script Modules*/
-var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 
 // Public
 var ServiceFactory = {
@@ -74,7 +74,7 @@ var ServiceFactory = {
 	 * @desc returns the logger
 	 */
 	getLogger: function (method) {
-		return Logger.getLogger('TurnToProduct');
+		return Logger.getLogger('int_turnto_core_v5');
 	},
 
 	/**
@@ -116,7 +116,7 @@ var ServiceFactory = {
 		
 		//Distinguish two different download URLs (Example for UGC http://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml)
 		//"/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-		var url = "http://www." + ServiceFactory.getStaticURLPreference() + "/static/export/" + siteKey + "/" + authKey + xmlName;
+		var url = "http://www." + ServiceFactory.getStaticURLPreference() + File.SEPARATOR + "static" + File.SEPARATOR + "export" + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
 
 		var requestDataContainer = {
 			requestMethod: 'GET',

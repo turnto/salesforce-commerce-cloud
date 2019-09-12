@@ -183,13 +183,6 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>true</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="turntoCommentCaptureEnabled">
-                <display-name xml:lang="en-US">Turnto Comment Capture Enabled</display-name>
-                <type>boolean</type>
-                <mandatory-flag>false</mandatory-flag>
-                <externally-managed-flag>false</externally-managed-flag>
-                <default-value>true</default-value>
-            </attribute-definition>
             <attribute-definition attribute-id="turntoCssOverwrites">
                <display-name xml:lang="x-default">CSS Overwrites</display-name>
                <description xml:lang="x-default">Allows you to customize widget colors, fonts, font sizes, line-heights, padding, etc. using CSS overwrites</description>
@@ -241,7 +234,7 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
-                <default-value>static.www.turnto.com</default-value>
+                <default-value>turnto.com</default-value>
             </attribute-definition>
             <attribute-definition attribute-id="turntoURL">
                 <display-name xml:lang="x-default">URL</display-name>
@@ -296,7 +289,6 @@
 				<attribute attribute-id="turntoVCGalleryEnabled"/>
                 <attribute attribute-id="turntoCCPinboardEnabled"/>
                 <attribute attribute-id="turntoCCPinboardTeaserEnabled"/>
-                <attribute attribute-id="turntoCommentCaptureEnabled"/>
             </attribute-group>
         </group-definitions>
     </type-extension>

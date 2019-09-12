@@ -12,7 +12,7 @@
     </head>
     <body>
         <iscomment>TurnTo Includes</iscomment>
-        <isinclude template="turnto/htmlheadinclude"/>
+        <isinclude template="turnto/htmlHeadInclude"/>
         <div class="page" data-action="${pdict.action}" data-querystring="${pdict.queryString}" >
             <isinclude template="/components/header/pageHeader" />
             <isreplace/>

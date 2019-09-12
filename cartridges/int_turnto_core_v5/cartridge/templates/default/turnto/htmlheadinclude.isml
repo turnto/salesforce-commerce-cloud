@@ -2,7 +2,7 @@
 
 <iscomment>Global Import of the TurnTo Helper and Site Key Variable</iscomment>
 <isscript>
-	var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
+	var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
 	var turntoUrl = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain;
 </isscript>
@@ -15,4 +15,4 @@
 </isif>
 
 <iscomment>Include widgets v5 JS file and TurnToConfig object</iscomment>
-<isinclude template="turnto/htmlheadincludejs"/>
+<isinclude template="turnto/htmlHeadIncludeJS"/>

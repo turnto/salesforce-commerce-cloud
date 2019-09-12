@@ -16,10 +16,10 @@ var File = require('dw/io/File');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 var StepUtil = require('bc_job_components/cartridge/scripts/util/StepUtil');
-var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
-var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadService');
+var ServiceFactory = require('~/cartridge/scripts/util/serviceFactory');
+var FeedDownloadService = require('~/cartridge/scripts/service/feedDownloadService');
 
 /**
  * @function

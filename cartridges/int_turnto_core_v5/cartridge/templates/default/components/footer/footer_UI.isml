@@ -23,21 +23,17 @@
 <script src="${URLUtils.staticURL('/lib/jquery/jquery.zoom.min.js')}" ></script>
 <script type="text/javascript"><isinclude template="resources/appresources"/></script>
 <script type="text/javascript"><isinclude url="${URLUtils.url('Resources-LoadTransient')}"/></script>
+<script>var consent = ${session.custom.consentTracking};</script>
 <script src="${URLUtils.staticURL('/js/app.js')}"></script>
 <isif condition="${!('pageContext' in this) || empty(pageContext)}">
 	<isscript>pageContext = new Object();</isscript>
 </isif>
-<script>pageContext = <isprint value="${JSON.stringify(pageContext)}" encoding="off"/>;</script>
+<script>pageContext = <isprint value="${JSON.stringify(pageContext)}" />;</script>
 <script>
 var meta = "${pdict.CurrentPageMetaData.description}";
 var keywords = "${pdict.CurrentPageMetaData.keywords}";
 </script>
 
-<isscript>
-    var hookHelper = require('*/cartridge/scripts/template/hookHelper');
-    hookHelper.callHook('app.template.afterFooter', null, {pdict: pdict});
-</isscript>
-
 <iscomment>TurnTo JS files</iscomment>
 <script src="${URLUtils.staticURL('js/teasers.js')}" async></script>
-<script src="${URLUtils.staticURL('js/teasersproductgrid.js')}" async></script>
+<script src="${URLUtils.staticURL('js/teasersProductGrid.js')}" async></script>

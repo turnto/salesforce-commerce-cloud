@@ -1,5 +1,5 @@
 /**
- * ExportHistoricalOrders.js
+ * exportHistoricalOrders.js
  * 
  * The script exports order data to the Import/Export folder (impex) 
  * 
@@ -22,8 +22,8 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
-var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var OrderWriterHelper = require('*/cartridge/scripts/util/orderWriterHelper');
 
 /**
  * @function
@@ -61,42 +61,46 @@ var run = function run() {
 		for each(var currentLocale in TurnToHelper.getAllowedLocales()) {
 
 			try {
+				var dateLimit = new Calendar();
+				dateLimit.add(Calendar.DAY_OF_YEAR, historicalOrderDays*-1);
+				
+				var query : String = "creationDate >= {0} AND customerLocaleID = {1}";
+				var orders : SeekableIterator =  OrderMgr.searchOrders(query, "creationDate asc", dateLimit.getTime(), currentLocale);
+
+				if (orders.count == 0) {
+					// Do not create the file writer and continue to next locale
+					continue;
+				}
+
 				// Create a TurnTo directory if one doesn't already exist
-				var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + currentLocale);
+				var turntoDir : File = new File(impexPath + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale);
 				if (!turntoDir.exists()) {
 					turntoDir.mkdirs();
 				}
 
 				// Initialize a file writer for output
-				var orderExportFile : File = new File(turntoDir.getFullPath() + '/' + exportFileName + '_' + currentLocale + '_' + Site.getCurrent().ID +'.txt');
+				var orderExportFile : File = new File(turntoDir.getFullPath() + File.SEPARATOR + exportFileName + '_' + currentLocale + '_' + Site.getCurrent().ID +'.txt');
 
 				var fileWriter : FileWriter = new FileWriter(orderExportFile);
 
 				fileWriter.writeLine("ORDERID\tORDERDATE\tEMAIL\tITEMTITLE\tITEMURL\tITEMLINEID\tZIP\tFIRSTNAME\tLASTNAME\tSKU\tPRICE\tITEMIMAGEURL\tTEASERSHOWN\tTEASERCLICKED\tDELIVERYDATE\tNICKNAME\tLOCALE");
 
-				var dateLimit = new Calendar();
-				dateLimit.add(Calendar.DAY_OF_YEAR, historicalOrderDays*-1);
-				
-				var query : String = "creationDate >= {0}";
-				var orders : SeekableIterator =  OrderMgr.searchOrders(query, "creationDate asc", dateLimit.getTime());
-
 				//set the request to the current locale so localized attributes will be used
 				request.setLocale(currentLocale);
-				
-				if(!empty(orders)) {
-					try {
-						while (orders.hasNext()) {
-							var order : Order = orders.next();
-							//using the order writer helper, write the product data
-							OrderWriterHelper.writeOrderData(order, fileWriter, currentLocale);
-						}
-					} finally {
-						if (orders != null) {
-							orders.close();
-						}
+
+				try {
+					while (orders.hasNext()) {
+						var order : Order = orders.next();
+						//using the order writer helper, write the product data
+						OrderWriterHelper.writeOrderData(order, fileWriter, currentLocale);
+					}
+				} finally {
+					if (orders != null) {
+						orders.close();
 					}
 				}
 			} catch (e) {
+				var error = e;
 				throw new Error('FAILED: Error message: ' + e.message);
 			} finally {
 				if (fileWriter != null) {

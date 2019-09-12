@@ -20,8 +20,7 @@
 	<div id="product-content">
 		<isinclude template="product/productcontent"/>
 	</div>
-	
-	<isinclude template="product/components/turntogallery"/>
+
 </div>
 
 <isif condition="${!isQuickView}">

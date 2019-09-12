@@ -18,10 +18,10 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
-var StepUtil = require('bc_job_components/cartridge/scripts/util/StepUtil');
-var FeedUploadService = require('~/cartridge/scripts/service/FeedUploadService');
-var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var StepUtil = require('*/cartridge/scripts/util/StepUtil');
+var FeedUploadService = require('~/cartridge/scripts/service/feedUploadService');
+var ServiceFactory = require('~/cartridge/scripts/util/serviceFactory');
 
 /**
  * @function
@@ -54,7 +54,7 @@ var run = function run() {
 		// Get the file path where the output will be stored
 		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
 		// Create a TurnTo directory if one doesn't already exist
-		var turntoDir : File = new File(impexPath + "/TurnTo");
+		var turntoDir : File = new File(impexPath + File.SEPARATOR + "TurnTo");
 
 		if (!turntoDir.exists()) {
 			turntoDir.mkdirs();
@@ -67,9 +67,14 @@ var run = function run() {
 		var allowedLocales = TurnToHelper.getAllowedLocales();
 		for each(var locale in allowedLocales) {
 			// List all files in the specific locale folder
-			var exportFiles : File = new File(turntoDir.getFullPath() + "/" + locale);
+			var exportFiles : File = new File(turntoDir.getFullPath() + File.SEPARATOR + locale);
 			exportFiles = exportFiles.listFiles();
 
+			// If no files are found, go to the next locale
+			if(exportFiles.isEmpty()) {
+				continue;
+			}
+			
 			// filter out files which match the file pattern
 			var filteredExportFiles = exportFiles.clone();
 			for each(var file in exportFiles) {
@@ -93,7 +98,7 @@ var run = function run() {
 						continue;
 					}
 					
-					//FeedUploadService
+					//feedUploadService
 					var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain);
 					Logger.info('Post file location: ' + postFileLocation);
 					Logger.info('Export file: ' + file);

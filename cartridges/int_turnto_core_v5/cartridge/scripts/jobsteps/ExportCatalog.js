@@ -10,8 +10,8 @@ var Logger = require('dw/system/Logger');
 var Site = require('dw/system/Site');
 
 /*Script Modules*/
-var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
-var ServiceFactory = require('int_turnto_core_v5/cartridge/scripts/util/ServiceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 //Globally scoped variables
 var products;
@@ -56,14 +56,14 @@ function beforeStep( parameters, stepExecution )
 
 			// create a folder with one or more locales
 			var folderAndFilePatternName = locales.join().replace(',', '_');
-			var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + locale);
+			var turntoDir : File = new File(impexPath + File.SEPARATOR + "TurnTo" + File.SEPARATOR + locale);
 
 			if (!turntoDir.exists()) {
 				turntoDir.mkdirs();
 			}
 
 			// Initialize a file writer for output with the current key
-			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + '/' + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
+			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
 			catalogExportFileWrite.createNewFile();
 
 			var currentFileWriter : FileWriter = new FileWriter(catalogExportFileWrite);
@@ -76,7 +76,7 @@ function beforeStep( parameters, stepExecution )
 		//query all site products
 		products = catalog.ProductMgr.queryAllSiteProductsSorted();
 	} catch (e) {
-		Logger.error('ExportCatalog.js has failed on the beforeStep step with the following error: ' + e.message);
+		Logger.error('exportCatalog.js has failed on the beforeStep step with the following error: ' + e.message);
 	}
 }
 
@@ -104,7 +104,7 @@ function read( parameters, stepExecution )
 			return tempProduct;
 		}
 	} catch (e) {
-		Logger.error('ExportCatalog.js has failed on the read step with the following error: ' + e.message);
+		Logger.error('exportCatalog.js has failed on the read step with the following error: ' + e.message);
 	}
 }
 
@@ -294,7 +294,7 @@ function process( product, parameters, stepExecution )
 			json[locales] = localejson;
 		}
 	} catch (e) {
-		Logger.error('ExportCatalog.js has failed on the process step with the following error: ' + e.message);
+		Logger.error('exportCatalog.js has failed on the process step with the following error: ' + e.message);
 	}
 	return json;
 }
@@ -334,7 +334,7 @@ function write( json, parameters, stepExecution )
 			}
 		}
 	} catch (e) {
-		Logger.error('ExportCatalog.js has failed on the write step with the following error: ' + e.message);
+		Logger.error('exportCatalog.js has failed on the write step with the following error: ' + e.message);
 	}
 } 
 
@@ -353,7 +353,7 @@ function afterStep( success, parameters, stepExecution )
 			}
 		}
 	} catch (e) {
-		Logger.error('ExportCatalog.js has failed on the afterStep step with the following error: ' + e.message);
+		Logger.error('exportCatalog.js has failed on the afterStep step with the following error: ' + e.message);
 	}
 }
 

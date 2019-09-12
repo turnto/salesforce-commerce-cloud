@@ -127,7 +127,7 @@
 					</ul>
 				<iselseif condition="${RefinementDefinition.attributeID.equals('turntoAverageRating')}">
 
-					<isinclude template="product/components/turntoratingrefinement"/>
+					<isinclude template="product/components/turntoRatingRefinement"/>
 					
 				<iselse/>
 
@@ -147,7 +147,7 @@
 							<li>
 								<a href="${StringHelpers.unsanitizeOR(pdict.ProductSearchResult.urlRefineAttributeValue('Search-Show',RefinementValue.getID(),RefinementValue.getValue()))}" title="${Resource.msg('search.productsearchrefinebar.clickrefine','search',null)}${RefinementValue.getDisplayValue()}">
 									<i class="fa fa-square-o fa-lg"></i>
-									<isprint value="${Resource.msg('refinement.' + RefinementDefinition.attributeID + '.' + RefinementValue.getDisplayValue(), 'locale', RefinementValue.getDisplayValue())}" encoding="off"/>
+									<isprint value="${Resource.msg('refinement.' + RefinementDefinition.attributeID + '.' + RefinementValue.getDisplayValue(), 'locale', RefinementValue.getDisplayValue())}" />
 								</a>
 							</li>
 						</isif>

@@ -1,17 +1,17 @@
 .TTteaser {
-	font-size: 12px;
+	font-size: 1rem;
 	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 }
 
 .TTteaser__rating {
 	display: inline-block; 
 	vertical-align: middle; 
-	margin-right: 5px;
+	margin-right: 0.5em;
 }
 
 .TTteaser__star svg {
-	width: 16px;
-	height: 16px; 
+	width: 1em;
+	height: 1em; 
 }
 
 .TTteaser__icon--full { 
@@ -29,7 +29,7 @@
 }
 
 .TTteaser__read-qa, .TTteaser__read-comments, .TTteaser__read-reviews, .TTteaser__write-review {
-	font-size: 12px;
+	font-size: 1rem;
 	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	color: #000;
 	Text-decoration: underline; 

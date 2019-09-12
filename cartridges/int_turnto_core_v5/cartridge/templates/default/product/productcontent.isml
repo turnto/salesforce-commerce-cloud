@@ -52,7 +52,7 @@
 	</iscomment>
 
 	<isif condition="${!isQuickView}">
-		<isinclude template="product/components/turntoteasers"/>
+		<isinclude template="product/components/turntoTeasers"/>
 	</isif>
 
 	<iscomment>
@@ -105,7 +105,7 @@
 			<isscript>
 				var topCommentSkus = productNumber;
 			</isscript>
-			<isinclude template="product/components/turntotopcomment"/>
+			<isinclude template="product/components/turntoTopComment"/>
 
 			<iscomment>
 				product promotions
@@ -248,7 +248,7 @@
 						}
 						var buttonTitleDisabledSelectVariation = StringUtils.format(Resource.msg('product.missingval','product', null), requiredOptions);
 					</isscript>
-					<button id="add-to-cart" type="button" title="${buttonTitleDisabledSelectVariation}" value="${buttonTitleDisabledSelectVariation}" class="button-fancy-large add-to-cart-disabled"<isprint value="${disabledAttr}" encoding="off"/>>${buttonTitle}</button>
+					<button id="add-to-cart" type="button" title="${buttonTitleDisabledSelectVariation}" value="${buttonTitleDisabledSelectVariation}" class="button-fancy-large add-to-cart-disabled"<isprint value="${disabledAttr}" />>${buttonTitle}</button>
 				</isif>
 				</div><!--  end details block -->
 			</fieldset>

@@ -116,7 +116,7 @@
 	<h1 class="product-name"  itemprop="name"><isprint value="${pdict.Product.name}"/></h1>
 	
 	<isinclude template="product/components/turntoteasers"/>
-	<isinclude template="product/components/turntogallery"/>
+	<isinclude template="product/components/turntovcgallery"/>
 	
 	<span class="visually-hidden" itemprop="url">${URLUtils.http('Product-Show','pid', pdict.Product.ID)}</span>
 

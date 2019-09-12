@@ -1,5 +1,5 @@
 /**
- * ImportAverageRatings.js
+ * importAverageRatings.js
  *
  * The script imports product average star ratings from a TurnTo feed
  * 
@@ -19,7 +19,7 @@ var txn = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 
 /**
  * @function
@@ -42,6 +42,14 @@ var run = function run() {
 		// Test mandatory parameters
 		if (empty(importFileName)) {
 			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Import File Name = (' + importFileName + ')');
+		}
+
+		// Create archive directory if it does not exist
+		var turntoDir = new File(File.IMPEX + File.SEPARATOR + "TurnTo");
+		var archiveFile = new File(turntoDir.fullPath + File.SEPARATOR + 'Archive');
+
+		if (!archiveFile.exists()) {
+			archiveFile.mkdirs();
 		}
 
 		//loop through all allowed locales per site
@@ -103,6 +111,9 @@ var run = function run() {
 				if (fileReader != null) {
 					fileReader.close();
 				}
+				// Archive file
+				var theArchiveFile = new File(archiveFile.fullPath + File.SEPARATOR + importfile.getName());
+				importfile.renameTo(theArchiveFile);
 			}
 		}
 	} catch(exception) {

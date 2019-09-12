@@ -1,7 +1,7 @@
 /**
- * @name teasersproductgrid.js
+ * @name teasersProductGrid.js
  * @description helper script to render reviews stars per product tile
- * @note this script is identical to the core teasersproductgrid.js script, but it is needed in this particular directory for proper webpack compilation
+ * @note this script is identical to the core teasersProductGrid.js script, but it is needed in this particular directory for proper webpack compilation
  */
 
 /**

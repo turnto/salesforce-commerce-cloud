@@ -54,7 +54,7 @@
         </div>
 
         <iscomment>TurnTo Visual Content Gallery Row</iscomment>
-        <isinclude template="product/components/turntovcgallery"/>
+        <isinclude template="product/components/turntoVCGallery"/>
         
         <iscomment>TurnTo Widgets</iscomment>
         <isinclude template="product/widgets"/>

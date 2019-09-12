@@ -1,18 +1,18 @@
 .TTratingBox {
-    height: 16px;
-    width: 90px;
-    margin-right: 5px;
+    height: 1.2em;
+    width: 7.5em;
+    margin-right: 0.4em;
     display:inline-block;
 }
 
 .TurnToReviewsTeaser {
     font-family: "Helvetica Neue",Helvetica,Verdana,Arial,Helvetica,sans-serif;
-    font-size: 12px !important;
+    font-size: 1rem;
     display:inline-block;
 }
 
 .TurnToReviewsTeaser a {
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 .TurnToReviewsTeaser a:hover {
@@ -22,11 +22,11 @@
 .TurnToItemTeaser {
     display:inline-block;
     font-family: "Helvetica Neue",Helvetica,Verdana,Arial,Helvetica,sans-serif;
-    font-size: 12px !important;
+    font-size: 1rem;
 }
 
 .TurnToItemTeaser a{
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 .TurnToItemTeaser a:hover {
@@ -38,6 +38,6 @@
 }
 
 #TTpartnerRegWindow {
-   width:750px;
-   height:500px;
+   width:62.5em;
+   height:41.6em;
 }

@@ -1,0 +1,4016 @@
+{
+    "step-types": {
+        "script-module-step": [{
+                "@type-id": "custom.CSComponents.MoveFiles",
+                "module": "bc_job_components/cartridge/scripts/jobsteps/MoveFiles.js",
+                "description": "Copy or move files from one directory to another.",
+                "function": "Run",
+                "parameters": {
+                    "parameter": [{
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path",
+                            "default-value": "IMPEX/src/mySourceFolder"
+                        },
+                        {
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path",
+                            "default-value": "IMPEX/src/myTargetFolder"
+                        },
+                        {
+                            "@name": "CopyOnly",
+                            "@type": "boolean",
+                            "@required": "false",
+                            "description": "If NOT checked, source files will be DELETED. Use with care!",
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "Overwrite",
+                            "@type": "boolean",
+                            "@required": "false",
+                            "description": "If checked, existing files in target folder will be overwritten.",
+                            "default-value": "false"
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            },
+                            "description": "No files found exit code"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when execution was successful."
+                        },
+                        {
+                            "@code": "NO_FILE_FOUND",
+                            "description": "Used when no file could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.FtpDownload",
+                "description": "Download files from an (S)FTP server",
+                "module": "bc_job_components/cartridge/scripts/jobsteps/FtpDownload.js",
+                "function": "Run",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "ServiceID",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "@type": "string",
+                            "@required": false,
+                            "description": "File pattern (Regular Expression)",
+                            "@trim": true
+                        },
+                        {
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "description": "Remote folder on Server where to find files, relative to home directory"
+                        },
+                        {
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": true,
+                            "description": "Local folder where to store files, relative to IMPEX/",
+                            "@trim": true,
+                            "default-value": "src/download"
+                        },
+                        {
+                            "@name": "DeleteRemoteFiles",
+                            "description": "If set to true, remove each file after a successful download",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            },
+                            "description": "Exit code in case no files were found.",
+                            "default-value": "OK"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILE_FOUND",
+                            "description": "In case exit status is OK and no files were found."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.FtpUpload",
+                "description": "Upload files to an (S)FTP server",
+                "module": "bc_job_components/cartridge/scripts/jobsteps/FtpUpload.js",
+                "function": "Run",
+                "parameters": {
+                    "parameters": [
+                        {
+                            "@name": "ServiceID",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "@type": "string",
+                            "@required": false,
+                            "description": "File pattern (Regular Expression)",
+                            "@trim": true
+                        },
+                        {
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "description": "Local folder with files, relative to IMPEX/",
+                            "default-value": "src/upload"
+                        },
+                        {
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": true,
+                            "description": "Remote folder on Server, relative to home directory",
+                            "@trim": true
+                        },
+                        {
+                            "@name": "ArchiveFolder",
+                            "@type": "string",
+                            "@required": false,
+                            "description": "Local folder where to archive files, relative to IMPEX/",
+                            "@trim": true
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            },
+                            "description": "Exit code in case no files were found.",
+                            "default-value": "OK"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILE_FOUND",
+                            "description": "In case exit status is OK and no files were found."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.TimeSlotCondition",
+                "module": "bc_job_components/cartridge/scripts/jobsteps/TimeSlotCondition",
+                "function": "testTimeSlot",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "startTime",
+                            "description": "The instance timezone time when the time slot starts",
+                            "@type": "time-string",
+                            "@required": true,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "endTime",
+                            "description": "The instance timezone time when the time slot ends",
+                            "@type": "time-string",
+                            "@required": true,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "mode",
+                            "description": "Defines whether subsequent steps should be executed when within or not within the time slot.",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "enum-values": {
+                                "value": [
+                                    "WITHIN",
+                                    "NOT_WITHIN"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "SUSPEND",
+                            "description": "Used when subsequent steps should be skipped."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportABTests",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "abTests",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/abtests"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-abtests.xml"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCatalog",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "catalog",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/catalog"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-catalog.xml"
+                        },
+                        {
+                            "@name": "Catalog",
+                            "description": "ID of the catalog to export. Leave empty to export the site catalog assigned to the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Categories",
+                            "description": "Comma separated list of category IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Products",
+                            "description": "Comma separated list of product IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "ExportCategories",
+                            "description": "Export categories",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportCategoryAssignements",
+                            "description": "Export category assignements",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportProductOptions",
+                            "description": "Export product options",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportProducts",
+                            "description": "Export products",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportRecommendations",
+                            "description": "Export recommendations",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportVariationAttributes",
+                            "description": "Export variation attributes",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportContent",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "content",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/content"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-content.xml"
+                        },
+                        {
+                            "@name": "Library",
+                            "description": "ID of the library to export. Leave empty to export the library assigned to the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Folders",
+                            "description": "Comma separated list of folder IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "ExportContent",
+                            "description": "Export contents",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportFolders",
+                            "description": "Export folders",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportSubFolders",
+                            "description": "Export sub folders",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCouponCodes",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "couponCodes",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/couponcodes"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-couponCodes.xml"
+                        },
+                        {
+                            "@name": "Coupon",
+                            "description": "Coupon ID or coupon code where to find coupon codes",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCoupons",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "coupons",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/coupons"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-coupons.xml"
+                        },
+                        {
+                            "@name": "Coupons",
+                            "description": "Comma separated list of coupon IDs or coupon codes to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCustomerGroups",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "customerGroups",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/customergroups"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-customerGroups.xml"
+                        },
+                        {
+                            "@name": "CustomerGroups",
+                            "description": "Comma separated list of customer group IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCustomerList",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "customerList",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/customerlist"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-customerList.xml"
+                        },
+                        {
+                            "@name": "CustomerList",
+                            "description": "Customer List ID. Leave empty to use the customer list assigned to the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export customers. Leave empty to export all customers of the customer list",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCustomers",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "customers",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/customers"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-customers.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export customers. Leave empty to export all customers of the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportCustomObjects",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "customObjects",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/customobjects"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-customObjects.xml"
+                        },
+                        {
+                            "@name": "Type",
+                            "description": "Type of custom object to export",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export custom objects. Leave empty to export all custom objects of the given type",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportGiftCertificates",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "giftCertificates",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/giftcertificates"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-giftCertificates.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export gift certificates. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportInventoryLists",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "inventoryLists",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/inventorylists"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-inventoryLists.xml"
+                        },
+                        {
+                            "@name": "InventoryLists",
+                            "description": "Comma separated list of inventory list IDs to export. Leave empty to export inventory assigned to the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportMetaData",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "metaData",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/metadata"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-metaData.xml"
+                        },
+                        {
+                            "@name": "CustomTypes",
+                            "description": "Comma separated list of custom type IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "SystemTypes",
+                            "description": "Comma separated list of system type IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "ExportCustomPreferences",
+                            "description": "Export custom preferences",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportCustomTypes",
+                            "description": "Export custom types",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "ExportSystemTypes",
+                            "description": "Export system types",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportOrders",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "orders",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/orders"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-orders.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export orders. Leave empty to export all orders of the current site",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "EncryptionAlgorithm",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "description": "Encryption algorithm to use for payment data. Can be 'RSA'."
+                        },
+                        {
+                            "@name": "EncryptionKey",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "description": "The base64 public key to use for encryption. Please refer to RSA on how to generate RSA key pairs"
+                        },
+                        {
+                            "@name": "UpdateExportStatus",
+                            "description": "Optional flag indicating whether the export status of the orders being exported will be set to 'Exported' or not. If true, all related OnOrder inventory transactions are also turned into final inventory transactions.",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportPriceAdjustmentLimits",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "priceAdjustmentLimits",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/priceadjustmentlimits"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-priceAdjustmentLimits.xml"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportPriceBooks",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "pricebooks",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/priceBooks"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-priceBooks.xml"
+                        },
+                        {
+                            "@name": "PriceBooks",
+                            "description": "Comma separated list of pricebook IDs to export. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportProductLists",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "productLists",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/productlists"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-productLists.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export product lists. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportPromotions",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "promotions",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/promotions"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-promotions.xml"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportShippingMethods",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "shippingMethods",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/shippingmethods"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-shippingMethods.xml"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportSlots",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "slots",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/slots"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-slots.xml"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportSourceCodes",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "sourceCodes",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/sourcecodes"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-sourceCodes.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export source codes. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ExportStores",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardExport.js",
+                "function": "stores",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "TargetFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Target folder path (in IMPEX)",
+                            "default-value": "src/export/stores"
+                        },
+                        {
+                            "@name": "Filename",
+                            "description": "Filename of the generated files that will contains exported data",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": "export-stores.xml"
+                        },
+                        {
+                            "@name": "Query",
+                            "description": "Query used to export stores. Leave empty to export all",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "OverwriteExportFile",
+                            "description": "Overwrite the file if exists",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true,
+                            "default-value": "true"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "FILE_ALREADY_EXISTS",
+                            "description": "Used when a file already exists with the given filename in the given target folder and the overwrite option is not set to true."
+                        },
+                        {
+                            "@code": "NO_DATA_TO_EXPORT",
+                            "description": "Used when there is no data to export."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportABTests",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "abTests",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/abtests"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/abtests"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportActiveData",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "activeData",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/activeData"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/activeData"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportContent",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "content",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/content"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "Library",
+                            "description": "Library ID",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/content"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportCoupons",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "coupons",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/coupons"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/coupons"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportCustomerGroups",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "customerGroups",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/customergroups"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/customergroups"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportCustomerList",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "customerList",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/customerlist"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/customerlist"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportCustomers",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "customers",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/customers"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/customers"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportCustomObjects",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "customObjects",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/customobjects"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/customobjects"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportGiftCertificates",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "giftCertificates",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/giftcertificates"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/giftcertificates"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportInventoryLists",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "inventoryLists",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/inventorylists"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/inventorylists"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportKeyValueMapping",
+                "@supports-site-context": true,
+                "@supports-organization-context": true,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "keyValueMapping",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/keyvaluemapping"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/keyvaluemapping"
+                        },
+                        {
+                            "@name": "KeyCount",
+                            "description": "Key Count",
+                            "@type": "string",
+                            "@required": false,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "MappingName",
+                            "description": "Mapping Name",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportPriceAdjustmentLimits",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "priceAdjustmentLimits",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/priceadjustmentlimits"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/priceadjustmentlimits"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportProductLists",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "productLists",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/productlists"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/productlists"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportPromotions",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "promotions",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/promotions"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/promotions"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportShippingMethods",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "shippingMethods",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/shippingmethods"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/shippingmethods"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportSlots",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "slots",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/slots"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/slots"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportSourceCodes",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "sourceCodes",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/sourcecodes"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/sourcecodes"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportStores",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "stores",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/stores"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/stores"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id": "custom.CSComponents.ImportTaxTable",
+                "@supports-site-context": true,
+                "@supports-organization-context": false,
+                "module": "bc_job_components/cartridge/scripts/jobsteps/StandardImport.js",
+                "function": "taxTable",
+                "parameters": {
+                    "parameters": [{
+                            "@name": "SourceFolder",
+                            "@type": "string",
+                            "@required": "true",
+                            "@trim": "true",
+                            "description": "Source folder path (in IMPEX)",
+                            "default-value": "src/import/taxtable"
+                        },
+                        {
+                            "@name": "FilePattern",
+                            "description": "File pattern (Regular Expression)",
+                            "@type": "string",
+                            "@required": "false",
+                            "@trim": "true",
+                            "default-value": ".*\\.xml"
+                        },
+                        {
+                            "@name": "FileAction",
+                            "description": "Action to take with files after successful import",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "ARCHIVE",
+                            "enum-values": {
+                                "value": [
+                                    "REMOVE",
+                                    "KEEP",
+                                    "ARCHIVE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ImportMode",
+                            "description": "Import mode",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "MERGE",
+                            "enum-values": {
+                                "value": [
+                                    "MERGE",
+                                    "UPDATE",
+                                    "DELETE",
+                                    "REPLACE"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "NoFileFoundStatus",
+                            "description": "No files found exit code",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "OK",
+                            "enum-values": {
+                                "value": [
+                                    "OK",
+                                    "ERROR"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "OnError",
+                            "description": "If one ore multiple files fail...",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "CONTINUE",
+                            "enum-values": {
+                                "value": [
+                                    "CONTINUE",
+                                    "ABORT"
+                                ]
+                            }
+                        },
+                        {
+                            "@name": "ArchivePath",
+                            "description": "The file archive directory",
+                            "@type": "string",
+                            "@required": true,
+                            "@trim": true,
+                            "default-value": "src/archive/taxtable"
+                        },
+                        {
+                            "@name": "IsDisabled",
+                            "description": "Mark the step as disabled. This will skip the step and returns a OK status",
+                            "@type": "boolean",
+                            "@required": false,
+                            "@trim": true
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [{
+                            "@code": "ERROR",
+                            "description": "Used when an error occurred."
+                        },
+                        {
+                            "@code": "OK",
+                            "description": "Used when everything went well."
+                        },
+                        {
+                            "@code": "NO_FILES_FOUND",
+                            "description": "Used when no files could be found in the source directory."
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

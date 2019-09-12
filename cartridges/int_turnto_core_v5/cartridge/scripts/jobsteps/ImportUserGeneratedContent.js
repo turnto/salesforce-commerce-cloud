@@ -1,5 +1,5 @@
 /**
- * ImportUserGeneratedContent.js
+ * importUserGeneratedContent.js
  *
  * The script imports user generated content for products from a TurnTo feed
  * 
@@ -21,7 +21,7 @@ var Status = require('dw/system/Status');
 var txn = require('dw/system/Transaction');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 
 /**
  * @function

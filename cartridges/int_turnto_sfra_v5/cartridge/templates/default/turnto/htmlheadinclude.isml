@@ -1,8 +1,8 @@
 <iscomment>Include TurnTo SFRA - Do a local include of this file at the bottom of htmlhead.isml</iscomment>
-<iscomment>pageassets.isml includes the remaining JS and CSS files</iscomment>
+<iscomment>pageAssets.isml includes the remaining JS and CSS files</iscomment>
 
 <isscript>
-	var TurnToHelper = require('int_turnto_core_v5/cartridge/scripts/util/HelperUtil');
+	var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
 	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
 	var turntoUrl = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain;
 </isscript>
@@ -12,4 +12,4 @@
 </isif>
 
 <iscomment>Include widgets v5 JS file and TurnToConfig object</iscomment>
-<isinclude template="turnto/htmlheadincludejs"/>
+<isinclude template="turnto/htmlHeadIncludeJS"/>

@@ -34,7 +34,7 @@ If you are not using the build cartridge the comments can be safely removed.
 <isif condition="${dw.system.System.getInstanceType() != dw.system.System.PRODUCTION_SYSTEM}">
 	<title>${pdict.CurrentPageMetaData.title} | ${Resource.msg('global.site.name', 'locale', null)} | ${Resource.msg('revisioninfo.revisionnumber', 'revisioninfo', null)}</title>
 <iselse/>
-  <title><isprint value="${pdict.CurrentPageMetaData.title}" encoding="off" /></title>
+  <title><isprint value="${pdict.CurrentPageMetaData.title}" /></title>
 </isif>
 
 <iscomment>FAVICON ICON: (website icon, a page icon or an urlicon) 16x16 pixel image icon for website</iscomment>
@@ -78,4 +78,4 @@ If you are not using the build cartridge the comments can be safely removed.
 <isinclude url="${URLUtils.url('Home-SetLayout')}"/>
 
 <iscomment>TurnTo Header Include</iscomment>
-<isinclude template="turnto/htmlheadinclude"/>
+<isinclude template="turnto/htmlHeadInclude"/>

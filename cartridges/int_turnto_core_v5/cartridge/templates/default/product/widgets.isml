@@ -18,4 +18,4 @@
 <isinclude template="product/components/setVariantSKU" />
 
 <iscomment>TurnTo Chatter Comment Widget</iscomment>
-<isinclude template="product/components/turntochatter" />
+<isinclude template="product/components/turntoChatter" />

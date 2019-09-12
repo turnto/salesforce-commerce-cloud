@@ -75,7 +75,7 @@
             <isscript>
                 var topCommentSkus = product.id;
             </isscript>
-            <isinclude template="product/components/turntotopcomment"/>
+            <isinclude template="product/components/turntoTopComment"/>
 
             <div class="col-12 prices-add-to-cart-actions">
                 <!-- Prices -->
@@ -99,7 +99,7 @@
         </div>
 
         <iscomment>TurnTo Visual Content Gallery Row</iscomment>
-        <isinclude template="product/components/turntovcgallery"/>
+        <isinclude template="product/components/turntoVCGallery"/>
         
         <iscomment>TurnTo Widgets</iscomment>
         <isinclude template="product/widgets"/>

@@ -116,7 +116,7 @@
             </div>
             
             <iscomment>TurnTo Visual Gallery Row Widget</iscomment>
-            <isinclude template="product/components/turntogallery"/>
+            <isinclude template="product/components/turntovcgallery"/>
         </div>
 
         <iscomment>TurnTo Widgets</iscomment>

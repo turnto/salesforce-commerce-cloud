@@ -35,7 +35,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('helperUtils.js error:' + e.message);
 		}
 		return preferenceValue;
 	},
@@ -75,7 +75,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('helperUtils.js error:' + e.message);
 		}
 
 		return false;
@@ -143,7 +143,7 @@ var TurnToHelper = {
 			currentPage = request.httpPath;
 
 		//NOTE: these can be modified if you need more or less defined page IDs
-		//if you do modify the following switch cases then make sure you adjust the conditional statements in 'htmlheadincludejs.isml'
+		//if you do modify the following switch cases then make sure you adjust the conditional statements in 'htmlHeadIncludeJS.isml'
 		//also new page IDs will need to be added to the TurnTo system in order for features to work, reach out to your TurnTo representative
 		if (currentPage.indexOf('Product') > -1) {
 			pageID = 'pdp-page';
@@ -199,7 +199,7 @@ var TurnToHelper = {
 	 * @desc returns the logger
 	 */
 	getLogger: function () {
-		return Logger.getLogger('TurnToHelperUtil');
+		return Logger.getLogger('int_core_turnto_core_v5');
 	}
 
 }
