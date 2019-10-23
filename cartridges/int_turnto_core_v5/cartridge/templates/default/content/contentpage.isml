@@ -61,7 +61,7 @@
 	<isinclude template="content/content/htmlcontentasset"/>
 
 	<iscomment>TurnTo Visual Content Pinboard</iscomment>
-    <isinclude template="product/components/turntoVCPinboard"/>
+    <isinclude template="product/components/ttVCPinboard"/>
 
 </isdecorate>
 

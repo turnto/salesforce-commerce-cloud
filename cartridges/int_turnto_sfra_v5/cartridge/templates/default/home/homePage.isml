@@ -29,7 +29,7 @@
     </div>
     
     <iscomment>TurnTo Checkout Comments Pinboard</iscomment>
-    <isinclude template="product/components/turntoPinboard"/>
+    <isinclude template="product/components/ttPinboard"/>
 
     <div class="home-email-signup">
         <div class="container">

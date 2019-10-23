@@ -37,13 +37,13 @@
 	<div class="content-slot slot-grid-header">
 
 		<iscomment>TurnTo Comments Pinboard Teaser</iscomment>
-		<isinclude template="product/components/turntoCommentsPinboardTeaser"/>
+		<isinclude template="product/components/ttCommentsPinboardTeaser"/>
 
 		<isif condition="${!empty(pdict.ProductSearchResult.category)}">
 			<isslot id="cat-banner" context="category" description="Category Banner" context-object="${pdict.ProductSearchResult.category}"/>
 		   
 		    <iscomment>TurnTo CCheckout Comments Pinboard</iscomment>
-			<isinclude template="product/components/turntoPinboard"/>
+			<isinclude template="product/components/ttPinboard"/>
 		    
 		<iselse/>
 			<isif condition="${pdict.SearchPromo != null}">

@@ -39,7 +39,7 @@
 	} 
 	topCommentSkus.join(',');
 </isscript>
-<isinclude template="product/components/turntoTopComment"/>
+<isinclude template="product/components/ttTopComment"/>
 
 <iscomment>TurnTo Top Comment Capture</iscomment>
-<isinclude template="checkout/turntoCommentCapture"/>
+<isinclude template="checkout/ttCommentCapture"/>

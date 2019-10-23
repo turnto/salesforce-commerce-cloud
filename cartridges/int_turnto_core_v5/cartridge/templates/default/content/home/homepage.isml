@@ -11,7 +11,7 @@
 
 	<div class="home-bottom-slots">
     	<iscomment>TurnTo Checkout Comments Pinboard</iscomment>
-    	<isinclude template="product/components/turntoPinboard"/>
+    	<isinclude template="product/components/ttPinboard"/>
 	    
 		<div class="home-bottom-left">
 			<isslot id="home-bottom-left" description="Bottom content below flash banner - left side" context="global" />

@@ -20,7 +20,7 @@
 		<isinclude template="product/productcontent"/>
 	</div>
 
-	<isinclude template="product/components/turntoVCGallery"/>
+	<isinclude template="product/components/ttVCGallery"/>
 </div>
 
 <isif condition="${!isQuickView}">

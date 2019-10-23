@@ -52,7 +52,7 @@
 	</iscomment>
 
 	<isif condition="${!isQuickView}">
-		<isinclude template="product/components/turntoTeasers"/>
+		<isinclude template="product/components/ttTeasers"/>
 	</isif>
 
 	<iscomment>
@@ -105,7 +105,7 @@
 			<isscript>
 				var topCommentSkus = productNumber;
 			</isscript>
-			<isinclude template="product/components/turntoTopComment"/>
+			<isinclude template="product/components/ttTopComment"/>
 
 			<iscomment>
 				product promotions

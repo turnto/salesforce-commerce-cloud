@@ -11,7 +11,7 @@
     </isif>
 	
 	<iscomment>TurnTo Comments Pinboard Teaser</iscomment>
-	<isinclude template="product/components/turntoCommentsPinboardTeaser"/>
+	<isinclude template="product/components/ttCommentsPinboardTeaser"/>
     
     <h1 class="header page-title">
         <isif condition="${pdict.productSearch.isCategorySearch}">

@@ -2,7 +2,7 @@
 <iscomment>TurnTo Javascript Order Feed</iscomment>
 
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
-	<script​ type="text/javascript">
+	<script type="text/javascript">
 		//use site key only if client has multiple stores *uncomment the following line and the siteKey attribute of the order data items JSON below if client has multiple stores*
 		//var siteKey = ${siteKey};
 		TurnToCmd('feed.send', {
@@ -34,7 +34,7 @@
 	} 
 	topCommentSkus.join(',');
 </isscript>
-<isinclude template="product/components/turntoTopComment"/>
+<isinclude template="product/components/ttTopComment"/>
 
 <iscomment>TurnTo Top Comment Capture</iscomment>
-<isinclude template="checkout/turntoCommentCapture"/>
+<isinclude template="checkout/ttCommentCapture"/>

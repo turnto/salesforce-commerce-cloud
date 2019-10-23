@@ -7,7 +7,7 @@
 
 <div class="product-review" data-pid="${pdict.Product.ID}">
 	<iscomment>TurnTo Visual Content Gallery Row</iscomment>
-    <isinclude template="product/components/turntoVCGallery"/>
+    <isinclude template="product/components/ttVCGallery"/>
         
     <iscomment>TurnTo Widgets</iscomment>
     <isinclude template="product/widgets"/>

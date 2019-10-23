@@ -1,5 +1,5 @@
 <div class="row tile-body-footer">
     <div class="ratings col-xs-12 col-sm-6">
-		<isinclude template="product/components/turntoTeasersProductGrid"/>
+		<isinclude template="product/components/ttTeasersProductGrid"/>
     </div>
 </div>

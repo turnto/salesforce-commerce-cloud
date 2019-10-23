@@ -127,7 +127,7 @@
 					</ul>
 				<iselseif condition="${RefinementDefinition.attributeID.equals('turntoAverageRating')}">
 
-					<isinclude template="product/components/turntoRatingRefinement"/>
+					<isinclude template="product/components/ttRatingRefinement"/>
 					
 				<iselse/>
 

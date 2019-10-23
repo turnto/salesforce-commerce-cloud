@@ -7,7 +7,7 @@
         <iselseif condition="${refinementValue.type === 'size'}">
             <isinclude template="search/refinements/attributes/size"/>
         <iselseif condition="${refinementValue.id == 'turntoAverageRating'}">
-            <isinclude template="product/components/turntoRatingRefinement"/>
+            <isinclude template="product/components/ttRatingRefinement"/>
         <iselse>
             <isinclude template="search/refinements/attributes/boolean"/>
         </isif>

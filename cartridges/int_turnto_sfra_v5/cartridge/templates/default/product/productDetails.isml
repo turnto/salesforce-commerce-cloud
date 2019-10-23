@@ -89,7 +89,7 @@
                         <isscript>
                             var topCommentSkus = product.id;
                         </isscript>
-                        <isinclude template="product/components/turntoTopComment"/>
+                        <isinclude template="product/components/ttTopComment"/>
 
                         
                         <!-- Applicable Promotions -->
@@ -125,7 +125,7 @@
             </div>
             
             <iscomment>TurnTo Visual Content Gallery Row</iscomment>
-            <isinclude template="product/components/turntoVCGallery"/>
+            <isinclude template="product/components/ttVCGallery"/>
 
             <iscomment>TurnTo Widgets</iscomment>
         	<isinclude template="product/widgets"/>
