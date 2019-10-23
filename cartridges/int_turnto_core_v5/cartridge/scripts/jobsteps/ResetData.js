@@ -4,7 +4,7 @@ var Status = require('dw/system/Status');
 var txn = require('dw/system/Transaction');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
 
 //Globally scoped variables
 var products;
@@ -13,6 +13,10 @@ var allowedLocales = TurnToHelper.getAllowedLocales();
  
 //function is executed only ONCE
 function beforeStep( parameters, stepExecution ) {
+
+	if (parameters.IsDisabled) {
+		return new Status(Status.OK, 'OK', 'Reset Data job step is disabled.');
+	}
 
 	products = catalog.ProductMgr.queryAllSiteProducts();
 	
@@ -26,14 +30,14 @@ function beforeStep( parameters, stepExecution ) {
 //For example, to show that 50 of 100 items have already been processed.
 function getTotalCount( parameters, stepExecution ) { 
 
-	return products.count;
+	return !empty(products) ? products.count : 0;
 }
 
 //the read function returns either one product or nothing
 //It returns nothing if there are no more items available in the chunk
 function read( parameters, stepExecution ) {
 
-	if( products.hasNext() ) {
+	if( products && products.hasNext() ) {
 		return products.next();
 	}
 	return;

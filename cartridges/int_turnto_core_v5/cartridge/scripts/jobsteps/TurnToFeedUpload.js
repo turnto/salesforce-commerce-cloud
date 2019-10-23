@@ -18,10 +18,9 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
-var StepUtil = require('*/cartridge/scripts/util/StepUtil');
-var FeedUploadService = require('~/cartridge/scripts/service/feedUploadService');
-var ServiceFactory = require('~/cartridge/scripts/util/serviceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var FeedUploadService = require('~/cartridge/scripts/service/FeedUploadService');
+var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
 
 /**
  * @function
@@ -34,7 +33,7 @@ var run = function run() {
 	try {
 		var args = arguments[0];
 
-		if (StepUtil.isDisabled(args)) {
+		if (args.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
 
@@ -52,9 +51,9 @@ var run = function run() {
 		var turntoUrl = TurnToHelper.getURLSitePreference();
 
 		// Get the file path where the output will be stored
-		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
+		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 		// Create a TurnTo directory if one doesn't already exist
-		var turntoDir : File = new File(impexPath + File.SEPARATOR + "TurnTo");
+		var turntoDir = new File(impexPath + File.SEPARATOR + "TurnTo");
 
 		if (!turntoDir.exists()) {
 			turntoDir.mkdirs();
@@ -67,11 +66,11 @@ var run = function run() {
 		var allowedLocales = TurnToHelper.getAllowedLocales();
 		for each(var locale in allowedLocales) {
 			// List all files in the specific locale folder
-			var exportFiles : File = new File(turntoDir.getFullPath() + File.SEPARATOR + locale);
+			var exportFiles = new File(turntoDir.getFullPath() + File.SEPARATOR + locale);
 			exportFiles = exportFiles.listFiles();
 
 			// If no files are found, go to the next locale
-			if(exportFiles.isEmpty()) {
+			if(!exportFiles) {
 				continue;
 			}
 			
@@ -85,9 +84,9 @@ var run = function run() {
 					//Localized siteKey and authKey, need to download per locale, added to the content body of the service request
 					for each(var obj in siteAndAuthKeys.entrySet()) {
 						if(obj.value.locales.indexOf(locale) > -1) {
-							var siteKey : String = JSON.parse(obj.key);
-							var authKey : String = obj.value.authKey;
-							var domain : String = 'www.' + obj.value.domain;
+							var siteKey = JSON.parse(obj.key);
+							var authKey = obj.value.authKey;
+							var domain = 'www.' + obj.value.domain;
 							break;
 						}
 					}

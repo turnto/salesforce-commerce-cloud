@@ -1,0 +1,20 @@
+<iscomment>Include TurnTo LEGACY (non-SFRA) - Do a local include of this file at the bottom of htmlhead.isml</iscomment>
+
+<iscomment>Global Import of the TurnTo Helper and Site Key Variable</iscomment>
+<isscript>
+	var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
+	var turntoUrl = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain;
+</isscript>
+
+<span hidden class="siteKey"><isprint value="${siteKey}"/></span>
+<span hidden class="turntoUrl"><isprint value="${turntoUrl}"/></span>
+
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCssOverwrites')}">
+	<link href="${URLUtils.staticURL('/css/turnto.css')}" type="text/css" rel="stylesheet" />
+</isif>
+
+<iscomment>Include widgets v5 JS file and TurnToConfig object</iscomment>
+<isinclude template="turnto/htmlHeadJS"/>
+
+<script src="https://widgets.${turntoUrl}/v5/widgets/${siteKey}/js/turnto.js" async></script>

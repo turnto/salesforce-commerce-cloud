@@ -16,10 +16,10 @@ var File = require('dw/io/File');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
 var StepUtil = require('bc_job_components/cartridge/scripts/util/StepUtil');
-var ServiceFactory = require('~/cartridge/scripts/util/serviceFactory');
-var FeedDownloadService = require('~/cartridge/scripts/service/feedDownloadService');
+var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
+var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadService');
 
 /**
  * @function
@@ -45,9 +45,9 @@ var run = function run() {
 		}
 
 		// Get the file path where the output will be stored
-		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
+		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 		// Create a TurnTo directory if one doesn't already exist
-		var turntoDir : File = new File(impexPath + "/TurnTo");
+		var turntoDir = new File(impexPath + "/TurnTo");
 		if (!turntoDir.exists()) {
 			turntoDir.mkdir();
 		}
@@ -56,7 +56,7 @@ var run = function run() {
 		for each(var currentLocale in TurnToHelper.getAllowedLocales()) {
 
 			//"turnto-skuaveragerating.xml" OR "turnto-ugc.xml"
-			var file : File = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + xmlName);
+			var file = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + xmlName);
 
 			//If the file exists, replace it
 			if (file.exists()) {

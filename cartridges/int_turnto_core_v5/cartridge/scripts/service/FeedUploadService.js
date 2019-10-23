@@ -9,7 +9,7 @@
 var dwsvc = require('dw/svc');
 
 /* Script Modules */
-var ServiceFactory = require('~/cartridge/scripts/util/serviceFactory');
+var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
 
 /* Constants */
 var serviceName = ServiceFactory.SERVICES.UPLOAD;

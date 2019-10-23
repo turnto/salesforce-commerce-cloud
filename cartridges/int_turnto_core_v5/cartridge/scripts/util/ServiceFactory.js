@@ -7,10 +7,11 @@
 /* API Modules */
 var Logger = require('dw/system/Logger');
 var Site = require('dw/system/Site');
+var File = require('dw/io/File');
 var ProductMgr = require('dw/catalog/ProductMgr');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
 
 // Public
 var ServiceFactory = {
@@ -116,7 +117,7 @@ var ServiceFactory = {
 		
 		//Distinguish two different download URLs (Example for UGC http://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml)
 		//"/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-		var url = "http://www." + ServiceFactory.getStaticURLPreference() + File.SEPARATOR + "static" + File.SEPARATOR + "export" + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
+		var url = "http://" + ServiceFactory.getStaticURLPreference() + File.SEPARATOR + "static" + File.SEPARATOR + "export" + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
 
 		var requestDataContainer = {
 			requestMethod: 'GET',

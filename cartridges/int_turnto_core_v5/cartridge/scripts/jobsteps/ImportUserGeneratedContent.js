@@ -21,7 +21,7 @@ var Status = require('dw/system/Status');
 var txn = require('dw/system/Transaction');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
 
 /**
  * @function

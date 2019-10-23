@@ -8,24 +8,25 @@ var URLUtils = require('dw/web/URLUtils');
 var HashMap = require('dw/util/HashMap');
 var Logger = require('dw/system/Logger');
 var Site = require('dw/system/Site');
+var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
-var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
 //Globally scoped variables
 var products;
 var product;
 var tempProduct;
 var hashMapOfFileWriters;
-var hashMapOfKeys;
+var hashMapOfKeys = new HashMap();
 var allowedLocales;
 
 //function is executed only ONCE
 function beforeStep( parameters, stepExecution )
 {
 	try {
-		if (parameters.isDisabled) {
+		if (parameters.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
 		}
 
@@ -35,7 +36,7 @@ function beforeStep( parameters, stepExecution )
 		//instantiate new hash map to store the locale file writers
 		hashMapOfFileWriters = new HashMap();
 
-		var impexPath : String = File.getRootDirectory(File.IMPEX).getFullPath();
+		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 		for each(var key in hashMapOfKeys) {
 			// create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
 			var locales = key.locales.replace(' ', '').split(',');
@@ -56,17 +57,17 @@ function beforeStep( parameters, stepExecution )
 
 			// create a folder with one or more locales
 			var folderAndFilePatternName = locales.join().replace(',', '_');
-			var turntoDir : File = new File(impexPath + File.SEPARATOR + "TurnTo" + File.SEPARATOR + locale);
+			var turntoDir = new File(impexPath + File.SEPARATOR + "TurnTo" + File.SEPARATOR + locale);
 
 			if (!turntoDir.exists()) {
 				turntoDir.mkdirs();
 			}
 
 			// Initialize a file writer for output with the current key
-			var catalogExportFileWrite : File = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
+			var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
 			catalogExportFileWrite.createNewFile();
 
-			var currentFileWriter : FileWriter = new FileWriter(catalogExportFileWrite);
+			var currentFileWriter = new FileWriter(catalogExportFileWrite);
 
 			//write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
@@ -85,7 +86,7 @@ function beforeStep( parameters, stepExecution )
 function getTotalCount( parameters, stepExecution )
 {
 	//Return product count
-	return products.count;
+	return !empty(products) ? products.count : 0;
 }
 
 //the read function returns either one item or nothing. 
@@ -95,7 +96,7 @@ function read( parameters, stepExecution )
 	try {
 		var useVariants = ServiceFactory.getUseVariantsPreference();
 		//Return next product
-		if( products.hasNext() ) {
+		if( products && products.hasNext() ) {
 			tempProduct = products.next();
 			//do not return a product if use variants site preference is false and the product is a variant
 			if (!useVariants && tempProduct.isVariant()) {

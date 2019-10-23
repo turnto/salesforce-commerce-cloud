@@ -10,6 +10,6 @@
     <div class="ratings pull-right">
         <isset name="isQuickView" value="${false}" scope="page"/>
         <iscomment>TurnTo Teasers</iscomment>
-        <isinclude template="product/components/turntoteasers"/>
+        <isinclude template="product/components/turntoTeasers"/>
     </div>
 </div>

@@ -38,4 +38,4 @@
 </isdecorate>
 
 <iscomment>Include TurnTo Post Purchase Widget *Order Feed*</iscomment>
-<isinclude template="turnto/confirmationInclude"/>
+<isinclude template="turnto/confirmationPageInclude"/>

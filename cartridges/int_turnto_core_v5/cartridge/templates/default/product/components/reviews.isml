@@ -5,7 +5,7 @@
 	=============================================================
 </iscomment>
 
-<div class="product-review" data-pid="${Product.ID}">
+<div class="product-review" data-pid="${pdict.Product.ID}">
 	<iscomment>TurnTo Visual Content Gallery Row</iscomment>
     <isinclude template="product/components/turntoVCGallery"/>
         

@@ -1,7 +1,7 @@
 <iscontent type="text/html" charset="UTF-8" compact="true"/>
 <isdecorate template="search/pt_productsearchresult_content">
 	<isscript>
-		var ProductUtils = require('~/cartridge/scripts/product/ProductUtils.js');
+		var ProductUtils = require('*/cartridge/scripts/product/ProductUtils.js');
 		var compareEnabled = false;
 		if (!empty(pdict.CurrentHttpParameterMap.cgid.value)) {
 			compareEnabled = ProductUtils.isCompareEnabled(pdict.CurrentHttpParameterMap.cgid.value);

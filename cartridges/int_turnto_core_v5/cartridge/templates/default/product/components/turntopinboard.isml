@@ -10,6 +10,6 @@
 			   NOTE: The following Javascript is NOT configured out of the box and will need modifications, see documentation. 
 			   NOTE: The JS snippet will need to be placed in the JS file that is loaded onto the page the pinboard is desired on (e.g. search results page requires the snippet to be on the search JS file)
 			   Javascript snippet -> "TurnToCmd('commentsPinboard.set', {skus: ['abc']});"
-			   Note: You will also need to add the commentsPinboard attribute on the TurnToConfig object (see htmlHeadIncludeJS.isml)
+			   Note: You will also need to add the commentsPinboard attribute on the TurnToConfig object (see htmlHeadJS.isml)
 	</iscomment>
 </isif>

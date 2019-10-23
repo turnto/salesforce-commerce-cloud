@@ -1,6 +1,6 @@
 <isif condition="${pdict.resetAttributes}">
 	<isscript>
-		var ProductUtils = require('~/cartridge/scripts/product/ProductUtils.js');
+		var ProductUtils = require('*/cartridge/scripts/product/ProductUtils.js');
 		var url = dw.web.URLUtils.url('Product-Variation', 'pid', pdict.Product.ID, 'format', 'ajax');
 		var qs = ProductUtils.getQueryString(pdict.CurrentHttpParameterMap, ["source", "uuid", "Quantity"]);
 		if (qs && qs.length>0) { url+="&"+qs; }
@@ -261,7 +261,7 @@
 
 	<div class="product-actions">
 		<isscript>
-			var Url = require('~/cartridge/scripts/util/Url');
+			var Url = require('*/cartridge/scripts/util/Url');
 			pdict.url = Url.getCurrent(pdict);
 			pdict.title = pdict.Product.name;
 		</isscript>
@@ -285,3 +285,4 @@
 		</div>
 	</isif>
 </isif>
+<link rel="stylesheet" href="${URLUtils.staticURL('/css/sitegen.css')}" />

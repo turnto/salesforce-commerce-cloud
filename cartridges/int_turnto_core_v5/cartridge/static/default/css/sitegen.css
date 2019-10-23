@@ -1,0 +1,4 @@
+.pdp-main .product-review {
+    height: 23em; /* approximate */
+    overflow: auto;
+}

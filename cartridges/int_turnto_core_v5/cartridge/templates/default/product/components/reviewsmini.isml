@@ -7,6 +7,6 @@
 	}
 </isscript>
 
-<div class="product-review" data-pid="${Product.ID}">
+<div class="product-review" data-pid="${pdict.Product.ID}">
 	<isinclude template="product/components/turntoTeasers"/>
 </div>

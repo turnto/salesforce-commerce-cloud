@@ -1,7 +1,7 @@
-<iscomment>This template includes teasers JS because it is located in a separate template than htmlHeadInclude due to how the assets JS logic renders the JS files at certain parsing points</iscomment>
+<iscomment>This template includes teasers JS because it is located in a separate template than htmlHeadGlobalInclude due to how the assets JS logic renders the JS files at certain parsing points</iscomment>
 
 <isscript>
-	var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
+	var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
 </isscript>
 
 <iscomment>Global Site Key Variable for client side</iscomment>

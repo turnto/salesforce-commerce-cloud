@@ -1,6 +1,6 @@
 'use strict';
 var base = module.superModule;
-var ratingsDecorator = require('~/cartridge/models/product/decorators/ratingsturnto');
+var ratingsDecorator = require('~/cartridge/models/product/decorators/ratingsTurnto');
 
 /**
  * Decorate product with product tile information

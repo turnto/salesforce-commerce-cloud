@@ -1,0 +1,69 @@
+<iscomment>This template includes the turnToConfig obejct configuration for dynamic page IDs.
+		   NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
+</iscomment>
+
+<isscript>
+	var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+	var pageID = TurnToHelper.getPageID();
+</isscript>
+
+<script type="text/javascript">
+	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
+	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'HelperUtil.js', function 'getPageID'
+	if('${pageID}' == 'pdp-page') {
+			var turnToConfig = {
+				locale: "${request.getLocale()}",
+				pageId: "pdp-page",
+				gallery: {
+					// Add one or more SKUs as an array.
+					// skus: []
+				},
+				//optional top comments feature, refer to "v5 Top Comment Widget"
+				topComments: {
+					// tags: [],
+					// onFinish: function() {}
+				}, 
+				//optional comments display feature, refer to "v5 Comments Display"
+				chatter: {
+					// onFinish: function() {}
+				}
+		};
+	} else if ('${pageID}' == 'order-confirmation-page') {
+			var turnToConfig = {
+					locale: "${request.getLocale()}",
+					pageId: "order-confirmation-page"
+			}
+	} else if ('${pageID}' == 'search-page') {
+		var turnToConfig = {
+				locale: "${request.getLocale()}",
+				pageId: "search-page",
+				commentsPinboardTeaser: {
+					// promoButtonUrl: ""
+					// skus: [],
+					// tags: [],
+					// brands: [],
+					// onFinish: function(){}
+				}
+		}
+	} else if ('${pageID}' == 'pinboard-page') {
+		var turnToConfig = {
+			locale: "${request.getLocale()}",
+			pageId: "vc-pinboard-page",
+			vcPinboard: {
+				// Add SKUs, tags, brands, or any combination.
+			}
+		};
+	} else {
+		var turnToConfig = {
+				locale: "${request.getLocale()}",
+				pageId: "non-defined-page",
+				commentsPinboard: {
+					// skus: [],
+					// tags: [],
+					// brands: [],
+					// onFinish: function(){}
+				}
+		};
+	}
+	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push( arguments)};
+</script>

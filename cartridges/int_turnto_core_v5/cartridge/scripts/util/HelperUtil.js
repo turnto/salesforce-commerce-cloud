@@ -35,7 +35,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('helperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
 		}
 		return preferenceValue;
 	},
@@ -75,7 +75,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('helperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
 		}
 
 		return false;
@@ -147,7 +147,7 @@ var TurnToHelper = {
 		//also new page IDs will need to be added to the TurnTo system in order for features to work, reach out to your TurnTo representative
 		if (currentPage.indexOf('Product') > -1) {
 			pageID = 'pdp-page';
-		} else if (currentPage.indexOf('Confirm') > -1) {
+		} else if (currentPage.indexOf('Confirm') > -1 || currentPage.indexOf('Submit') > -1) {
 			pageID = 'order-confirmation-page';
 		} else if (currentPage.indexOf('Search') > -1) {
 			pageID = 'search-page';
@@ -163,27 +163,6 @@ var TurnToHelper = {
 		}
 		
 		return pageID
-	},
-
-	/**
-	 * @function
-	 * @name getDataCenterUrl
-	 * @param preferenceName The name of the localized TurnTo SitePreference to retrieve
-	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
-	 */
-	getDataCenterUrl: function (preferenceName) {
-		var localizedValues : dw.util.Collection = Site.getCurrent().getCustomPreferenceValue(preferenceName);
-		var locale : String = request.httpLocale;
-		var preferenceValue : String = null;
-		for each( var entry : String in localizedValues ) {
-			var entryLocale : String = entry.split( ":" )[0];
-			var entryUrl : String = entry.split( ":" )[2];
-			if( entryLocale == locale ) {
-				preferenceValue = entryUrl;
-				break;
-			}
-		}
-		return preferenceValue ? preferenceValue : TurnToHelper.getDefaultDataCenterUrl();
 	},
 	
 	/**
@@ -201,7 +180,6 @@ var TurnToHelper = {
 	getLogger: function () {
 		return Logger.getLogger('int_core_turnto_core_v5');
 	}
-
 }
 
 module.exports = TurnToHelper;

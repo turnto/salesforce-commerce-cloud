@@ -66,7 +66,11 @@ function populateTeaser(counts) {
 		}
 		fragment.appendChild(generateWriteReview('Be the first to write a review'));
 	}
-	document.getElementById('tt-teaser').appendChild(fragment);
+	var teaserElem = document.getElementById('tt-teaser');
+	if (!teaserElem) {
+		return;
+	}
+	teaserElem.appendChild(fragment);
 	// add event listener to handle click to open the write a review screen 
 	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) {
 		TurnToCmd('reviewsList.writeReview');

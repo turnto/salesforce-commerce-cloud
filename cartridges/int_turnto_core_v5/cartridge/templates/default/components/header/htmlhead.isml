@@ -78,4 +78,4 @@ If you are not using the build cartridge the comments can be safely removed.
 <isinclude url="${URLUtils.url('Home-SetLayout')}"/>
 
 <iscomment>TurnTo Header Include</iscomment>
-<isinclude template="turnto/htmlHeadInclude"/>
+<isinclude template="turnto/htmlHeadGlobalInclude"/>

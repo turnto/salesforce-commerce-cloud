@@ -22,8 +22,8 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/helperUtil');
-var OrderWriterHelper = require('*/cartridge/scripts/util/orderWriterHelper');
+var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
 
 /**
  * @function
