@@ -1,9 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoTopCommentEnabled')}">
-	<iscomment>TurnTo Top Comment v5
-	           Note: Must enable the top comments attribute on the TurnToConfig object
-			   Note: The following div must contain a SKU for rendering purposes 
-			   Note: Due to the possibility of this template being include on multiple pages, the SKU is left blank as the product SKU can vary based on pages
-	</iscomment>
-	
-	<div class="tt-top-comment" data-ttsku="${topCommentSkus}"​></div>
-</isif>

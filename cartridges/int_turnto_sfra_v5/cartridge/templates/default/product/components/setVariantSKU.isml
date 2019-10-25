@@ -1,6 +1,6 @@
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true}">
 	<script type="text/javascript">
 		TurnToCmd('set', {'sku': '${pdict.product.id}'});
-		TurnToCmd('gallery.set', {'sku': '${pdict.product.id}'});
+		TurnToCmd('gallery.set', {skus: ['${pdict.product.id}']});
 	</script>
 </isif>

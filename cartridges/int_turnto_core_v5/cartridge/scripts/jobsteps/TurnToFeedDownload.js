@@ -17,7 +17,6 @@ var Status = require('dw/system/Status');
 
 /*Script Modules*/
 var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
-var StepUtil = require('bc_job_components/cartridge/scripts/util/StepUtil');
 var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
 var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadService');
 
@@ -32,7 +31,7 @@ var run = function run() {
 	try {
 		var args = arguments[0];
 
-		if (StepUtil.isDisabled(args)) {
+		if (args.isDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
 

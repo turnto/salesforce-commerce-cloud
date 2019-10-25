@@ -1,6 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoVCPinboardEnabled')}">
-    <!--isdecorate template="common/layout/page"-->
-        <iscomment>TurnTo VC Pinboard Widget</iscomment>
-        <div id="tt-vc-pinboard-widget"></div>
-    <!--/isdecorate-->
-</isif>

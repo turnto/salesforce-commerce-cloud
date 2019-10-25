@@ -1,5 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCCPinboardTeaserEnabled')}">
-    <iscomment>TurnTo Comments Pinboard Teaser v5</iscomment>
-    <iscomment>Note: You will also need to add the commentsPinboardTeaser attribute on the TurnToConfig object (see htmlHeadJS.isml)</iscomment>
-    <div id="tt-comments-pinboard-teaser-widget"></div>
-</isif>

@@ -1,2 +1,0 @@
-<iscomment>TurnTo Teasers</iscomment>
-<div id="${product.id}" class="TTteaser" data-productid="${product.id}" data-starrating="${product.starRating}"></div>

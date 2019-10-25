@@ -51,15 +51,23 @@ function loadTeaserCounts(sku) {
 function populateTeaser(counts) {
 	var fragment = document.createDocumentFragment(); 
 	if (counts.reviews > 0) { // has reviews
-			fragment.appendChild(generateTeaserStars(counts.avgRating)); 
-			fragment.appendChild(generateReadReviews(counts.reviews)); 
-			if (counts.comments > 0) {
-				fragment.appendChild(document.createTextNode(' | '));
-				fragment.appendChild(generateReadComments(counts.comments)); 
-			}
-			fragment.appendChild(document.createTextNode(' or '));
-			fragment.appendChild(generateWriteReview('Write a Review')); 
+		fragment.appendChild(generateTeaserStars(counts.avgRating)); 
+		fragment.appendChild(generateReadReviews(counts.reviews));
+		if (counts.questions > 0) {
+			fragment.appendChild(document.createTextNode(' | '));
+			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
+		}
+		if (counts.comments > 0) {
+			fragment.appendChild(document.createTextNode(' | '));
+			fragment.appendChild(generateReadComments(counts.comments)); 
+		}
+		fragment.appendChild(document.createTextNode(' or '));
+		fragment.appendChild(generateWriteReview('Write a Review')); 
 	} else { // no reviews
+		if (counts.questions > 0) {
+			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
+			fragment.appendChild(document.createTextNode(' or '));
+		} 
 		if (counts.comments > 0) {
 			fragment.appendChild(generateReadComments(counts.comments)); 
 			fragment.appendChild(document.createTextNode(' or '));
@@ -119,6 +127,31 @@ function generateReadComments(numComments) {
 	var el = createTeaserElement('a', 'TTteaser__read-comments', text);
 	el.setAttribute('href', '#tt-chatter-widget');
 	return el; 
+}
+
+/**
+ * @function
+ * @name generateQuestions
+ * @description This function is called by the populateTeaser function to generate the read questions
+ * @param {Number} numQuestions
+ * @return {Object} el DOM object
+ */
+function generateQuestions(num_questions, num_answers) {
+	// Populate 'x Questions' text with the number of questions
+	var text = num_questions + ' Question' + (num_questions > 1 ? 's' : '');
+	
+	// then populate the number of answers
+	if (num_answers > 0) {
+	 text = text + ', ' + num_answers + ' Answer' + (num_answers > 1 ? 's' : '');
+	}
+	
+	var el = createTeaserElement('a', 'TTteaser__read-qa', text);
+	 el.setAttribute('href', '#tt-instant-answers-widget');
+	
+	//For the Q&A list widget set to the following
+	el.setAttribute('href', '#tt-qa-list');
+	
+	return el;
 }
 
 /**

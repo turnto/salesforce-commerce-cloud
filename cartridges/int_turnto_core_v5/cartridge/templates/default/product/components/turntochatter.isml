@@ -1,9 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentDisplayEnabled')}">
-	<iscomment>TurnTo Chatter 
-	           Note: must enabled the chatter attribute on the TurnToConfig object*
-			   Note: The CC Display widget does not support multiple SKUs; only one product or category SKU is accepted	
-			   **Must have more than 4 comments for the chatter widget to display
-	</iscomment>
-
-    <div id="tt-chatter-widget"></div>
-</isif>

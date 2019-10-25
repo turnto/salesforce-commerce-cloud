@@ -1,4 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoVCGalleryEnabled')}">
-    <iscomment>TurnTo Gallery Widget</iscomment>
-    <div id="tt-gallery-row"></div>
-</isif>
