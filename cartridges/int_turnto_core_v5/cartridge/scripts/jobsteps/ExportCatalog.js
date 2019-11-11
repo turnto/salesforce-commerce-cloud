@@ -144,18 +144,18 @@ function process( product, parameters, stepExecution )
 		var priceStr : String = price.getValue().toString();
 	
 		// CATEGORYPATHJSON
-		var categoryPathJSON = '';
+		var categoryPathJSON = [];
 		if (product.getPrimaryCategory() != null) {
 			var primaryCategoryID = product.getPrimaryCategory().getID();
 			var currentCategory = product.getPrimaryCategory();
 			var categoryArray = new Array();
 			while (currentCategory != null && !currentCategory.isRoot()) 
 			{
-				var categoryjson = [{
+				var categoryjson = {
 						id : currentCategory.getID(),
 						name : TurnToHelper.replaceNull(currentCategory.getDisplayName()),
 						url : URLUtils.http('Search-Show', 'cgid', currentCategory.getID()).toString()
-				}]
+				};
 				categoryArray.push(JSON.stringify(categoryjson));
 				currentCategory = currentCategory.getParent();
 			}
@@ -279,7 +279,7 @@ function process( product, parameters, stepExecution )
 					keywords : 			TurnToHelper.replaceNull(keywords, ""),
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
 					virtualparentcode : product.isVariant() ? product.masterProduct.ID : product.getID(),
-					categorypathjson :	TurnToHelper.replaceNull(categoryPathJSON, ""),
+					categorypathjson :	'[' + TurnToHelper.replaceNull(categoryPathJSON, "") + ']',
 					members :			TurnToHelper.replaceNull(bundledProductsArray, ""),
 					brand :				product.getBrand() ? product.getBrand() : '',
 					mpn :				TurnToHelper.replaceNull(mpn, ""),

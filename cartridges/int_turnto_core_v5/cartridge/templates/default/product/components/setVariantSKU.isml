@@ -5,6 +5,9 @@
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true}">
 	<script type="text/javascript">
 		TurnToCmd('set', {'sku': '${pdict.Product.ID}'});
-		TurnToCmd('gallery.set', {skus: ['${pdict.Product.ID}']});
+		<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoVCGalleryEnabled')}">
+			TurnToCmd('gallery.set', {skus: ['${pdict.Product.ID}']});
+		</isif>
 	</script>
 </isif>
+
