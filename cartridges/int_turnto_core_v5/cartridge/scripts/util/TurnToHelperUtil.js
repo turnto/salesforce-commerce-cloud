@@ -35,7 +35,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
 		}
 		return preferenceValue;
 	},
@@ -75,7 +75,7 @@ var TurnToHelper = {
 				}
 			}
 		} catch (e) {
-			TurnToHelper.getLogger().error('HelperUtils.js error:' + e.message);
+			TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
 		}
 
 		return false;
@@ -179,6 +179,48 @@ var TurnToHelper = {
 	 */
 	getLogger: function () {
 		return Logger.getLogger('int_core_turnto_core_v5');
+	},
+
+	/**
+	 * @name getTurnToStarClass
+	 * @desc returns the turnto star class
+	 * @param {String} presentationID
+	 */
+	getTurnToStarClass: function (presentationID) {
+		var turntoStarClass = '';
+
+		if (!empty(presentationID)) {
+			turntoStarClass = 'TTratingBox TTrating-' + presentationID;
+		}
+		return turntoStarClass;
+	},
+
+	/**
+	 * @name getTopCommentSKUsLegacy
+	 * @desc returns the turnto top comment SKUs for Site Genesis (Legacy) only
+	 * @param {ProductLineItems} productLineItems
+	 */
+	getTopCommentSKUsLegacy: function (productLineItems) {
+		var topCommentSkus = [];
+		for each(var item in productLineItems) {
+			topCommentSkus.push(item.getProduct().getID());
+		} 
+		return topCommentSkus.join(',');
+	},
+
+		/**
+	 * @name getTopCommentSKUs
+	 * @desc returns the turnto top comment SKUs
+	 * @param {ShippingModel} shipping
+	 */
+	getTopCommentSKUs: function (shipping) {
+		var topCommentSkus = [];
+		for each(var shippingModel in shipping) {
+			for each(var item in shippingModel.productLineItems.items) {
+				topCommentSkus.push(item.id);
+			}
+		} 
+		return topCommentSkus.join(',');
 	}
 }
 

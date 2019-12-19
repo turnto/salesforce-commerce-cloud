@@ -102,9 +102,7 @@
 			<isinclude template="product/components/options"/>
 
 			<iscomment>TurnTo Top Comment Include</iscomment>
-			<isscript>
-				var topCommentSkus = productNumber;
-			</isscript>
+			<isset name="topCommentSkus" value="${productNumber}" scope="page" />
 			<isinclude template="product/components/ttTopComment"/>
 
 			<iscomment>

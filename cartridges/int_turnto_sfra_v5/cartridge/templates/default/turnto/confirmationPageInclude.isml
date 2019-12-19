@@ -30,15 +30,9 @@
 </isif>
 
 <iscomment>TurnTo Top Comment Include</iscomment>
-<isscript>
-	var topCommentSkus = '';
-	for each(var shippingModel in pdict.order.shipping) {
-		for each(var item in shippingModel.productLineItems.items) {
-			topCommentSkus += item.id;
-		}
-	} 
-	topCommentSkus.join(',');
-</isscript>
+<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+<isset name="topCommentSkus" value="${TurnToHelper.getTopCommentSKUs(pdict.order.shipping)}" scope="page" />
+
 <isinclude template="product/components/ttTopComment"/>
 
 <iscomment>TurnTo Top Comment Capture</iscomment>

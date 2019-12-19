@@ -72,9 +72,7 @@
             </div>
 
             <iscomment>TurnTo Top Comment Include</iscomment>
-            <isscript>
-                var topCommentSkus = product.id;
-            </isscript>
+            <isset name="topCommentSkus" value="${product.id}" scope="page" />
             <isinclude template="product/components/ttTopComment"/>
 
             <div class="col-12 prices-add-to-cart-actions">

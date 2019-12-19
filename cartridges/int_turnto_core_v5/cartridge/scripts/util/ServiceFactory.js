@@ -11,7 +11,7 @@ var File = require('dw/io/File');
 var ProductMgr = require('dw/catalog/ProductMgr');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 
 // Public
 var ServiceFactory = {

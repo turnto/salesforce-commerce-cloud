@@ -4,7 +4,7 @@ var Status = require('dw/system/Status');
 var txn = require('dw/system/Transaction');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 
 //Globally scoped variables
 var products;

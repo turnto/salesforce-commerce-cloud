@@ -19,7 +19,7 @@ var txn = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 
 /**
  * @function

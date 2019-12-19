@@ -11,7 +11,7 @@ var Site = require('dw/system/Site');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
 //Globally scoped variables
@@ -72,6 +72,8 @@ function beforeStep( parameters, stepExecution )
 			//write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
 			hashMapOfFileWriters.put(key.locales, currentFileWriter);
+
+			currentFileWriter.close();
 		}
 
 		//query all site products
@@ -269,7 +271,7 @@ function process( product, parameters, stepExecution )
 			//build locale JSON
 			var localejson = {
 					sku : 				TurnToHelper.replaceNull(product.getID(), ""),
-					imageurl:			"",
+					imageurl:			imageURL,
 					title:				TurnToHelper.replaceNull(product.getName(), ""),
 					price : 			TurnToHelper.replaceNull(priceStr, ""),
 					currency : 			TurnToHelper.replaceNull(price.getCurrencyCode(), ""),
@@ -333,6 +335,7 @@ function write( json, parameters, stepExecution )
 				}
 				localeFileWriter.write("\n");
 			}
+			localeFileWriter.close();
 		}
 	} catch (e) {
 		Logger.error('exportCatalog.js has failed on the write step with the following error: ' + e.message);

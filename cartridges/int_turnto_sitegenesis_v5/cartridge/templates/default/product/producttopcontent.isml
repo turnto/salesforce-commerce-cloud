@@ -57,14 +57,14 @@
 				<div class="tab">
 					<input type="radio" name="css-tabs" id="tab-2" <isif condition="${recProducts.size() < 1}">checked</isif> class="tab-switch">
 					<label for="tab-2" class="tab-label">${Resource.msg('product.tab.description', 'product', null)}</label>
-					<div class="tab-content"><isprint value="${pdict.Product.shortDescription}" encoding="off"/></div>
+					<div class="tab-content"><isprint value="${pdict.Product.shortDescription}" encoding="htmlcontent" /></div>
 				</div>
 			</isif>
 			<isif condition="${! empty(pdict.Product.longDescription) && pdict.Product.longDescription.markup.length > 0}">
 				<div class="tab">
 					<input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
 					<label for="tab-3" class="tab-label">${Resource.msg('product.tab.details', 'product', null)}</label>
-					<div class="tab-content"><isprint value="${pdict.Product.longDescription}" encoding="off"/></div>
+					<div class="tab-content"><isprint value="${pdict.Product.longDescription}" encoding="htmlcontent" /></div>
 				</div>
 			</isif>
 			<isif condition="${showAttributes}">

@@ -22,7 +22,7 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
 
 /**

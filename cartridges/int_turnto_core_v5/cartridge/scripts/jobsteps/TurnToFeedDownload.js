@@ -16,7 +16,7 @@ var File = require('dw/io/File');
 var Status = require('dw/system/Status');
 
 /*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
 var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadService');
 

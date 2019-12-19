@@ -1,11 +1,10 @@
 <iscomment>Include TurnTo LEGACY (non-SFRA) - Do a local include of this file at the bottom of htmlhead.isml</iscomment>
-
+<iscomment>Include TurnTo SFRA - Do a local include of this file at the bottom of htmlhead.isml : pageAssets.isml includes the remaining JS and CSS files</iscomment>
 <iscomment>Global Import of the TurnTo Helper and Site Key Variable</iscomment>
-<isscript>
-	var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
-	var siteKey = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey;
-	var turntoUrl = TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain;
-</isscript>
+
+<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+<isset name="siteKey" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}" scope="page" />
+<isset name="turntoUrl" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain}" scope="page" />
 
 <span hidden class="siteKey"><isprint value="${siteKey}"/></span>
 <span hidden class="turntoUrl"><isprint value="${turntoUrl}"/></span>

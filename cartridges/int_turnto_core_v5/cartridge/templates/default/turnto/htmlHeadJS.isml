@@ -2,14 +2,12 @@
 		   NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
 
-<isscript>
-	var TurnToHelper = require('*/cartridge/scripts/util/HelperUtil');
-	var pageID = TurnToHelper.getPageID();
-</isscript>
+<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+<isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
-	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'HelperUtil.js', function 'getPageID'
+	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
 	if('${pageID}' == 'pdp-page') {
 			var turnToConfig = {
 				locale: "${request.getLocale()}",

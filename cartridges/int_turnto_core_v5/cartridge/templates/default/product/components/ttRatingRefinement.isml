@@ -1,13 +1,10 @@
 <iscomment>This file creates an extension for the TurnTo Rating refinements on category and search pages</iscomment>
-
 <ul <isif condition="${Refinements.getAllRefinementValues(RefinementDefinition).size() > RefinementDefinition.cutoffThreshold}">class="scrollable"</isif>>
 	<iscomment>render the refinement values as simple list</iscomment>
 	<isloop items="${Refinements.getAllRefinementValues(RefinementDefinition)}" var="RefinementValue">
-		<isif condition="${!empty(RefinementValue.getPresentationID())}">
-			<isset name="turntoStarClass" value="${'TTratingBox TTrating-' + StringHelpers.cleanupID(RefinementValue.getPresentationID())}" scope="page"/>
-		<iselse/>
-			<isset name="turntoStarClass" value="" scope="page"/>
-		</isif>
+		<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+		<isset name="turntoStarClass" value="${TurnToHelper.getTurnToStarClass(RefinementValue.getPresentationID())}" scope="page"/>
+		
 		<isif condition="${pdict.ProductSearchResult.isRefinedByAttributeValue(RefinementDefinition.attributeID,RefinementValue.value)}">
 			<li class="selected">
 				<a href="${StringHelpers.unsanitizeOR(pdict.ProductSearchResult.urlRelaxAttributeValue('Search-Show',RefinementValue.getID(),RefinementValue.getValue()))}" title="${Resource.msg('search.productsearchrefinebar.clickrefine','search',null)}${RefinementValue.getDisplayValue()}">

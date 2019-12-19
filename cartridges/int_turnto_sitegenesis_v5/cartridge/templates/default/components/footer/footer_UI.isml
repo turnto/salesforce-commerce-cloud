@@ -23,12 +23,12 @@
 <script src="${URLUtils.staticURL('/lib/jquery/jquery.zoom.min.js')}" ></script>
 <script type="text/javascript"><isinclude template="resources/appresources"/></script>
 <script type="text/javascript"><isinclude url="${URLUtils.url('Resources-LoadTransient')}"/></script>
-<script>var consent = ${session.custom.consentTracking};</script>
+<script>var consent = ${session.privacy.consentTracking};</script>
 <script src="${URLUtils.staticURL('/js/app.js')}"></script>
 <isif condition="${!('pageContext' in this) || empty(pageContext)}">
 	<isscript>pageContext = new Object();</isscript>
 </isif>
-<script>pageContext = <isprint value="${JSON.stringify(pageContext)}" encoding="off"/>;</script>
+<script>pageContext = <isprint value="${JSON.stringify(pageContext)}" encoding="jsonvalue" />;</script>
 <script>
 var meta = "${pdict.CurrentPageMetaData.description}";
 var keywords = "${pdict.CurrentPageMetaData.keywords}";
