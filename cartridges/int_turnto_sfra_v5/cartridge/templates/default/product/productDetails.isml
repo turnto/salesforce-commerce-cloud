@@ -129,7 +129,7 @@
         	<isinclude template="product/widgets"/>
 
             <iscomment>TurnTo JS Include</iscomment>
-            <isinclude template="turnto/pageAssets"/>
+            <isinclude template="turnto/productPageAssets"/>
         	
         </div>  
     </isobject>

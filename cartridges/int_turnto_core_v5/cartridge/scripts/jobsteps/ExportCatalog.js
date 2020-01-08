@@ -72,8 +72,6 @@ function beforeStep( parameters, stepExecution )
 			//write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
 			hashMapOfFileWriters.put(key.locales, currentFileWriter);
-
-			currentFileWriter.close();
 		}
 
 		//query all site products
@@ -335,7 +333,6 @@ function write( json, parameters, stepExecution )
 				}
 				localeFileWriter.write("\n");
 			}
-			localeFileWriter.close();
 		}
 	} catch (e) {
 		Logger.error('exportCatalog.js has failed on the write step with the following error: ' + e.message);
