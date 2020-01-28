@@ -78,7 +78,7 @@ var run = function run() {
 								var productNode : XML = xmlStreamReader.readXMLObject();
 								var product = ProductMgr.getProduct(productNode.attribute('sku'));
 								if(product != null) {
-									dw.system.Logger.error('product id=' + product.ID);
+									dw.system.Logger.info('INFO product is found, product id=' + product.ID);
 									var reviewCount = parseInt(productNode.attribute("review_count"));
 									var relatedReviewCount = parseInt(productNode.attribute("related_review_count"));
 									var commentCount = parseInt(productNode.attribute("comment_count"));
@@ -96,6 +96,8 @@ var run = function run() {
 									product.custom.turntoCommentCount = commentCount;
 	
 									txn.commit();
+								} else {
+									dw.system.Logger.error('ERROR product is NULL, product id=' + productNode.attribute('sku'));
 								}
 							} catch ( e ) {
 								error = true;

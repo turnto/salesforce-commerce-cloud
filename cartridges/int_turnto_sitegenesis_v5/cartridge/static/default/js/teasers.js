@@ -83,6 +83,26 @@ function populateTeaser(counts) {
 	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) {
 		TurnToCmd('reviewsList.writeReview');
 	});
+
+	// add event listener to display the tab the reviews are displayed under
+	document.querySelector('.TTteaser__read-reviews').addEventListener('click',
+		function(e) { showTab(); }
+	);
+
+	// event listener to display the tab Q&A is displayed under
+	document.querySelector('.TTteaser__read-qa').addEventListener('click',
+		function(e) { showTab(); }
+	);
+}
+
+/**
+ * @function
+ * @name showTab
+ * @description This is a helper function used by other functions to open a tab on the PDP page
+ * @param {String} tag type of tab to open
+ */
+function showTab() { 
+	$('.tabs .reviews input').click();
 }
 
 /**
@@ -211,7 +231,7 @@ function generateTeaserStars(rating) {
 	return el;
 }
 
-/* Javascript to load on page load*/
+// Javascript to load on page load
 $(document).ready(function () {
 	//PDP teasers only
 	if( $('span[itemprop="productID"]').text().length ) {

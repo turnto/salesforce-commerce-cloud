@@ -76,7 +76,7 @@
 						{
                             "@name": "FilePattern",
                             "@type": "string",
-                            "@required": false,
+                            "@required": true,
                             "description": "File pattern (Regular Expression)",
                             "@trim": true
                         },

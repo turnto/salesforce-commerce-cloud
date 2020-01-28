@@ -82,7 +82,7 @@
 					</div>
 				</div>
 			</isif>
-    		<div class="tab">
+    		<div class="tab reviews">
     			<input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
     			<label for="tab-5" class="tab-label">${Resource.msg('product.tab.reviews', 'product', null)}</label>
     			<div class="tab-content"><isinclude template="product/components/reviews"/></div>
