@@ -48,8 +48,6 @@ var run = function run() {
 			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Service ID = (' + serviceID + ') Post File Location = (' + postFileLocation + ') FilePattern = (' + filePattern + ')');
 		}
 
-		var turntoUrl = TurnToHelper.getURLSitePreference();
-
 		// Get the file path where the output will be stored
 		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 		// Create a TurnTo directory if one doesn't already exist

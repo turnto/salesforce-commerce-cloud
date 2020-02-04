@@ -52,15 +52,6 @@ var TurnToHelper = {
 	
 	/**
 	 * @function
-	 * @name getURLSitePreference
-	 * @return {String} the URL site preference
-	 */
-	getURLSitePreference: function() {
-		return Site.getCurrent().getCustomPreferenceValue('turntoURL');
-	},
-	
-	/**
-	 * @function
 	 * @name hasSiteAndAuthKeyPerLocale
 	 * @param locale The locale in which to check if a site and auth key exists
 	 * @return {Boolean} true if the locale contains both auth and site keys; false if it does not contain an auth key, site key or both

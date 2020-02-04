@@ -51,19 +51,11 @@ var ServiceFactory = {
 	},
 
 	/**
-	 * @name getStaticURLPreference
-	 * @desc returns the static URL custom site preference
+	 * @name getLocalizedDomainURLPreference
+	 * @desc returns the localized domain URL
 	 */
-	getStaticURLPreference: function () {
-		return Site.getCurrent().getCustomPreferenceValue('turntoStaticURL');
-	},
-	
-	/**
-	 * @name getURLPreference
-	 * @desc returns the static URL custom site preference
-	 */
-	getURLPreference: function () {
-		return Site.getCurrent().getCustomPreferenceValue('turntoURL');
+	getLocalizedDomainURLPreference: function (currentLocale) {
+		return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).domain;
 	},
 
 	/*****************************************************
@@ -117,7 +109,7 @@ var ServiceFactory = {
 		
 		//Distinguish two different download URLs (Example for UGC http://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml)
 		//"/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-		var url = "http://" + ServiceFactory.getStaticURLPreference() + File.SEPARATOR + "static" + File.SEPARATOR + "export" + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
+		var url = "http://www." + ServiceFactory.getLocalizedDomainURLPreference(currentLocale) + File.SEPARATOR + "static" + File.SEPARATOR + "export" + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
 
 		var requestDataContainer = {
 			requestMethod: 'GET',
