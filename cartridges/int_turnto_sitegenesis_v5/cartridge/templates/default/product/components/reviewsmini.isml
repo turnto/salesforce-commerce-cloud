@@ -8,5 +8,5 @@
 </isscript>
 
 <div class="product-review" data-pid="${pdict.Product.ID}">
-	<isinclude template="product/components/ttTeasers"/>
+	<isinclude template="product/components/ttTeasersProductGrid"/>
 </div>

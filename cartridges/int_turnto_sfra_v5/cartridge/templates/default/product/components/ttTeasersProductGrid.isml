@@ -5,4 +5,4 @@
 <link rel="stylesheet" href="${URLUtils.staticURL('/css/teasers.css')}" />
 
 <iscomment>TurnTo Teasers</iscomment>
-<div id="${pdict.Product.ID}" class="TTteaser" data-productid="${pdict.Product.ID}" data-starrating="${'turntoAverageRating' in pdict.Product.custom ? pdict.Product.custom.turntoAverageRating : ''}"></div>
+<div id="${product.id}" class="TTteaser" data-productid="${product.id}" data-starrating="${product.starRating}"></div>

@@ -85,17 +85,16 @@ var run = function run() {
 									//Round the rating to the nearest 0.5
 									var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
 									rating = rating.toString();
-									var decimal = parseInt(rating.substring(2, 3))
-									rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0')
+									var decimal = parseInt(rating.substring(2, 3));
+									rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0');
 								
-									txn.begin();
-	
-									product.custom.turntoAverageRating = rating;
-									product.custom.turntoReviewCount = reviewCount;
-									product.custom.turntoRelatedReviewCount = relatedReviewCount;
-									product.custom.turntoCommentCount = commentCount;
-	
-									txn.commit();
+									txn.wrap(function(){
+										product.custom.turntoAverageRating = rating;
+										product.custom.turntoReviewCount = reviewCount;
+										product.custom.turntoRelatedReviewCount = relatedReviewCount;
+										product.custom.turntoCommentCount = commentCount;
+									});
+
 								} else {
 									dw.system.Logger.error('ERROR product is NULL, product id=' + productNode.attribute('sku'));
 								}

@@ -197,15 +197,35 @@ function generateReadReviews(numReviews) {
  * @return {Object} el DOM object
  */
 function generateTeaserStar(starType) { 
-	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); 
-	svgEl.setAttribute('class', 'TTteaser__icon--' + starType); 
-	var useEl = document.createElementNS('http://www.w3.org/2000/svg','use'); 
-	useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#tt-teaser-star--' + starType);
+	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	svgEl.setAttribute('class', 'TTteaser__icon--' + starType);
+	useEl = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+	useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href',
+	'#tt-teaser-star--' + starType);
 	svgEl.appendChild(useEl);
-	var el = createTeaserElement('span', 'TTteaser__star'); 
+	var el = createTeaserElement('span', 'TTteaser__star');
 	el.appendChild(svgEl);
 	return el;
 }
+
+/**
+ * @function
+ * @name getAdjustedRating
+ * @description the getAdjustedRating function adjusts/rounds the rating to have decimal value of .0 or .5
+ * @param {String} rating
+ * @return {Number} adjusted rating decimal value
+ */
+function getAdjustedRating(rating) {
+	var floorValue = Math.floor(rating);
+	var rounded = Math.round(rating * 100) / 100;
+	var decimalValue = parseFloat((rounded - floorValue).toFixed(2));
+	if (decimalValue < 0.25) {
+	  return floorValue;
+	} else if (decimalValue < 0.75) {
+	  return floorValue + 0.5;
+	}
+	return floorValue + 1;
+  }
 
 /**
  * @function
@@ -215,18 +235,16 @@ function generateTeaserStar(starType) {
  * @return {Object} el DOM object
  */
 function generateTeaserStars(rating) {
-	var el = createTeaserElement('div', 'TTteaser__rating'); 
-	var numFullStars = Math.floor(rating);
-	for (var i = 0; i < numFullStars; i++) {
-		el.appendChild(generateTeaserStar('full')); 
-	}
-	var hasHalfStar = (rating - numFullStars) >= 0.5; 
-	if (hasHalfStar) {
-		el.appendChild(generateTeaserStar('half')); 
-	}
-	var emptyStarsStartIdx = numFullStars + (hasHalfStar ? 1 : 0); 
-	for (var i = emptyStarsStartIdx; i < 5; i++) {
-		el.appendChild(generateTeaserStar('empty')); 
+	var el = createTeaserElement('div', 'TTteaser__rating');
+	var adjustedRating = getAdjustedRating(rating);
+	for (var i = 1; i <= 5 ; i++) {
+	  if (i > adjustedRating && i - adjustedRating >= 1) {
+		el.appendChild(generateTeaserStar('empty'));
+	  } else if (i <= adjustedRating) {
+		el.appendChild(generateTeaserStar('full'));
+	  } else {
+		el.appendChild(generateTeaserStar('half'));
+	  }
 	}
 	return el;
 }

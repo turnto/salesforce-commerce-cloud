@@ -37,23 +37,30 @@ function beforeStep( parameters, stepExecution )
 		hashMapOfFileWriters = new HashMap();
 
 		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+
+		// if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
+		var areAllowedLocales = false;
+
 		for each(var key in hashMapOfKeys) {
 			// create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
 			var locales = key.locales.replace(' ', '').split(',');
 			var isAllowedLocale =  true;
 
 			for each(var locale in locales) {
-				// check if locale is allowed on the site, if it is noit allowed, marked the variable as false and break out of the loop to continue to the next key
+				// check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
 				if(allowedLocales.indexOf(locale) <= -1) {
 					isAllowedLocale = false;
 					break;
 				}
 			}
 
-			//if the one or more locales are not allowed then continue to the next key and do not create a file writer
+			// if the one or more locales are not allowed then continue to the next key and do not create a file writer
 			if(!isAllowedLocale) {
 				continue;
 			}
+
+			// if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
+			areAllowedLocales = true;
 
 			// create a folder with one or more locales
 			var folderAndFilePatternName = locales.join().replace(',', '_');
@@ -69,9 +76,14 @@ function beforeStep( parameters, stepExecution )
 
 			var currentFileWriter = new FileWriter(catalogExportFileWrite);
 
-			//write header text
+			// write header text
 			currentFileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");
 			hashMapOfFileWriters.put(key.locales, currentFileWriter);
+		}
+
+		// if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
+		if(!areAllowedLocales) {
+			return new Status(Status.ERROR, 'ERROR', 'There are no allowed locales for a catalog export, check the site/auth keys configuration and the site level allowed locales.');
 		}
 
 		//query all site products
@@ -144,8 +156,9 @@ function process( product, parameters, stepExecution )
 		var priceStr : String = price.getValue().toString();
 	
 		// CATEGORYPATHJSON
-		var categoryPathJSON = [];
+		var categoryPathJSON;
 		if (product.getPrimaryCategory() != null) {
+			categoryPathJSON = [];
 			var primaryCategoryID = product.getPrimaryCategory().getID();
 			var currentCategory = product.getPrimaryCategory();
 			var categoryArray = new Array();
@@ -160,7 +173,7 @@ function process( product, parameters, stepExecution )
 				currentCategory = currentCategory.getParent();
 			}
 			categoryArray.reverse();
-			categoryPathJSON = categoryArray.toString();
+			categoryPathJSON = '[' + TurnToHelper.replaceNull(categoryArray.toString(), "") + ']';
 		}
 		
 		// MEMBERS
@@ -279,7 +292,7 @@ function process( product, parameters, stepExecution )
 					keywords : 			TurnToHelper.replaceNull(keywords, ""),
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
 					virtualparentcode : product.isVariant() ? product.masterProduct.ID : product.getID(),
-					categorypathjson :	'[' + TurnToHelper.replaceNull(categoryPathJSON, "") + ']',
+					categorypathjson :	categoryPathJSON ? categoryPathJSON : '',
 					members :			TurnToHelper.replaceNull(bundledProductsArray, ""),
 					brand :				product.getBrand() ? product.getBrand() : '',
 					mpn :				TurnToHelper.replaceNull(mpn, ""),

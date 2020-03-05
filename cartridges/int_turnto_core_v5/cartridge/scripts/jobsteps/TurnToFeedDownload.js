@@ -71,7 +71,7 @@ var run = function run() {
 			var feedDownloadResult = FeedDownloadService.call(requestDataContainer);
 		
 			if (!feedDownloadResult.isOk()) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name : ' + xmlName);
+				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name: ' + xmlName + ' with URL: ' + requestDataContainer.path);
 			}
 		}
 	} catch(exception) {
