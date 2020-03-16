@@ -89,7 +89,7 @@ $(document).ready(function () {
 	for(var i=0; i <  allTeaserDivs.length; i++) {
 		var teaserDiv = allTeaserDivs[i];
 		if('starrating' in teaserDiv.dataset && teaserDiv.dataset.starrating > 0) {
-			var el = generateTeaserStars(teaserDiv.dataset.productid, teaserDiv.dataset.starrating);
+			var el = generateTeaserStars(teaserDiv.dataset.starrating);
 			document.getElementById(teaserDiv.dataset.productid).appendChild(el);
 
 		}
