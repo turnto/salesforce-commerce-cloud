@@ -91,7 +91,6 @@ $(document).ready(function () {
 		if('starrating' in teaserDiv.dataset && teaserDiv.dataset.starrating > 0) {
 			var el = generateTeaserStars(teaserDiv.dataset.starrating);
 			document.getElementById(teaserDiv.dataset.productid).appendChild(el);
-
 		}
 	}
 });
