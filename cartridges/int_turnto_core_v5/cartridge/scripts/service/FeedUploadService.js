@@ -1,5 +1,7 @@
 'use strict';
 
+var Logger = require('dw/system/Logger');
+
 /**
  * Feed Download Service
  *
@@ -20,21 +22,25 @@ var serviceName = ServiceFactory.SERVICES.UPLOAD;
  *
  */
 var serviceConfig = {
+	executeOverride: true,
     createRequest: function (service, requestDataContainer) {
-        var request;
-
-        service.URL = requestDataContainer.path;
-        service.setOutFile(requestDataContainer.outfile);
-        service.requestMethod = requestDataContainer.requestMethod;
-
-        var client = service.getClient();
-        client.open("POST", requestDataContainer.path);
-        client.sendMultiPart( requestDataContainer.args);
+    	
+        var request = {};
+        request.URL = requestDataContainer.path;
+        request.requestMethod = requestDataContainer.requestMethod;
+        request.args = requestDataContainer.args;
 
         return request;
     },
+    execute: function (service, requestObject) {   	
+        var client = service.getClient();
+        client.open(requestObject.requestMethod, requestObject.URL);
+        result = client.sendMultiPart( requestObject.args);
+
+        return result;
+    },
     parseResponse: function (service, response) {
-        return response.text;
+        return response;
     },
     mockCall: function (service, request) {
         return {};
