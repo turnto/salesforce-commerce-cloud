@@ -37,6 +37,9 @@ var serviceConfig = {
         client.open(requestObject.requestMethod, requestObject.URL);
         result = client.sendMultiPart( requestObject.args);
 
+	Logger.info("Result");
+	Logger.info(JSON.stringify(result));
+
         return result;
     },
     parseResponse: function (service, response) {

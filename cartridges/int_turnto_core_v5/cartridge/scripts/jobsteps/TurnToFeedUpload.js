@@ -108,6 +108,9 @@ var run = function run() {
 					}
 				
 					if (!feedUploadResult.isOk()) {
+						Logger.info(feedUploadResult.getMsg());
+						Logger.info(JSON.stringify(feedUploadResult));
+						Logger.info(feedUploadResult.toString());
 						return new Status(Status.ERROR, 'ERROR', 'FAILED uploading file with XML file name : ' + file.fullPath + '\nerror:' + feedUploadResult.errorMessage);
 					} else {
 						// Archive file
