@@ -47,7 +47,7 @@ var TurnToHelper = {
 	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
 	 */
 	getLocalizedSitePreferenceFromRequestLocale: function( preferenceName ) {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.httpLocale);
+		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.locale);
 	},
 	
 	/**
