@@ -111,13 +111,6 @@ var TurnToHelper = {
 		var adjustedAllowedLocales = [];
 		
 		for each(var locale in siteAllowedLocales) {
-			Logger.info("Locale: ");
-			Logger.info(locale);
-			
-			if (locale == "default") {
-				locale = "en_US";
-			}
-			
 			//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
 			if(TurnToHelper.hasSiteAndAuthKeyPerLocale(locale)) {
 				adjustedAllowedLocales.push(locale);
