@@ -4,27 +4,30 @@
 
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
+<isset name="product_sku" value="${TurnToHelper.getParentSku(product.id)}" scope="page"/>
 
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
+
 	if('${pageID}' == 'pdp-page') {
-			var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "pdp-page",
-				gallery: {
-					// Add one or more SKUs as an array.
-					// skus: []
-				},
-				//optional top comments feature, refer to "v5 Top Comment Widget"
-				topComments: {
-					// tags: [],
-					// onFinish: function() {}
-				}, 
-				//optional comments display feature, refer to "v5 Comments Display"
-				chatter: {
-					// onFinish: function() {}
-				}
+		var turnToConfig = {
+			locale: "${request.getLocale()}",
+			pageId: "pdp-page",
+			sku: "${product_sku}",
+			gallery: {
+				// Add one or more SKUs as an array.
+				// skus: []
+			},
+			//optional top comments feature, refer to "v5 Top Comment Widget"
+			topComments: {
+				// tags: [],
+				// onFinish: function() {}
+			}, 
+			//optional comments display feature, refer to "v5 Comments Display"
+			chatter: {
+				// onFinish: function() {}
+			}
 		};
 	} else if ('${pageID}' == 'order-confirmation-page') {
 			var turnToConfig = {
@@ -51,17 +54,7 @@
 				// Add SKUs, tags, brands, or any combination.
 			}
 		};
-	} else {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "non-defined-page",
-				commentsPinboard: {
-					// skus: [],
-					// tags: [],
-					// brands: [],
-					// onFinish: function(){}
-				}
-		};
 	}
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push( arguments)};
 </script>
+
