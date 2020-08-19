@@ -51,18 +51,18 @@ function loadTeaserCounts(sku) {
 function populateTeaser(counts) {
 	var fragment = document.createDocumentFragment(); 
 	if (counts.reviews > 0) { // has reviews
-			fragment.appendChild(generateTeaserStars(counts.avgRating)); 
-			fragment.appendChild(generateReadReviews(counts.reviews));
-			if (counts.questions > 0) {
-				fragment.appendChild(document.createTextNode(' | '));
-				fragment.appendChild(generateQuestions(counts.questions, counts.answers));
-			}
-			if (counts.comments > 0) {
-				fragment.appendChild(document.createTextNode(' | '));
-				fragment.appendChild(generateReadComments(counts.comments)); 
-			}
-			fragment.appendChild(document.createTextNode(' or '));
-			fragment.appendChild(generateWriteReview('Write a Review')); 
+		fragment.appendChild(generateTeaserStars(counts.avgRating)); 
+		fragment.appendChild(generateReadReviews(counts.reviews));
+		if (counts.questions > 0) {
+			fragment.appendChild(document.createTextNode(' | '));
+			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
+		}
+		if (counts.comments > 0) {
+			fragment.appendChild(document.createTextNode(' | '));
+			fragment.appendChild(generateReadComments(counts.comments)); 
+		}
+		fragment.appendChild(document.createTextNode(' or '));
+		fragment.appendChild(generateWriteReview('Write a Review')); 
 	} else { // no reviews
 		if (counts.questions > 0) {
 			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
