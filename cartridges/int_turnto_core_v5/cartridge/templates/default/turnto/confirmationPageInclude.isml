@@ -29,8 +29,6 @@
 				]
 			};
 		
-		console.log(jsOrderFeed);
-		
 		TurnToCmd('feed.send', jsOrderFeed);
 	</script>
 </isif>
