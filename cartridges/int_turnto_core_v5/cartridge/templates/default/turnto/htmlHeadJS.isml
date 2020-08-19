@@ -4,7 +4,16 @@
 
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
-<isset name="product_sku" value="${TurnToHelper.getParentSku(product.id)}" scope="page"/>
+
+<isif condition="${pageID == 'pdp-page'}">
+	<isset name="product_sku" value="${TurnToHelper.getProductSku(product.id)}" scope="page"/>
+	<span hidden class="productsku"><isprint value="${product_sku}"/></span>
+</isif>
+<isif condition="${pageID != 'pdp-page'}">
+	<isset name="product_sku" value="" scope="page"/>
+	<span hidden class="productsku"><isprint value="${product_sku}"/></span>
+</isif>
+
 
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation

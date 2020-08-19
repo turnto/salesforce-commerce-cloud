@@ -51,18 +51,18 @@ function loadTeaserCounts(sku) {
 function populateTeaser(counts) {
 	var fragment = document.createDocumentFragment(); 
 	if (counts.reviews > 0) { // has reviews
-		fragment.appendChild(generateTeaserStars(counts.avgRating)); 
-		fragment.appendChild(generateReadReviews(counts.reviews));
-		if (counts.questions > 0) {
-			fragment.appendChild(document.createTextNode(' | '));
-			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
-		}
-		if (counts.comments > 0) {
-			fragment.appendChild(document.createTextNode(' | '));
-			fragment.appendChild(generateReadComments(counts.comments)); 
-		}
-		fragment.appendChild(document.createTextNode(' or '));
-		fragment.appendChild(generateWriteReview('Write a Review')); 
+			fragment.appendChild(generateTeaserStars(counts.avgRating)); 
+			fragment.appendChild(generateReadReviews(counts.reviews));
+			if (counts.questions > 0) {
+				fragment.appendChild(document.createTextNode(' | '));
+				fragment.appendChild(generateQuestions(counts.questions, counts.answers));
+			}
+			if (counts.comments > 0) {
+				fragment.appendChild(document.createTextNode(' | '));
+				fragment.appendChild(generateReadComments(counts.comments)); 
+			}
+			fragment.appendChild(document.createTextNode(' or '));
+			fragment.appendChild(generateWriteReview('Write a Review')); 
 	} else { // no reviews
 		if (counts.questions > 0) {
 			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
@@ -83,26 +83,6 @@ function populateTeaser(counts) {
 	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) {
 		TurnToCmd('reviewsList.writeReview');
 	});
-
-	// add event listener to display the tab the reviews are displayed under
-	document.querySelector('.TTteaser__read-reviews').addEventListener('click',
-		function(e) { showTab(); }
-	);
-
-	// event listener to display the tab Q&A is displayed under
-	document.querySelector('.TTteaser__read-qa').addEventListener('click',
-		function(e) { showTab(); }
-	);
-}
-
-/**
- * @function
- * @name showTab
- * @description This is a helper function used by other functions to open a tab on the PDP page
- * @param {String} tag type of tab to open
- */
-function showTab() { 
-	$('.tabs .reviews input').click();
 }
 
 /**
@@ -249,10 +229,11 @@ function generateTeaserStars(rating) {
 	return el;
 }
 
-// Javascript to load on page load
+/* Javascript to load on page load*/
 $(document).ready(function () {
 	//PDP teasers only
-	if( $('span[itemprop="productID"]').text().length ) {
-		loadTeaserCounts($('span[itemprop="productID"]').text());
+	if( $('span.productsku').text().length ) {
+		loadTeaserCounts($('span.productsku').text());
 	}
 });
+
