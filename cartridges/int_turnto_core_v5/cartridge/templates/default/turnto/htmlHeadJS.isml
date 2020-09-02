@@ -41,7 +41,8 @@
 	} else if ('${pageID}' == 'order-confirmation-page') {
 			var turnToConfig = {
 					locale: "${request.getLocale()}",
-					pageId: "order-confirmation-page"
+					pageId: "order-confirmation-page",
+					sku: "${product_sku}"
 			}
 	} else if ('${pageID}' == 'search-page') {
 		var turnToConfig = {
