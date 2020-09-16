@@ -10,8 +10,34 @@ var Site = require('dw/system/Site');
 var System = require('dw/system/System');
 var HashMap = require('dw/util/HashMap');
 var Logger = require('dw/system/Logger');
+var ProductMgr = require('dw/catalog/ProductMgr');
 
 var TurnToHelper = {
+		
+	getProductSku: function ( lookup_id ) {
+		var useVariants : Boolean = Boolean(Site.getCurrent().getCustomPreferenceValue('turntoUseVariants'));
+
+		if (useVariants) {
+			product_sku = lookup_id;
+		} else {
+			product_sku = TurnToHelper.getParentSku( lookup_id );
+		}
+		
+		return product_sku;
+	},
+		
+	getParentSku: function( lookup_id ) {
+		
+	    var product = ProductMgr.getProduct(lookup_id)
+	    
+		if(!product.isMaster()) {
+			var product_id = product.getMasterProduct().getID();
+		} else {
+			var product_id = lookup_id;
+		}
+		
+		return product_id;
+	},
 		
 	/**
 	 * @function
@@ -47,7 +73,7 @@ var TurnToHelper = {
 	 * @return {String} The localized value of the Site Preference specified by the preferenceName parameter
 	 */
 	getLocalizedSitePreferenceFromRequestLocale: function( preferenceName ) {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.httpLocale);
+		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.locale);
 	},
 	
 	/**
@@ -216,3 +242,4 @@ var TurnToHelper = {
 }
 
 module.exports = TurnToHelper;
+

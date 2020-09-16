@@ -249,10 +249,11 @@ function generateTeaserStars(rating) {
 	return el;
 }
 
-// Javascript to load on page load
+/* Javascript to load on page load*/
 $(document).ready(function () {
 	//PDP teasers only
-	if( $('span[itemprop="productID"]').text().length ) {
-		loadTeaserCounts($('span[itemprop="productID"]').text());
+	if( $('span.productsku').text().length ) {
+		loadTeaserCounts($('span.productsku').text());
 	}
 });
+
