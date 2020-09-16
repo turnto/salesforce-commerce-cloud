@@ -5,6 +5,13 @@
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
+<isif condition="${pageID == 'pdp-page'}">
+	<isset name="product_sku" value="${product.id}" scope="page"/>
+</isif>
+<isif condition="${pageID != 'pdp-page'}">
+	<isset name="product_sku" value="" scope="page"/>
+</isif>
+
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
@@ -12,7 +19,7 @@
 			var turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "pdp-page",
-				sku: "${product.id}",
+				sku: "${product_sku}",
 				gallery: {
 					// Add one or more SKUs as an array.
 					// skus: []
