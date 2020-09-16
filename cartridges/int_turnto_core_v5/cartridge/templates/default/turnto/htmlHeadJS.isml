@@ -12,6 +12,7 @@
 			var turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "pdp-page",
+				sku: "${product.id}",
 				gallery: {
 					// Add one or more SKUs as an array.
 					// skus: []
