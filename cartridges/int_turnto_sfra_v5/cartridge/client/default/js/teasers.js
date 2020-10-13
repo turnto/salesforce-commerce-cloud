@@ -57,7 +57,7 @@ function populateTeaser(counts) {
 				fragment.appendChild(document.createTextNode(' | '));
 				fragment.appendChild(generateQuestions(counts.questions, counts.answers));
 			}
-			if (counts.comments > 0) {
+			if (counts.comments > 0 && false) {
 				fragment.appendChild(document.createTextNode(' | '));
 				fragment.appendChild(generateReadComments(counts.comments)); 
 			}
@@ -68,7 +68,7 @@ function populateTeaser(counts) {
 			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
 			fragment.appendChild(document.createTextNode(' or '));
 		} 
-		if (counts.comments > 0) {
+		if (counts.comments > 0 && false) {
 			fragment.appendChild(generateReadComments(counts.comments)); 
 			fragment.appendChild(document.createTextNode(' or '));
 		}
