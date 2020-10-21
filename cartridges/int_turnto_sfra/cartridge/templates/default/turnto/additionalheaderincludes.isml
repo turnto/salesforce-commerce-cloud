@@ -363,7 +363,7 @@
 	var TurnToSetupTypeRR = "${!empty(dw.system.Site.getCurrent().preferences.custom.turntoSetupTypeRR.value) ? dw.system.Site.getCurrent().preferences.custom.turntoSetupTypeRR.value : 'staticEmbed'}";
 	var TurnToSetupTypeQA = "${!empty(dw.system.Site.getCurrent().preferences.custom.turntoSetupTypeQA.value) ? dw.system.Site.getCurrent().preferences.custom.turntoSetupTypeQA.value : 'staticEmbed'}";
 	var TurnToSSO = ${TurnToHelper.isSSOEnabled()};
-	var TurnToJSFeed = "${!empty(dw.system.Site.getCurrent().preferences.custom.turntoJSFeed.value) ? dw.system.Site.getCurrent().preferences.custom.turntoJSFeed.value : false}";
+	var TurnToJSFeed = true;
 
 	if(TurnToSSO) {
 		turnToConfig.registration = {
