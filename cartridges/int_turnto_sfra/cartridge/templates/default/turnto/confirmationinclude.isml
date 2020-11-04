@@ -34,6 +34,7 @@
 	<script>
 		window.onload = function () { 
 			if (document.location.href.indexOf('Order-Confirm') > 0) {
+				TurnToFeed.dontSendOnDocumentReady = true;
 				TurnToFeed.addFeedPurchaseOrder({orderId:'${pdict.order.orderNumber}',email:'${pdict.order.orderEmail}',postalCode: '${pdict.order.billing.billingAddress.address.postalCode}',firstName: '${pdict.order.billing.billingAddress.address.firstName}', lastName: '${pdict.order.billing.billingAddress.address.lastName}', deliveryDate: '${dw.util.StringUtils.formatCalendar(new dw.util.Calendar(pdict.order.creationDate), "yyyy-MM-dd hh:mm:ss")}' });
 				<isloop items="${pdict.order.shipping}" var="shippingModel">
 					<isloop items="${shippingModel.productLineItems.items}" var="item">
