@@ -235,7 +235,7 @@ function process( product, parameters, stepExecution )
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
 					virtualparentcode : product.isMaster() ? TurnToHelper.replaceNull(product.getID(), "") : '',
 					categorypathjson :	categoryPathJSON,
-					members :			bundledProductsArray,
+					members :			"",
 					brand :				product.getBrand() ? product.getBrand() : '',
 					mpn :				mpn,
 					isbn :				isbn,
