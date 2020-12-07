@@ -1,4 +1,4 @@
- var system = require( 'dw/system' );
+var system = require( 'dw/system' );
 var catalog = require( 'dw/catalog' );
 var job = require( 'dw/job' ); 
 var io = require( 'dw/io' );
