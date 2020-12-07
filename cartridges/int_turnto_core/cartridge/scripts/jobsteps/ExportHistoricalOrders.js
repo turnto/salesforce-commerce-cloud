@@ -42,7 +42,7 @@ var run = function run() {
 		
 		Logger.info("Starting ExportHistoricalOrders run");
 
-		// Load input Parameters test
+		// Load input Parameters
 		var exportFileName = args.ExportFileName;
 
 		// Test mandatory parameters
