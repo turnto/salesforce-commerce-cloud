@@ -32,23 +32,29 @@ var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
  * @returns {dw.system.Status} The exit status for the job step
  */
 var run = function run() {
-
+	
 	try {
 		var args = arguments[0];
 
 		if (args.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
+		
+		Logger.info("Starting ExportHistoricalOrders run");
 
-		// Load input Parameters
+		// Load input Parameters test
 		var exportFileName = args.ExportFileName;
 
 		// Test mandatory parameters
 		if (empty(exportFileName)) {
 			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Export File Name = (' + exportFileName + ')');
 		}
+		
+		Logger.info("[debug] - exportFileName - "+exportFileName);
 
 		var historicalOrderDays : Integer = Site.getCurrent().getCustomPreferenceValue('turntoHistoricalOrderDays');
+		
+		Logger.info("[debug] - historicalOrderDays - "+historicalOrderDays);
 
 		if (empty(historicalOrderDays)) {
 			return new Status(Status.ERROR, 'ERROR', 'Mandatory site preference "turntoHistoricalOrderDays" is missing. Export File Name = (' + exportFileName + ')');
@@ -60,6 +66,8 @@ var run = function run() {
 		//loop through all allowed locales per site
 		for each(var currentLocale in TurnToHelper.getAllowedLocales()) {
 
+			Logger.info("[debug] - locale - "+currentLocale);
+			
 			try {
 				// Create a TurnTo directory if one doesn't already exist
 				var turntoDir : File = new File(impexPath + "/TurnTo" + "/" + currentLocale);
@@ -84,7 +92,11 @@ var run = function run() {
 				request.setLocale(currentLocale);
 
 				try {
+					Logger.info("[debug] - starting orders");
+					var i = 0;
 					while (orders.hasNext()) {
+						Logger.info("[debug] - writing orders - order "+i);
+						++i;
 						var order : Order = orders.next();
 						//using the order writer helper, write the product data
 						OrderWriterHelper.writeOrderData(order, fileWriter, currentLocale);
@@ -100,6 +112,7 @@ var run = function run() {
 				if (fileWriter != null) {
 					fileWriter.close();
 				}
+				Logger.info("[debug] - end");
 			}
 		}
 	} catch(exception) {
