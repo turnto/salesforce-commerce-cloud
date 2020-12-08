@@ -68,10 +68,12 @@ function getTotalCount( parameters, stepExecution )
 function read( parameters, stepExecution )
 {
 	try {
+		var useVariants = ServiceFactory.getUseVariantsPreference();
 		//Return next product
-		if( products.hasNext() ) {
+		if( products && products.hasNext() ) {
 			tempProduct = products.next();
-			if (tempProduct.isVariant()) {
+			//do not return a product if use variants site preference is false and the product is a variant
+			if (!useVariants && tempProduct.isVariant()) {
 				return '';
 			}
 			return tempProduct;
@@ -233,7 +235,7 @@ function process( product, parameters, stepExecution )
 					category : 			'', //Leaving blank because CATEGORYPATHJSON is populated
 					keywords : 			keywords,
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
-					virtualparentcode : product.isMaster() ? TurnToHelper.replaceNull(product.getID(), "") : '',
+					virtualparentcode : product.isVariant() ? product.masterProduct.ID : product.ID,
 					categorypathjson :	categoryPathJSON,
 					members :			bundledProductsArray,
 					brand :				product.getBrand() ? product.getBrand() : '',
