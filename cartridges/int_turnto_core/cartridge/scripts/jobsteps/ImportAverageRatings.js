@@ -81,7 +81,7 @@ var run = function run() {
 	
 									product.custom.turntoAverageRating = rating;
 									product.custom.turntoReviewCount = reviewCount;
-									product.custom.turntoRelatedReviewCount = reviewCount;
+									product.custom.turntoRelatedReviewCount = relatedReviewCount;
 									product.custom.turntoCommentCount = commentCount;
 	
 									txn.commit();
