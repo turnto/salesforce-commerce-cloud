@@ -291,7 +291,7 @@ function process( product, parameters, stepExecution )
 					category : 			'', //Leaving blank because CATEGORYPATHJSON is populated
 					keywords : 			TurnToHelper.replaceNull(keywords, ""),
 					instock : 			product.getOnlineFlag() ? "Y" : "N",
-					virtualparentcode : product.isVariant() ? product.masterProduct.ID : "",
+					virtualparentcode : product.getBrand() ? product.getBrand() : "",
 					categorypathjson :	categoryPathJSON ? categoryPathJSON : '',
 					members :			TurnToHelper.replaceNull(bundledProductsArray, ""),
 					brand :				product.getBrand() ? product.getBrand() : '',
