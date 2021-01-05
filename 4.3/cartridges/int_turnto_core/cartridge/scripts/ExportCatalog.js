@@ -60,10 +60,11 @@ function exportCatalog() {
     	fileWriter.writeLine("SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA");	    	
 		var products : SeekableIterator =  ProductMgr.queryAllSiteProducts();		
 		try {
+			var useVariants = ServiceFactory.getUseVariantsPreference();
 			while (products.hasNext()) {			 
 				var product : Product = products.next();
 				
-				if (product.isVariant()) {
+				if (product.isVariant() && !useVariants) {
 					continue;
 				}
 				
@@ -131,9 +132,8 @@ function exportCatalog() {
 				fileWriter.write("\t");
 				
 				// VIRTUALPARENTCODE								
-				if (product.isMaster()) {
-					fileWriter.write(replaceNull(product.getID(), ""));
-				}
+				var vpc = product.isVariant() ? product.masterProduct.ID : product.ID
+				fileWriter.write(replaceNull(vpc, ""));
 				fileWriter.write("\t");
 				
 				// CATEGORYPATHJSON
