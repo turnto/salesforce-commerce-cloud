@@ -111,6 +111,12 @@ var OrderWriterHelper = {
 			fileWriter.write("\t");
 		
 			//DELIVERYDATE
+			var shipment = productLineItem.getShipment();
+			if (shipment) {
+				var deliveryDate : Date = shipment.getCreationDate();
+				var deliveryDateString = dw.util.StringUtils.formatCalendar(new Calendar(deliveryDate), "yyyy-MM-dd hh:mm:ss");
+				fileWriter.write(deliveryDateString);
+			}
 			fileWriter.write("\t");
 		
 			//NICKNAME
