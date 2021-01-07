@@ -11,3 +11,7 @@ cartridges/app_storefront_core/
 cartridges/app_storefront_base/
 cartridges/modules/
 cartridges/bm_app_storefront_base/
+.DS_Store
+.project
+.settings
+*.swp
