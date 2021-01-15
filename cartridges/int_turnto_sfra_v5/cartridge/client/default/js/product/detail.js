@@ -1,5 +1,6 @@
 'use strict';
-var base = require('./detail');
+var base = require('base/product/base');
+var teasersModules = require('../teaser/teasersModules');
 
 module.exports = {
     availability: base.availability,
@@ -55,9 +56,11 @@ module.exports = {
                 $('.product-id').text(response.data.product.id);
                 $('.product-detail:not(".bundle-item")').data('pid', response.data.product.id);
             }
-            TurnToCmd('set', {'sku': response.data.product.id});
+            // eslint-disable-next-line no-undef
+            TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
+            teasersModules.loadTeaserCounts(response.data.product.id);
+            // TurnToCmd('gallery.set', { skus: [response.data.product.id] });
         });
-        
     },
     updateAddToCart: function () {
         $('body').on('product:updateAddToCart', function (e, response) {
@@ -97,27 +100,45 @@ module.exports = {
         });
     },
     sizeChart: function () {
-        var $sizeChart = $('.size-chart-collapsible');
         $('.size-chart a').on('click', function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            if ($sizeChart.is(':empty')) {
+            var $prodSizeChart = $(this).closest('.size-chart').find('.size-chart-collapsible');
+            if ($prodSizeChart.is(':empty')) {
                 $.ajax({
                     url: url,
                     type: 'get',
                     dataType: 'json',
                     success: function (data) {
-                        $sizeChart.append(data.content);
+                        $prodSizeChart.append(data.content);
                     }
                 });
             }
-            $sizeChart.toggleClass('active');
+            $prodSizeChart.toggleClass('active');
         });
 
+        var $sizeChart = $('.size-chart-collapsible');
         $('body').on('click touchstart', function (e) {
             if ($('.size-chart').has(e.target).length <= 0) {
                 $sizeChart.removeClass('active');
             }
         });
-    }
+    },
+    copyProductLink: function () {
+        $('body').on('click', '#fa-link', function () {
+            event.preventDefault();
+            var $temp = $('<input>');
+            $('body').append($temp);
+            $temp.val($('#shareUrl').val()).select();
+            document.execCommand('copy');
+            $temp.remove();
+            $('.copy-link-message').attr('role', 'alert');
+            $('.copy-link-message').removeClass('d-none');
+            setTimeout(function () {
+                $('.copy-link-message').addClass('d-none');
+            }, 3000);
+        });
+    },
+
+    focusChooseBonusProductModal: base.focusChooseBonusProductModal()
 };

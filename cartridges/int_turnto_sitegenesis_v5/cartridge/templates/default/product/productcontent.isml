@@ -284,3 +284,9 @@
 	</isif>
 </isif>
 <link rel="stylesheet" href="${URLUtils.staticURL('/css/sitegen.css')}" />
+<iscomment>TurnTo script execute</iscomment>
+<script>
+	TurnToCmd('set', {'sku': '${pdict.Product.ID}'});
+</script>
+<script src="${URLUtils.staticURL('js/teasers.js')}" async></script>
+<script src="${URLUtils.staticURL('js/teasersProductGrid.js')}" async></script>

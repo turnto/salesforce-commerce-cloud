@@ -6,10 +6,10 @@
  * This file acts as a wrapper for the TurnTo Feed Download Service calls
  */
 /* API Modules */
-var dwsvc = require('dw/svc');
+var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 
 /* Script Modules */
-var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 /* Constants */
 var serviceName = ServiceFactory.SERVICES.IMPORT;
@@ -20,24 +20,18 @@ var serviceName = ServiceFactory.SERVICES.IMPORT;
  *
  */
 var serviceConfig = {
-    createRequest: function (service, requestDataContainer) {
-        var request;
-
-        service.URL = requestDataContainer.path;
-        service.setOutFile(requestDataContainer.outfile);
-        service.requestMethod = requestDataContainer.requestMethod;
-
-        return request;
+    createRequest: function (svc, params) {
+        svc.setURL(params.path);
+        svc.setOutFile(params.outfile);
+        svc.setRequestMethod(params.requestMethod);
+        return params;
     },
-    parseResponse: function (service, response) {
-        return response.text;
-    },
-    mockCall: function (service, request) {
-        return {};
+    parseResponse: function (svc, client) {
+        return client.text;
     },
     filterLogMessage: function (msg) {
         return msg;
     }
 };
 
-module.exports = dwsvc.LocalServiceRegistry.createService(serviceName, serviceConfig);
+module.exports = LocalServiceRegistry.createService(serviceName, serviceConfig);

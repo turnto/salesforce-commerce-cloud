@@ -1,5 +1,3 @@
-<iscomment>This is a copy of the set details template from the app_storefront_base cartridge, but it includes the custom TurnTo widgets template include</iscomment>
-
 <isdecorate template="common/layout/page">
 
     <isscript>

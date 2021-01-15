@@ -1,5 +1,9 @@
 <div class="row tile-body-footer">
     <div class="ratings col-xs-12 col-sm-6">
-		<isinclude template="product/components/ttTeasersProductGrid"/>
+        <iscomment>
+        <span class="sr-only">${Resource.msgf('label.product.ratings', 'common', null, product.rating)}</span>
+        <isinclude template="product/components/ratings" />
+        </iscomment>
+        <isinclude template="turnto/components/ttTeasersProductGrid"/>
     </div>
 </div>
