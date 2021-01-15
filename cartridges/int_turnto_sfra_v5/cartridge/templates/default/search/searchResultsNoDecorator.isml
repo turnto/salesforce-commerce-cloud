@@ -1,39 +1,39 @@
-<iscomment>This is a copy of the search results no decorator template from the app_storefront_base cartridge, but it includes the custom TurnTo checkout comments pinboard teaser and comments pinboard teaser logic</iscomment>
-
 <isif condition="${pdict.reportingURLs && pdict.reportingURLs.length}">
     <isinclude template="reporting/reportingUrls" />
 </isif>
 
-<div class="hero slant-down search-banner">
-    <!--- If no image, default is specified in search.scss > .search-banner --->
-    <isif condition="${pdict.productSearch.bannerImageUrl}">
-        style="background-image: url(${pdict.productSearch.bannerImageUrl})"
-    </isif>
-	
-	<iscomment>TurnTo Comments Pinboard Teaser</iscomment>
-	<isinclude template="product/components/ttCommentsPinboardTeaser"/>
-    
-    <h1 class="header page-title">
-        <isif condition="${pdict.productSearch.isCategorySearch}">
-            ${pdict.productSearch.category.name}
-        <iselse>
-            ${Resource.msg('label.header.banner', 'search', null)}
+<!--- Search Results Banner --->
+<isif condition="${pdict.productSearch.isCategorySearch}">
+    <div class="hero slant-down search-banner"
+        <!--- If no image, default is specified in search.scss > .search-banner --->
+        <isif condition="${pdict.productSearch.bannerImageUrl}">
+            style="background-image: url(${pdict.productSearch.bannerImageUrl})"
         </isif>
-    </h1>
-</div>
+    >
+        <iscomment>TurnTo Comments Pinboard Teaser</iscomment>
+        <isinclude template="product/components/ttCommentsPinboardTeaser"/>
+        
+        <h1 class="header page-title">
+            ${pdict.productSearch.category.name}
+        </h1>
+    </div>
+<iselse>
+    <isslot id="search-result-banner-m" description="Banner for search results" context="global" />
+</isif>
+
 <div class="container search-results">
     <div class="row search-nav">
         <isif condition="${!pdict.productSearch.isCategorySearch}">
             <div class="nav-tabs-wrapper">
                 <ul class="nav nav-tabs nav-fill" role="tablist">
 
-                    <li class="nav-item">
-                        <a class="nav-link active product-search" href="#product-search-results" data-toggle="tab" role="tab" aria-expanded="true">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active product-search" href="#product-search-results" aria-controls="product-search-results" data-toggle="tab" role="tab" aria-selected="true" tabindex="0" id="product-tab">
                             ${Resource.msg('tab.nav.search.productsresults', 'search', null)}
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link content-search" href="#content-search-results-pane" data-toggle="tab" role="tab" aria-expanded="false"
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link content-search" href="#content-search-results-pane" aria-controls="content-search-results-pane" data-toggle="tab" role="tab" aria-selected="false" tabindex="-1" id="articles-tab"
                             data-url="${URLUtils.url('Search-Content', 'q', pdict.productSearch.searchKeywords, 'startingPage', 0)}">
                             ${Resource.msg('tab.nav.search.artclesresults', 'search', null)}
                         </a>
@@ -44,7 +44,7 @@
     </div>
     <div class="row">
         <div class="tab-content col-12">
-            <div class="tab-pane container active" id="product-search-results" role="tabpanel" aria-expanded="true">
+            <div class="tab-pane container active" id="product-search-results" role="tabpanel" aria-labelledby="product-tab">
 
                     <isif condition="${pdict.productSearch.productIds.length > 0}">
                         <div class="row grid-header">
@@ -76,24 +76,22 @@
                         </div>
 
                         <div class="col-sm-12 col-md-9">
-                            <div class="container">
-                                <!--- Selected filters bar --->
-                                <div class="row filter-bar d-md-none">
-                                    <isinclude template="search/filterBar" />
-                                </div>
+                             <!--- Selected filters bar --->
+                             <div class="row filter-bar d-md-none">
+                                 <isinclude template="search/filterBar" />
+                             </div>
 
-                                <!--- Product Grid --->
-                                <div class="row product-grid" itemtype="http://schema.org/SomeProducts" itemid="#product">
-                                    <isinclude template="search/productGrid" />
-                                </div>
-                            </div>
+                             <!--- Product Grid --->
+                             <div class="row product-grid" itemtype="http://schema.org/SomeProducts" itemid="#product">
+                                 <isinclude template="search/productGrid" />
+                             </div>
                         </div>
                     </div>
                 </isif>
             </div>
             <!--- Content Grid --->
-            <div class="tab-pane container" id="content-search-results-pane" role="tabpanel" aria-expanded="false">
-                <div id="content-search-results" class="row content-grid-header justify-content-center"></div>
+            <div class="tab-pane container" id="content-search-results-pane" role="tabpanel" aria-labelledby="articles-tab">
+                <div id="content-search-results" class="content-grid-header"></div>
             </div>
 
         </div>

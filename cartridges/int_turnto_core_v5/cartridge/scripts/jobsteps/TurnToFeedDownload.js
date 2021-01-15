@@ -11,14 +11,13 @@
  *   IsDisabled : Boolean Mark the step as disabled. This will skip the step and returns a OK status
  */
 
-var Site = require('dw/system/Site');
 var File = require('dw/io/File');
 var Status = require('dw/system/Status');
 
-/*Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
-var ServiceFactory = require('~/cartridge/scripts/util/ServiceFactory');
-var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadService');
+/* Script Modules */
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
+var FeedDownloadService = require('*/cartridge/scripts/service/feedDownloadService');
 
 /**
  * @function
@@ -27,58 +26,61 @@ var FeedDownloadService = require('~/cartridge/scripts/service/FeedDownloadServi
  * @returns {dw.system.Status} The exit status for the job step
  */
 var run = function run() {
+    try {
+        var args = arguments[0];
 
-	try {
-		var args = arguments[0];
+        if (args.isDisabled) {
+            return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
+        }
 
-		if (args.isDisabled) {
-			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
-		}
-
-		//Load input Parameter
-		var xmlName = args.XMLName;
+		// Load input Parameter
+        var xmlName = args.XMLName;
 
 		// Test mandatory parameter
-		if (empty(xmlName)) {
-			return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. XML Name = (' + xmlName + ')');
-		}
+        if (empty(xmlName)) {
+            return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. XML Name = (' + xmlName + ')');
+        }
 
 		// Get the file path where the output will be stored
-		var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+        var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 		// Create a TurnTo directory if one doesn't already exist
-		var turntoDir = new File(impexPath + "/TurnTo");
-		if (!turntoDir.exists()) {
-			turntoDir.mkdir();
-		}
+        var turntoDir = new File(impexPath + '/TurnTo');
+        if (!turntoDir.exists()) {
+            turntoDir.mkdir();
+        }
 
-		//Loop through all allowed locales per site
-		for each(var currentLocale in TurnToHelper.getAllowedLocales()) {
+		// Loop through all allowed locales per site
+        var locales = TurnToHelper.getAllowedLocales();
+        for (var i = 0; i < locales.length; i++) {
+            // Create a directory for current Locale if one doesn't already exist
+            var currentLocaleDir = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i]);
+            if (!currentLocaleDir.exists()) {
+                currentLocaleDir.mkdir();
+            }
 
-			//"turnto-skuaveragerating.xml" OR "turnto-ugc.xml"
-			var file = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + xmlName);
+			// "turnto-skuaveragerating.xml" OR "turnto-ugc.xml"
+            var file = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i] + File.SEPARATOR + xmlName);
 
-			//If the file exists, replace it
-			if (file.exists()) {
-				file.remove();
-			}
+			// If the file exists, replace it
+            if (file.exists()) {
+                file.remove();
+            }
 
-			var requestDataContainer = ServiceFactory.buildFeedDownloadRequestContainer(xmlName, currentLocale, file);
-			
-			//false is returned if a site or auth key is missing for the current locale
-			if(!requestDataContainer) {
-				continue;
-			}
-			var feedDownloadResult = FeedDownloadService.call(requestDataContainer);
-		
-			if (!feedDownloadResult.isOk()) {
-				return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name: ' + xmlName + ' with URL: ' + requestDataContainer.path);
-			}
-		}
-	} catch(exception) {
-		var error = exception.message;
-		return new Status(Status.ERROR, 'ERROR', 'FAILED Download failed with catch block. Error message: ' + exception.message);
-	}
-	return new Status(Status.OK, 'OK', 'Download successful.');
+            var requestDataContainer = ServiceFactory.buildFeedDownloadRequestContainer(xmlName, locales[i], file);
+
+			// false is returned if a site or auth key is missing for the current locale
+            if (requestDataContainer) {
+                var feedDownloadResult = FeedDownloadService.call(requestDataContainer);
+
+                if (!feedDownloadResult.isOk()) {
+                    return new Status(Status.ERROR, 'ERROR', 'FAILED receiving file with XML file name: ' + xmlName + ' with URL: ' + requestDataContainer.path);
+                }
+            }
+        }
+    } catch (exception) {
+        return new Status(Status.ERROR, 'ERROR', 'FAILED Download failed with catch block. Error message: ' + exception.message);
+    }
+    return new Status(Status.OK, 'OK', 'Download successful.');
 };
 
 exports.Run = run;

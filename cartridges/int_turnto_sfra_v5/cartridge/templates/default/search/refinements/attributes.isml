@@ -1,5 +1,3 @@
-<iscomment>This is a copy of the attributes template from the app_storefront_base cartridge, but it includes the custom TurnTo average ratings logic</iscomment>
-
 <ul class="values content">
     <isloop items="${refinement.values}" var="refinementValue">
         <isif condition="${refinementValue.type === 'color'}">
@@ -7,7 +5,7 @@
         <iselseif condition="${refinementValue.type === 'size'}">
             <isinclude template="search/refinements/attributes/size"/>
         <iselseif condition="${refinementValue.id == 'turntoAverageRating'}">
-            <isinclude template="product/components/ttRatingRefinement"/>
+            <isinclude template="turnto/components/ttRatingRefinement"/>
         <iselse>
             <isinclude template="search/refinements/attributes/boolean"/>
         </isif>
