@@ -50,6 +50,8 @@ function process( product, parameters, stepExecution ) {
 		return '';
 	}
 
+	var logging = parameters.Logging;
+
 	//Iterate all locales and reset TurnTo product attributes to an empty string;
 	for each(currentLocale in allowedLocales) {
 
@@ -70,7 +72,9 @@ function process( product, parameters, stepExecution ) {
 	
 			txn.commit();
 		} catch(e) {
-			Logger.error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+			if (logging) {
+				Logger.error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+			}
 		}
 	}
 	return;

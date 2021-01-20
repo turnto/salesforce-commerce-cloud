@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="TurnToExportCatalog" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToExportCatalogFeed_v5" type="custom.TurnToExportCatalogFeed_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportCatalog</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToFeedUpload_v5" type="custom.TurnToFeedUpload_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="FilePattern">exportCatalog.*</parameter>
+                    <parameter name="NoFileFoundStatus">OK</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="TurnToHistoricalOrderExportOngoing" priority="0">
+        <description>Exports all orders placed in the last X days, where X is the value of the "Historical Order Days" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToExportOrderFeedOngoing_v5" type="custom.TurnToExportOrderFeedOngoing_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportFileName">exportOrders</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToFeedUpload_v5" type="custom.TurnToFeedUpload_v5" enforce-restart="false">
+                <description>3</description>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="FilePattern">exportOrders.*</parameter>
+                    <parameter name="NoFileFoundStatus">OK</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="TurnToHistoricalOrderExportSpecificDate" priority="0">
+        <description>Exports all orders from X date, where X is the value of the "Historical Order Date" Custom Site Preference in the "TurnTo Feeds" preference group</description>
+        <parameters/>
+        <split sequential="false">
+            <flow>
+                <context site-id="RefArchGlobal"/>
+                <template-ref template-id="template_150"/>
+            </flow>
+            <flow>
+                <context site-id="RefArchGlobal"/>
+                <template-ref template-id="template_150"/>
+            </flow>
+            <flow-template template-id="template_150">
+                <step step-id="TurnToExportOrderFeedSpecificDate_v5" type="custom.TurnToExportOrderFeedSpecificDate_v5" enforce-restart="false">
+                    <description/>
+                    <parameters>
+                        <parameter name="ExportFileName">exportOrders</parameter>
+                    </parameters>
+                </step>
+            </flow-template>
+        </split>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToFeedUpload_v5" type="custom.TurnToFeedUpload_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ServiceID">turnto.http.export.orders.post</parameter>
+                    <parameter name="PostFileLocation">/feedUpload/postfile</parameter>
+                    <parameter name="FilePattern">exportOrders.*</parameter>
+                    <parameter name="NoFileFoundStatus">OK</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="TurnToImportAverageRatings" priority="1">
+        <description>Imports the average rating feed from TurnTo, which is used to show the average stars on the product tiles</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToFeedDownload_v5" type="custom.TurnToFeedDownload_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="XMLName">/turnto-skuaveragerating.xml</parameter>
+                    <parameter name="NoFileFoundStatus">OK</parameter>
+                    <parameter name="IsDisabled">false</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToResetData_v5" type="custom.TurnToResetData_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="DataType">ratings</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToImportRatingsFeed_v5" type="custom.TurnToImportRatingsFeed_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImportFileName">turnto-skuaveragerating.xml</parameter>
+                    <parameter name="ProductNotFoundStatus">ERROR</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+    <job job-id="TurnToImportUserGeneratedContent" priority="0">
+        <description>Import the user generated content XML feed from TurnTo, which can be used to make the content searchable by the storefront</description>
+        <parameters/>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToFeedDownload_v5" type="custom.TurnToFeedDownload_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="XMLName">/turnto-ugc.xml</parameter>
+                    <parameter name="NoFileFoundStatus">OK</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToResetData_v5" type="custom.TurnToResetData_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="DataType">ugc</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <flow>
+            <context site-id="RefArchGlobal"/>
+            <step step-id="TurnToImportUGCFeed_v5" type="custom.TurnToImportUGCFeed_v5" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ImportFileName">turnto-ugc.xml</parameter>
+                    <parameter name="Logging">true</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers/>
+    </job>
+
+</jobs>
