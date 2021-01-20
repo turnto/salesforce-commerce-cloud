@@ -11,5 +11,5 @@
 <isscript>
 	var assets = require('*/cartridge/scripts/assets.js');
 	assets.addJs('/js/teasers.js');
-	assets.addJs('/js/teasersProductGrid.js');
+	assets.addJs('/js/teasersproductgrid.js');
 </isscript>

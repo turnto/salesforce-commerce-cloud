@@ -1,6 +1,6 @@
 <isdecorate template="common/layout/page">
     <!-- dwMarker="content" dwContentID="${pdict.content.UUID}" -->
-    <isprint value="${pdict.content.body}" encoding="htmlcontent" />
+    <isprint value="${pdict.content.body}" encoding="off" />
     <iscomment>TurnTo Visual Content Pinboard</iscomment>
     <isinclude template="product/components/ttVCPinboard"/>
     <!-- END_dwmarker -->
