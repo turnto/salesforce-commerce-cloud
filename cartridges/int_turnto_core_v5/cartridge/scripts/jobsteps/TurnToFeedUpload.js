@@ -36,10 +36,11 @@ var run = function run() {
         }
 
 		// Load input Parameters
-        var serviceID = args.ServiceID;
-        var postFileLocation = args.PostFileLocation;
-        var filePattern = args.FilePattern;
-        var noFilesFoundStatus = args.NoFileFoundStatus;
+		var serviceID = args.ServiceID;
+		var postFileLocation = args.PostFileLocation;
+		var filePattern = args.FilePattern;
+		var noFilesFoundStatus = args.NoFileFoundStatus;
+		var logging = args.Logging;
 
 		// Test mandatory parameters
         if (empty(serviceID) || empty(postFileLocation) || empty(filePattern)) {
@@ -95,8 +96,10 @@ var run = function run() {
                         } else {
 							// feedUploadService
                             var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain);
-                            Logger.info('Post file location: ' + postFileLocation);
-                            Logger.info('Export file: ' + file);
+							if (logging) {
+								Logger.info('Post file location: ' + postFileLocation);
+								Logger.info('Export file: ' + file);
+							}
 
 							// call service, returns success or error
                             var feedUploadResult = FeedUploadService.call(requestDataContainer);

@@ -62,6 +62,7 @@ function process(product, parameters) {
     if (!empty(product)) {
         var currentProduct = product;
 
+		var logging = parameters.Logging;
 		// Iterate all locales and reset TurnTo product attributes to an empty string;
         allowedLocales.forEach(function (currentLocale) {
 			// set the request to the current locale so localized attributes will be used
@@ -81,7 +82,9 @@ function process(product, parameters) {
                 Transaction.commit();
             } catch (e) {
                 Transaction.rollback();
-                TurnToHelper.getLogger().error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+				if (logging) {
+					Logger.error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+				}
             }
         });
     }

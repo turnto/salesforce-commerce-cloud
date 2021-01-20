@@ -42,7 +42,8 @@ var run = function run() {
         }
 
 		// Load input Parameters
-        var importFileName = args.ImportFileName;
+		var importFileName = args.ImportFileName;
+		var logging = args.Logging;
 
 		// Test mandatory parameters
         if (empty(importFileName)) {
@@ -110,8 +111,10 @@ var run = function run() {
                         } catch (e) {
                             Transaction.rollback();
                             error = true;
-                            Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
-                        }
+							if (logging) {
+								Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
+							}
+						}
                     }
                 }
             } finally {
