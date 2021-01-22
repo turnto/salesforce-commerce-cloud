@@ -29,6 +29,9 @@ var OrderWriterHelper = {
 		
 		var useVariants : Boolean = Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
 		
+		// boolean for whether all items in the order have shipped yet - constant SHIPPING_STATUS_SHIPPED equals 2
+		var allItemsShipped : Boolean = (order.getShippingStatus() == 2)
+		
 		for (var i : Number = 0; i < products.size(); i++) {
 			var productLineItem : ProductLineItem = products[i];
 			var product : Product = productLineItem.getProduct();
@@ -112,7 +115,8 @@ var OrderWriterHelper = {
 		
 			//DELIVERYDATE
 			var shipment = productLineItem.getShipment();
-			if (shipment) {
+			// Only write DELIVERYDATE if the item has a shipment, and the whole order has shipped
+			if (shipment && allItemsShipped) {
 				var deliveryDate : Date = shipment.getCreationDate();
 				var deliveryDateString = dw.util.StringUtils.formatCalendar(new Calendar(deliveryDate), "yyyy-MM-dd hh:mm:ss");
 				fileWriter.write(deliveryDateString);
@@ -132,3 +136,4 @@ var OrderWriterHelper = {
 }
 
 module.exports = OrderWriterHelper;
+
