@@ -1,3 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCommentsPDPEnable')}">
-	<div id="TurnToChatterContent"></div>
-</isif>

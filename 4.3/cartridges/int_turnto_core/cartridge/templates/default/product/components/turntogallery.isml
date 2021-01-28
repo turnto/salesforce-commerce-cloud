@@ -1,5 +1,0 @@
-<isif condition="${!isQuickView}">
-	<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoVisualGalleryEnable')}">
-		<div id="TurnToGalleryContent"></div>
-	</isif>
-</isif>
