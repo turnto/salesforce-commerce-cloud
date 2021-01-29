@@ -29,8 +29,9 @@ var OrderWriterHelper = {
 		
 		var useVariants : Boolean = Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
 		
-		// boolean for whether all items in the order have shipped yet - constant SHIPPING_STATUS_SHIPPED equals 2
-		var allItemsShipped : Boolean = (order.getShippingStatus() == 2)
+		// boolean for whether all items in the order have shipped yet - constant ORDER_STATUS_COMPLETED equals 5
+		// https://documentation.b2c.commercecloud.salesforce.com/DOC3/index.jsp?topic=%2Fcom.demandware.dochelp%2FDWAPI%2Fscriptapi%2Fhtml%2Fapi%2Fclass_dw_order_Order.html
+		var allItemsShipped : Boolean = (order.getStatus() == 5)
 		
 		for (var i : Number = 0; i < products.size(); i++) {
 			var productLineItem : ProductLineItem = products[i];
@@ -120,6 +121,11 @@ var OrderWriterHelper = {
 				var deliveryDate : Date = shipment.getCreationDate();
 				var deliveryDateString = dw.util.StringUtils.formatCalendar(new Calendar(deliveryDate), "yyyy-MM-dd hh:mm:ss");
 				fileWriter.write(deliveryDateString);
+			} else {
+			// TurnTo v4.3 default behavior is to set DELIVERY_DATE value equal to the value for PURCHASE_DATE if no DELIVERY_DATE
+			// value is present. As such, if the order has not been shipped, we actually want to set DELIVERY_DATE super far out
+			// so the client doesn't receive an RSE for an order that hasn't shipped yet
+				fileWriter.write("2200-01-01 00:00:00"); // Set ~80 years out
 			}
 			fileWriter.write("\t");
 		

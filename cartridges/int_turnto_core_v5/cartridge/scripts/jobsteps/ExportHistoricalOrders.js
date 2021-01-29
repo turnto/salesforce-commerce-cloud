@@ -64,8 +64,8 @@ var run = function run() {
 				var dateLimit = new Calendar();
 				dateLimit.add(Calendar.DAY_OF_YEAR, historicalOrderDays*-1);
 				
-				var query : String = "creationDate >= {0} AND customerLocaleID = {1}";
-				var orders : SeekableIterator =  OrderMgr.searchOrders(query, "creationDate asc", dateLimit.getTime(), currentLocale);
+				var query : String = "lastModified >= {0} AND customerLocaleID = {1}";
+				var orders : SeekableIterator =  OrderMgr.searchOrders(query, "lastModified asc", dateLimit.getTime(), currentLocale);
 
 				if (orders.count == 0) {
 					// Do not create the file writer and continue to next locale
