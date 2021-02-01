@@ -82,7 +82,7 @@ var run = function run() {
 								var product = ProductMgr.getProduct(productNode.attribute('sku'));
 								if(product != null) {
 									if (logging) {
-										dw.system.Logger.info('INFO product is found, product id=' + product.ID);
+										dw.system.Logger.info('INFO product is found, product id = {0}' + product.ID);
 									}
 									var reviewCount = parseInt(productNode.attribute("review_count"));
 									var relatedReviewCount = parseInt(productNode.attribute("related_review_count"));
@@ -102,12 +102,13 @@ var run = function run() {
 
 								} else {
 									if (productNotFoundStatus == 'ERROR') {
+										error = true;
 										if (logging) {
-											dw.system.Logger.error('ERROR product is NULL, product id=' + productNode.attribute('sku'));
+											dw.system.Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
 										}
 									} else {
 										if (logging) {
-											dw.system.Logger.info('INFO product is NULL, product id=' + productNode.attribute('sku'));
+											dw.system.Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));
 										}
 									}
 								}
