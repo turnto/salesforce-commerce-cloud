@@ -107,7 +107,12 @@ var TurnToHelper = {
 	 */
 	getAllowedLocales: function() {
 		//loop through site enabled locales to generate a catalog export for each locale		
-		var siteAllowedLocales = Site.getCurrent().getAllowedLocales();
+		var allSites = Site.getAllSites();
+		var allSiteLocales = [];
+		foreach (allSites as site) {
+			var siteAllowedLocales site.getAllowedLocales();
+			allSiteLocales[] = siteAllowedLocales;
+		}
 		var adjustedAllowedLocales = [];
 		
 		for each(var locale in siteAllowedLocales) {
@@ -116,7 +121,7 @@ var TurnToHelper = {
 				adjustedAllowedLocales.push(locale);
 			}
 		}
-		
+
 		return adjustedAllowedLocales;
 	},
 
