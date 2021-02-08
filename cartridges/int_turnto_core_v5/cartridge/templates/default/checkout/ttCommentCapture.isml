@@ -1,2 +1,6 @@
 <iscomment>TurnTo Comment Capture For Order Confirmation Page</iscomment>
+<div>
+<h3>This is a disclaimer</h3>
 <div id="tt-comment-capture"></div>
+<p>Please be aware that....</p>
+</div>
