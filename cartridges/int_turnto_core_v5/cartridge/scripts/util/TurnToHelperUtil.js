@@ -109,19 +109,22 @@ var TurnToHelper = {
 		//loop through site enabled locales to generate a catalog export for each locale		
 		var allSites = Site.getAllSites();
 		var allSiteLocales = [];
-		foreach (allSites as site) {
-			var siteAllowedLocales site.getAllowedLocales();
-			allSiteLocales[] = siteAllowedLocales;
-		}
-		var adjustedAllowedLocales = [];
+		var siteAllowedLocales = [];
+		allSites.toArray().forEach(function (site) {
+			var siteAllowedLocales = site.getAllowedLocales();
+			siteAllowedLocales.toArray().forEach(function (locale) {
+				allSiteLocales.push(locale);
+			});
+		});
 		
-		for each(var locale in siteAllowedLocales) {
+		var adjustedAllowedLocales = [];
+		allSiteLocales.forEach(function (locale){
 			//If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
 			if(TurnToHelper.hasSiteAndAuthKeyPerLocale(locale)) {
 				adjustedAllowedLocales.push(locale);
 			}
-		}
-
+		});
+		
 		return adjustedAllowedLocales;
 	},
 
@@ -247,4 +250,5 @@ var TurnToHelper = {
 }
 
 module.exports = TurnToHelper;
+
 

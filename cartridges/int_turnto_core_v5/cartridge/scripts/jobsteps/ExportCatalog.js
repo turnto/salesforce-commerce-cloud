@@ -32,7 +32,7 @@ function beforeStep( parameters, stepExecution )
 
 		hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
 		allowedLocales = TurnToHelper.getAllowedLocales();
-
+		
 		//instantiate new hash map to store the locale file writers
 		hashMapOfFileWriters = new HashMap();
 
@@ -45,7 +45,7 @@ function beforeStep( parameters, stepExecution )
 			// create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
 			var locales = key.locales.replace(' ', '').split(',');
 			var isAllowedLocale =  true;
-
+			
 			for each(var locale in locales) {
 				// check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
 				if(allowedLocales.indexOf(locale) <= -1) {
@@ -56,7 +56,8 @@ function beforeStep( parameters, stepExecution )
 
 			// if the one or more locales are not allowed then continue to the next key and do not create a file writer
 			if(!isAllowedLocale) {
-				continue;
+				//skip this for now
+				//continue;
 			}
 
 			// if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
@@ -71,7 +72,7 @@ function beforeStep( parameters, stepExecution )
 			}
 
 			// Initialize a file writer for output with the current key
-			var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
+			var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + Site.getCurrent().ID + '.txt');
 			catalogExportFileWrite.createNewFile();
 
 			var currentFileWriter = new FileWriter(catalogExportFileWrite);
@@ -246,10 +247,10 @@ function process( product, parameters, stepExecution )
 		}
 
 		//Iterate all locales, generate and return a simple mapping object with locale 
-		//and formatted output such as ```{ "en_us": "Row data for English US", ...}``` 
-		
+		//and formatted output such as ```{ "en_us": "Row data for English US", ...}``` 		
 		for each(var key in  hashMapOfKeys.values()) {
 			var locales = key.locales;
+			
 			//CATEGORY
 			//Leaving blank because CATEGORYPATHJSON is populated
 
@@ -379,3 +380,4 @@ module.exports = {
 		write: write,
 		afterStep: afterStep
 	};
+
