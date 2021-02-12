@@ -45,7 +45,7 @@ function beforeStep( parameters, stepExecution )
 			// create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
 			var locales = key.locales.replace(' ', '').split(',');
 			var isAllowedLocale =  true;
-			
+
 			for each(var locale in locales) {
 				// check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
 				if(allowedLocales.indexOf(locale) <= -1) {
@@ -134,7 +134,6 @@ function process( product, parameters, stepExecution )
 	var json = {};
 
 	try {
-
 		//Non-localized data
 		// IMAGEURL
 		var image : MediaFile = product.getImage("large", 0);
@@ -250,6 +249,7 @@ function process( product, parameters, stepExecution )
 		//and formatted output such as ```{ "en_us": "Row data for English US", ...}``` 		
 		for each(var key in  hashMapOfKeys.values()) {
 			var locales = key.locales;
+			var urls = key.urls;
 			
 			//CATEGORY
 			//Leaving blank because CATEGORYPATHJSON is populated
@@ -270,11 +270,16 @@ function process( product, parameters, stepExecution )
 			}
 			for each (var l in localesArray) {
 				request.setLocale(l);
-				var url = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
+				var localeUrl = urls[l];
+				if (localeUrl) {
+					productURL = localeUrl.concat('/', product.getID(), '.html');
+				} else {
+					productURL = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
+				}
 				var item = {
 						title:			TurnToHelper.replaceNull(product.getName(), ""),
-						itemUrl:		url,
-						mobileItemUrl:	url
+						itemUrl:		productURL,
+						mobileItemUrl:	productURL
 				}
 				localeData[l] = item;
 			}
