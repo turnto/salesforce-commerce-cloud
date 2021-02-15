@@ -20,7 +20,7 @@
 							//siteKey: ${siteKey},
 							title: '${item.productName.replace(/'/g, "\\'")}', 
 							url:'${URLUtils.http('Product-Show', 'pid', item.id)}', 
-							sku:'${item.id}',
+							sku:'${(item.getProduct().isVariant()) ? item.getProduct().getMasterProduct().getID() : item.getProduct().getID()}',
 						}<isif condition="${!itemStatus.last}">,</isif>
 					</isloop>
 				</isloop>
