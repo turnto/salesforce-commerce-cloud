@@ -32,12 +32,15 @@ var run = function run() {
 	try {
 		var error = false;
 		var args = arguments[0];
+
 		if (args.IsDisabled) {
 			return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
 		}
 
 		// Load input Parameters
 		var importFileName = args.ImportFileName;
+		var productNotFoundStatus = args.ProductNotFoundStatus;
+		var logging = args.Logging;
 
 		// Test mandatory parameters
 		if (empty(importFileName)) {
@@ -78,7 +81,9 @@ var run = function run() {
 								var productNode : XML = xmlStreamReader.readXMLObject();
 								var product = ProductMgr.getProduct(productNode.attribute('sku'));
 								if(product != null) {
-									dw.system.Logger.info('INFO product is found, product id=' + product.ID);
+									if (logging) {
+										dw.system.Logger.info('INFO product is found, product id = {0}' + product.ID);
+									}
 									var reviewCount = parseInt(productNode.attribute("review_count"));
 									var relatedReviewCount = parseInt(productNode.attribute("related_review_count"));
 									var commentCount = parseInt(productNode.attribute("comment_count"));
@@ -96,11 +101,22 @@ var run = function run() {
 									});
 
 								} else {
-									dw.system.Logger.error('ERROR product is NULL, product id=' + productNode.attribute('sku'));
+									if (productNotFoundStatus == 'ERROR') {
+										error = true;
+										if (logging) {
+											dw.system.Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
+										}
+									} else {
+										if (logging) {
+											dw.system.Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));
+										}
+									}
 								}
 							} catch ( e ) {
 								error = true;
-								Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
+								if (logging) {
+									Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
+								}
 							}
 						}
 					}
@@ -137,3 +153,4 @@ var run = function run() {
 }
 
 exports.Run = run;
+
