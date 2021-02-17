@@ -147,21 +147,23 @@ function process(product) {
     try {
 		// Non-localized data
 		// IMAGEURL
-        var image = product.getImage('large', 0);
-        var imageURL = '';
-        if (image == null) {
-            image = product.getImage('medium', 0);
-        }
-        if (image == null) {
-            image = product.getImage('small', 0);
-        }
-        if (image == null) {
-            image = product.getImage('swatch', 0);
-        }
-        if (image != null) {
-            imageURL = image.getAbsURL().toString();
-        }
-
+		var image : MediaFile = product.getImage("hi-res", 0);
+		var imageURL = '';
+		if (image == null) {
+			image = product.getImage("large", 0);
+		}
+		if (image == null) {
+			image = product.getImage("medium", 0);
+		}
+		if (image == null) {
+			image = product.getImage("small", 0);
+		}
+		if (image == null) {
+			image = product.getImage("swatch", 0);
+		}
+		if (image != null) {
+			imageURL = image.getAbsURL().toString();
+		}
 		// PRICE
         var price = product.getPriceModel().getPrice();
         var priceStr = price.getValue().toString();
