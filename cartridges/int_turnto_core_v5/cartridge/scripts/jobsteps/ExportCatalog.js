@@ -289,7 +289,7 @@ function process( product, parameters, stepExecution )
 					title:				TurnToHelper.replaceNull(product.getName(), ""),
 					price : 			TurnToHelper.replaceNull(priceStr, ""),
 					currency : 			TurnToHelper.replaceNull(price.getCurrencyCode(), ""),
-					active : 			product.getAvailabilityModel().isOrderable() ? "Y" : "N",
+					active : 			product.getOnlineFlag() ? "Y" : "N",
 					itemurl:			URLUtils.http('Product-Show', 'pid', product.getID()).toString(),
 					category : 			'', //Leaving blank because CATEGORYPATHJSON is populated
 					keywords : 			TurnToHelper.replaceNull(keywords, ""),
