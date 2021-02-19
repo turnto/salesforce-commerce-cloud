@@ -104,11 +104,11 @@ var run = function run() {
 									} else {
 										if (productNotFoundStatus == 'ERROR') {
 											if (logging) {
-												dw.system.Logger.error('ERROR product is NULL, product id=' + productNode.attribute('sku'));
+												dw.system.Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
 											}
 										} else {
 											if (logging) {
-												dw.system.Logger.info('INFO product is NULL, product id=' + productNode.attribute('sku'));
+												dw.system.Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));
 											}
 										}
 									}
@@ -122,7 +122,7 @@ var run = function run() {
 						}
 					}
 				} else {
-                    Logger.error('FAILED: File not found. File Name: ' + importfile.fullPath + ' for Locale: ' + currentLocale);
+                    Logger.error('FAILED: File not found. File Name: {0} for Locale: {1}', importfile.fullPath, currentLocale);
                 }
 			} finally {
 				if (xmlStreamReader != null) {

@@ -37,7 +37,7 @@ var TurnToHelper = {
                 }
             }
         } catch (e) {
-            TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', e.message);
         }
         return preferenceValue;
     },
@@ -69,7 +69,7 @@ var TurnToHelper = {
                 }
             }
         } catch (e) {
-            TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', e.message);
         }
 
         return false;

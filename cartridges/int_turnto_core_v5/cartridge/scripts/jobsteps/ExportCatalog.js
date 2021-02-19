@@ -319,7 +319,7 @@ function process(product) {
             json[locales] = localejson;
         });
     } catch (e) {
-        Logger.error('exportCatalog.js has failed on the process step with the following error: ' + e.message);
+        Logger.error('exportCatalog.js has failed on the process step with the following error: {0}', e.message);
     }
     return json;
 }
@@ -360,7 +360,7 @@ function write(json) {
             }
         });
     } catch (e) {
-        Logger.error('exportCatalog.js has failed on the write step with the following error: ' + e.message);
+        Logger.error('exportCatalog.js has failed on the write step with the following error: {0}', e.message);
     }
 }
 
@@ -383,7 +383,7 @@ function afterStep() {
             }
         });
     } catch (e) {
-        Logger.error('exportCatalog.js has failed on the afterStep step with the following error: ' + e.message);
+        Logger.error('exportCatalog.js has failed on the afterStep step with the following error: {0}', e.message);
     }
 }
 
