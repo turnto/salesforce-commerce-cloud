@@ -1,1 +1,13 @@
-.DS_Store
+gulpfile.js
+webpack.config.js
+package-lock.json
+dw.json
+node_modules/*
+workspace/
+.vscode/
+bin/*
+cartridges/app_storefront_controllers/
+cartridges/app_storefront_core/
+cartridges/app_storefront_base/
+cartridges/modules/
+cartridges/bm_app_storefront_base/

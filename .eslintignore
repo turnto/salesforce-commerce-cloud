@@ -1,0 +1,10 @@
+webpack.config.js
+workspace/
+documentation/
+node_modules/
+cartridges/*/cartridge/static/
+cartridges/app_storefront_core
+cartridges/app_storefront_controllers
+cartridges/bm_app_storefront_base
+cartridges/app_storefront_base
+cartridges/modules
