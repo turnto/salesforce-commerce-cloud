@@ -1,8 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true}">
-	<script type="text/javascript">
-		TurnToCmd('set', {'sku': '${pdict.product.id}'});
-		<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoVCGalleryEnabled')}">
-			TurnToCmd('gallery.set', {skus: ['${pdict.product.id}']});
-		</isif>
-	</script>
-</isif>

@@ -1,5 +1,3 @@
-<iscomment>This is a copy of the bundle details template from the app_storefront_base cartridge, but it includes the custom TurnTo widgets template include</iscomment>
-
 <isdecorate template="common/layout/page">
 
     <isscript>
@@ -18,7 +16,7 @@
     <isset name="product" value="${pdict.product}" scope="page" />
     <isobject object="${product.raw}" view="detail" />
 
-    <div class="container product-detail" data-pid="${product.id}" itemscope itemtype="http://schema.org/Product">
+    <div class="container product-detail" data-pid="${product.id}">
         <div class="row">
             <div class="col-12">
                 <!---Breadcrumbs--->
@@ -29,7 +27,7 @@
                 <!-- Product Name -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1 class="product-name" itemprop="name">${product.productName}</h1>
+                        <h1 class="product-name">${product.productName}</h1>
                     </div>
                 </div>
             </div>
@@ -61,33 +59,36 @@
 
         <hr>
 
-        <div class="col-12 col-sm-6 offset-sm-6 bundle-footer">
-            <!-- Quantity -->
-            <isset name="product" value="${bundle}" scope="page" />
-            <isinclude template="product/components/quantity" />
+        <div class="row">
+            <div class="col-12 col-sm-6 offset-sm-6 bundle-footer">
+                <!-- Quantity -->
+                <isset name="loopState" value="${{count: 1}}" scope="page" />
+                <isset name="product" value="${bundle}" scope="page" />
+                <isinclude template="product/components/quantity" />
 
-            <!-- Availability -->
-            <div class="availability clearfix global-availability" data-ready-to-order="${bundle.readyToOrder}">
-                <isinclude template="product/components/availability" />
-            </div>
-
-            <iscomment>TurnTo Top Comment Include</iscomment>
-            <isset name="topCommentSkus" value="${product.id}" scope="page" />
-            <isinclude template="product/components/ttTopComment"/>
-
-            <div class="col-12 prices-add-to-cart-actions">
-                <!-- Prices -->
-                <div class="prices">
-                    <isset name="price" value="${product.price}" scope="page" />
-                    <isinclude template="product/components/pricing/main" />
+                <!-- Availability -->
+                <div class="availability clearfix global-availability" data-ready-to-order="${bundle.readyToOrder}">
+                    <isinclude template="product/components/availabilityBundleContainer" />
                 </div>
 
-                <!-- Cart and [Optionally] Apple Pay -->
-                <isinclude template="product/components/addToCartGlobal" />
-            </div>
+                <iscomment>TurnTo Top Comment Include</iscomment>
+                <isset name="topCommentSkus" value="${product.id}" scope="page" />
+                <isinclude template="product/components/ttTopComment"/>
 
-            <!-- Social Sharing Icons -->
-            <isinclude template="product/components/socialIcons" />
+                <div class="col-12 prices-add-to-cart-actions">
+                    <!-- Prices -->
+                    <div class="prices">
+                        <isset name="price" value="${product.price}" scope="page" />
+                        <isinclude template="product/components/pricing/main" />
+                    </div>
+
+                    <!-- Cart and [Optionally] Apple Pay -->
+                    <isinclude template="product/components/addToCartGlobal" />
+                </div>
+
+                <!-- Social Sharing Icons -->
+                <isinclude template="product/components/socialIcons" />
+            </div>
         </div>
 
         <isinclude template="product/components/descriptionAndDetails" />
@@ -95,10 +96,9 @@
         <div class="recommendations">
             <isslot id="product-recommendations-m" description="Recommended products" context="global" />
         </div>
-
-        <iscomment>TurnTo Visual Content Gallery Row</iscomment>
-        <isinclude template="product/components/ttVCGallery"/>
         
+        <iscomment>TurnTo Visual Content Gallery Row</iscomment>
+        <isinclude template="product/components/ttVCGallery"/>        
         <iscomment>TurnTo Widgets</iscomment>
         <isinclude template="product/widgets"/>
     </div>

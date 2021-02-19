@@ -1,5 +1,3 @@
-<iscomment>This is a copy of the homepage template from the app_storefront_base cartridge, but it includes the custom TurnTo pinboard template include</iscomment>
-
 <isdecorate template="common/layout/page">
     <isscript>
         var assets = require('*/cartridge/scripts/assets.js');
@@ -37,9 +35,9 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="hpEmailSignUp" placeholder="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}" aria-label="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-primary">${Resource.msg('button.form.emailsignup', 'homePage', null)}</button>
+                            <input type="text" class="form-control" name="hpEmailSignUp" placeholder="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}" aria-label="${Resource.msg('placeholdertext.form.emailsignup', 'homePage', null)}" />
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-primary subscribe-email" data-href="${URLUtils.url('EmailSubscribe-Subscribe')}">${Resource.msg('button.form.emailsignup', 'homePage', null)} </button>
                             </span>
                         </div>
                     </div>
