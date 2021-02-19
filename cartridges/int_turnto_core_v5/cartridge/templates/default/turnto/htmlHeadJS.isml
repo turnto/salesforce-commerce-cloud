@@ -1,48 +1,99 @@
 <iscomment>This template includes the turnToConfig obejct configuration for dynamic page IDs.
-		   NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
+NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
 
-<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/turnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
 <isif condition="${pageID == 'pdp-page'}">
-	<isset name="product_sku" value="${TurnToHelper.getProductSku(product.id)}" scope="page"/>
-	<span hidden class="productsku"><isprint value="${product_sku}"/></span>
+    <isif condition="${Resource.msg('turnTo.isSFRA','turnTo','false') === 'true'}">
+        <isset name="productId" value="${product.id}" scope="page" />
+    <iselse>
+        <isset name="productId" value="${pdict.Product.ID}" scope="page" />
+    </isif>
+    <isset name="product_sku" value="${TurnToHelper.getProductSku(productId)}" scope="page"/>
+    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
+<iselse>
+    <isset name="product_sku" value="" scope="page"/>
+    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
 </isif>
-<isif condition="${pageID != 'pdp-page'}">
-	<isset name="product_sku" value="" scope="page"/>
-	<span hidden class="productsku"><isprint value="${product_sku}"/></span>
-</isif>
-
 
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
+	var ssoConfig = {
+			userDataFn: function(contextObj) {
+				$.ajax({
+        			url: "${URLUtils.url('SpeedFlex-UserData')}",
+        			type: 'post',
+                	dataType: 'json',
+            		success: function (data) {
+						if (data.isUserLoggedIn) {
+							TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
+						} else {
+							window.location.href = data.redirectUrl;
+						}
+			        },
+            		error: function (err) {}
+	            });
+			},
+			loggedInDataFn: function(contextObj) {
+				$.ajax({
+                	url: "${URLUtils.url('SpeedFlex-LoggedInData')}",
+            		type: 'post',
+                	dataType: 'json',
+            		success: function (data) {
+						TurnToCmd('loggedInDataFnDone', { context: contextObj, loggedInData: data.userDataToken });
+			        },
+                	error: function (err) {}
+			    });
+			},
+			logout: function() {
+				$.ajax({
+                	url: "${URLUtils.url('SpeedFlex-LoggedOut')}",
+            		type: 'get',
+                	dataType: 'json',
+            		success: function (data) {},
+                	error: function (err) {}
+			    });
+			}
+		};
+
+	<isset name="baseSiteVer" value="${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}" scope="page"/>
+	var extensionVersion = {
+		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','') + ' ' + baseSiteVer}",
+		sfccPlatform: "${Resource.msg('turnTo.version.sfccPlatform','turnTo','')}",
+		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}",
+	};
 
 	if('${pageID}' == 'pdp-page') {
 		var turnToConfig = {
-			locale: "${request.getLocale()}",
-			pageId: "pdp-page",
-			sku: "${product_sku}",
-			gallery: {
-				// Add one or more SKUs as an array.
-				// skus: []
-			},
-			//optional top comments feature, refer to "v5 Top Comment Widget"
-			topComments: {
-				// tags: [],
-				// onFinish: function() {}
-			}, 
-			//optional comments display feature, refer to "v5 Comments Display"
-			chatter: {
-				// onFinish: function() {}
-			}
-		};
+				locale: "${request.getLocale()}",
+				pageId: "pdp-page",
+				sku: "${product_sku}",
+				gallery: {
+					// Add one or more SKUs as an array.
+					// skus: []
+				},
+				//optional top comments feature, refer to "v5 Top Comment Widget"
+				topComments: {
+					// tags: [],
+					// onFinish: function() {}
+				}, 
+				//optional comments display feature, refer to "v5 Comments Display"
+				chatter: {
+					// onFinish: function() {}
+				},
+				extensionVersion: extensionVersion,
+				sso: ssoConfig
+			};
 	} else if ('${pageID}' == 'order-confirmation-page') {
-			var turnToConfig = {
-					locale: "${request.getLocale()}",
-					pageId: "order-confirmation-page",
-					sku: "${product_sku}"
+		var turnToConfig = {
+				locale: "${request.getLocale()}",
+				pageId: "order-confirmation-page",
+				sku: "${product_sku}",
+				extensionVersion: extensionVersion,
+				sso: ssoConfig
 			}
 	} else if ('${pageID}' == 'search-page') {
 		var turnToConfig = {
@@ -54,17 +105,33 @@
 					// tags: [],
 					// brands: [],
 					// onFinish: function(){}
-				}
-		}
+				},
+				extensionVersion: extensionVersion,
+				sso: ssoConfig
+			}
 	} else if ('${pageID}' == 'pinboard-page') {
 		var turnToConfig = {
 			locale: "${request.getLocale()}",
 			pageId: "vc-pinboard-page",
 			vcPinboard: {
 				// Add SKUs, tags, brands, or any combination.
-			}
+			},
+			extensionVersion: extensionVersion,
+			sso: ssoConfig
 		};
-	}
-	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push( arguments)};
+	}  else {
+		var turnToConfig = {
+				locale: "${request.getLocale()}",
+				pageId: "non-defined-page",
+				commentsPinboard: {
+					// skus: [],
+					// tags: [],
+					// brands: [],
+					// onFinish: function(){}
+				},
+				extensionVersion: extensionVersion,
+				sso: ssoConfig
+			};
+	} 
+	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push(arguments)};
 </script>
-

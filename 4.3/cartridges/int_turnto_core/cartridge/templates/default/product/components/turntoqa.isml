@@ -1,7 +1,0 @@
-<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoQAEnable')}">
-	<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoSetupTypeQA') == 'dynamicEmbed'}">
-		<div id="TurnToContent"></div>
-	<iselse/>
-		<isinclude url="${URLUtils.url('TurnTo-GetProductQA') + '?pid=' + pdict.Product.ID}" />
-	</isif>
-</isif>

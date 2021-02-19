@@ -1,5 +1,3 @@
-<iscomment>This is a copy of the cat landing template from the app_storefront_base cartridge, but it includes the custom TurnTo pinboard template includes</iscomment>
-
 <isdecorate template="common/layout/page">
 
     <isscript>
@@ -7,8 +5,8 @@
         assets.addCss('/css/search.css');
     </isscript>
 
-	<isinclude template="product/components/ttPinboard"/>
-	
+    <isinclude template="product/components/ttPinboard"/>
+
     <isslot
         id="cat-landing-slotbanner-m"
         context="category"
@@ -18,7 +16,7 @@
 
     <div class="container">
         <div class="secondary-content">
-        	<isinclude template="product/components/ttPinboard"/>
+            <isinclude template="product/components/ttPinboard"/>
             <isslot id="cat-landing-slotbottom-m" context="category" description="First slot below the Category Banner" context-object="${pdict.category}"/>
             <isslot id="cat-landing-slotbottom2-m" context="category" description="Second slot below the Category Banner" context-object="${pdict.category}"/>
         </div>
