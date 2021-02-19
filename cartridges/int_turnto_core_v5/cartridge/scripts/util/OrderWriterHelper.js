@@ -23,13 +23,13 @@ var OrderWriterHelper = {
 	 */
     writeOrderData: function (order, fileWriter, currentLocale) {
 		// Get all of the product line items for the order
-		var products : Collection = order.getAllProductLineItems();
+		var products = order.getAllProductLineItems();
 		
-		var useVariants : Boolean = Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
+		var useVariants = Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') == true;
 		
-		for (var i : Number = 0; i < products.size(); i++) {
-			var productLineItem : ProductLineItem = products[i];
-			var product : Product = productLineItem.getProduct();
+		for (var i = 0; i < products.size(); i++) {
+			var productLineItem = products[i];
+			var product = productLineItem.getProduct();
 			if (product == null){
 				continue;
 			}
@@ -44,7 +44,7 @@ var OrderWriterHelper = {
 		
 			// ORDERDATE
 			// Format: 2011-08-25 20:50:15
-			var creationDate : Date = order.getCreationDate();
+			var creationDate = order.getCreationDate();
 			var creationStr = dw.util.StringUtils.formatCalendar(new Calendar(creationDate), "yyyy-MM-dd hh:mm:ss");
 			fileWriter.write(creationStr);
 			fileWriter.write("\t");
@@ -65,7 +65,7 @@ var OrderWriterHelper = {
 			fileWriter.write("\t");
 		
 			//ZIP
-			var billingAddress : OrderAddress = order.getBillingAddress();
+			var billingAddress = order.getBillingAddress();
 			fileWriter.write(billingAddress.getPostalCode());
 			fileWriter.write("\t");
 		
@@ -86,7 +86,10 @@ var OrderWriterHelper = {
 			fileWriter.write("\t");
 		
 			//ITEMIMAGEURL
-			var image : MediaFile = product.getImage("large", 0);
+			var image = product.getImage("hi-res", 0);
+			if (image == null){
+				image = product.getImage("large", 0);
+			}
 			if (image == null){
 				image = product.getImage("medium", 0);
 			}
@@ -111,7 +114,7 @@ var OrderWriterHelper = {
 			//DELIVERYDATE
 			var shipment = productLineItem.getShipment();
 			if (shipment) {
-				var deliveryDate : Date = shipment.getCreationDate();
+				var deliveryDate = shipment.getCreationDate();
 				var deliveryDateString = dw.util.StringUtils.formatCalendar(new Calendar(deliveryDate), "yyyy-MM-dd hh:mm:ss");
 				fileWriter.write(deliveryDateString);
 			}

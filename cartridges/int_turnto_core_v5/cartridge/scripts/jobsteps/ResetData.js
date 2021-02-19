@@ -83,7 +83,7 @@ function process(product, parameters) {
             } catch (e) {
                 Transaction.rollback();
 				if (logging) {
-					Logger.error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+					TurnToHelper.getLogger().error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
 				}
             }
         });

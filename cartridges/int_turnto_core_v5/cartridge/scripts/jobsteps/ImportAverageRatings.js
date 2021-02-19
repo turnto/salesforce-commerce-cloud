@@ -17,6 +17,7 @@ var XMLStreamReader = require('dw/io/XMLStreamReader');
 var XMLStreamConstants = require('dw/io/XMLStreamConstants');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var Logger = require('dw/system/Logger');
+var Transaction = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
@@ -63,7 +64,7 @@ var run = function run() {
         TurnToHelper.getAllowedLocales().forEach(function (currentLocale) {
             var importfile = null;
 			try {
-				var importfile : File = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName);//"turnto-skuaveragerating.xml");
+				var importfile = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName);//"turnto-skuaveragerating.xml");
 				
 	            if (importfile.exists()) {
 					// set the request to the current locale so localized attributes will be used
@@ -84,9 +85,9 @@ var run = function run() {
 										if (logging) {
 											dw.system.Logger.info('INFO product is found, product id = {0}', product.ID);
 										}
-	                                    var reviewCount = parseInt(productNode.attribute('review_count'), 10);
-	                                    var relatedReviewCount = parseInt(productNode.attribute('related_review_count'), 10);
-	                                    var commentCount = parseInt(productNode.attribute('comment_count'), 10);
+										var reviewCount = parseInt(productNode.attribute('review_count'), 10);
+										var relatedReviewCount = parseInt(productNode.attribute('related_review_count'), 10);
+										var commentCount = parseInt(productNode.attribute('comment_count'), 10);
 										//Round the rating to the nearest 0.5
 										var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
 										rating = rating.toString();
