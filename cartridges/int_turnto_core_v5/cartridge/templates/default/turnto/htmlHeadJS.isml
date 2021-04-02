@@ -119,7 +119,14 @@ NOTE: The template only features base functionality out of the box, in order to 
 			extensionVersion: extensionVersion,
 			sso: ssoConfig
 		};
-	}  else {
+	} else if ('${pageID}' == 'landing-page') {
+        var turnToConfig = {
+            locale: "${request.getLocale()}",
+            pageId: "email-landing-page",
+            extensionVersion: extensionVersion,
+            sso: ssoConfig
+        };
+    }else {
 		var turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "non-defined-page",
