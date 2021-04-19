@@ -35,48 +35,48 @@ var run = function run() {
             return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
         }
 
-		// Load input Parameters
-		var serviceID = args.ServiceID;
-		var postFileLocation = args.PostFileLocation;
-		var filePattern = args.FilePattern;
-		var noFilesFoundStatus = args.NoFileFoundStatus;
-		var logging = args.Logging;
+        // Load input Parameters
+        var serviceID = args.ServiceID;
+        var postFileLocation = args.PostFileLocation;
+        var filePattern = args.FilePattern;
+        var noFilesFoundStatus = args.NoFileFoundStatus;
+        var logging = args.Logging;
 
-		// Test mandatory parameters
+        // Test mandatory parameters
         if (empty(serviceID) || empty(postFileLocation) || empty(filePattern)) {
             return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Service ID = (' + serviceID + ') Post File Location = (' + postFileLocation + ') FilePattern = (' + filePattern + ')');
         }
 
-		// Get the file path where the output will be stored
+        // Get the file path where the output will be stored
         var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
-		// Create a TurnTo directory if one doesn't already exist
+        // Create a TurnTo directory if one doesn't already exist
         var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo');
 
         if (!turntoDir.exists()) {
             turntoDir.mkdirs();
         }
 
-		// Retrieve HashMap of Keys which contain auth and site keys
+        // Retrieve HashMap of Keys which contain auth and site keys
         var siteAndAuthKeys = TurnToHelper.getHashMapOfKeys();
 
-		// Loop through all allowed locales per site
+        // Loop through all allowed locales per site
         var allowedLocales = TurnToHelper.getAllowedLocales();
         for (var i = 0; i < allowedLocales.length; i++) {
             var locale = allowedLocales[i];
-			// List all files in the specific locale folder
+            // List all files in the specific locale folder
             var exportFiles = new File(turntoDir.getFullPath() + File.SEPARATOR + locale);
             exportFiles = exportFiles.listFiles();
 
-			// If no files are found, go to the next locale
+            // If no files are found, go to the next locale
             if (exportFiles) {
-				// filter out files which match the file pattern
+                // filter out files which match the file pattern
                 var filteredExportFiles = exportFiles.clone();
                 for (var k = 0; k < exportFiles.size(); k++) {
                     var file = exportFiles[k];
                     if (file.getName().match(filePattern) == null) {
                         filteredExportFiles.remove(file);
                     } else {
-						// Localized siteKey and authKey, need to download per locale, added to the content body of the service request
+                        // Localized siteKey and authKey, need to download per locale, added to the content body of the service request
                         var ttSiteSet = siteAndAuthKeys.entrySet();
                         var siteKey = null;
                         var authKey = null;
@@ -90,18 +90,18 @@ var run = function run() {
                             }
                         }
 
-						// If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
+                        // If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
                         if (empty(siteKey) || empty(authKey) || empty(domain)) {
                             Logger.error('FAILED Site and/or Auth key or domain is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + file.name + ' domain -> ' + domain);
                         } else {
-							// feedUploadService
+                            // feedUploadService
                             var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain);
-							if (logging) {
-								Logger.info('Post file location: ' + postFileLocation);
-								Logger.info('Export file: ' + file);
-							}
+                            if (logging) {
+                                Logger.info('Post file location: ' + postFileLocation);
+                                Logger.info('Export file: ' + file);
+                            }
 
-							// call service, returns success or error
+                            // call service, returns success or error
                             var feedUploadResult = FeedUploadService.call(requestDataContainer);
 
                             if (feedUploadResult.error) {
@@ -109,7 +109,7 @@ var run = function run() {
                             }
 
                             if (feedUploadResult.isOk()) {
-								// Archive file
+                                // Archive file
                                 var archiveFile = new File(turntoDir.fullPath + File.SEPARATOR + 'Archive');
 
                                 if (!archiveFile.exists()) {
