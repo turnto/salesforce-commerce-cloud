@@ -93,7 +93,7 @@ var run = function run() {
                                         var decimal = parseInt(rating.substring(2, 3), 10);
                                         rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0');
                                     
-                                        txn.wrap(function(){
+                                        Transaction.wrap(function(){
                                             product.custom.turntoAverageRating = rating;
                                             product.custom.turntoReviewCount = reviewCount;
                                             product.custom.turntoRelatedReviewCount = relatedReviewCount;
