@@ -17,6 +17,7 @@ var XMLStreamReader = require('dw/io/XMLStreamReader');
 var XMLStreamConstants = require('dw/io/XMLStreamConstants');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var Logger = require('dw/system/Logger');
+var Transaction = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
