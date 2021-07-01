@@ -18,8 +18,8 @@ var Calendar = require('dw/util/Calendar');
 var Status = require('dw/system/Status');
 
 /* Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
-var OrderWriterHelper = require('*/cartridge/scripts/util/orderWriterHelper');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
 
 /**
  * @function
