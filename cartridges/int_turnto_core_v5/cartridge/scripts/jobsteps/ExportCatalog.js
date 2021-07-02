@@ -60,7 +60,7 @@ function beforeStep(parameters) {
             // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
             if (isAllowedLocale) {
                 areAllowedLocales = true;
-
+                                
                 // create a folder with one or more locales
                 var folderAndFilePatternName = locales.join().replace(',', '_');
                 var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locale);
@@ -302,7 +302,7 @@ function process(product) {
                 category: '', // Leaving blank because CATEGORYPATHJSON is populated
                 keywords: TurnToHelper.sanitizeStr(keywords, ' '),
                 instock: product.getOnlineFlag() ? 'Y' : 'N',
-                virtualparentcode: product.isVariant() ? product.masterProduct.ID : '',
+                virtualparentcode: product.isVariant() ? product.masterProduct.ID : product.ID,
                 categorypathjson: categoryPathJSON || '',
                 members: TurnToHelper.replaceNull(bundledProductsArray, ''),
                 brand: product.getBrand() ? product.getBrand() : '',
