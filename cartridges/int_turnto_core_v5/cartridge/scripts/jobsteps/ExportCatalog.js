@@ -302,7 +302,7 @@ function process(product) {
                 category: '', // Leaving blank because CATEGORYPATHJSON is populated
                 keywords: TurnToHelper.sanitizeStr(keywords, ' '),
                 instock: product.getOnlineFlag() ? 'Y' : 'N',
-                virtualparentcode: product.isVariant() ? product.masterProduct.ID : '',
+                virtualparentcode: product.isVariant() ? product.masterProduct.ID : product.ID,
                 categorypathjson: categoryPathJSON || '',
                 members: TurnToHelper.replaceNull(bundledProductsArray, ''),
                 brand: product.getBrand() ? product.getBrand() : '',
