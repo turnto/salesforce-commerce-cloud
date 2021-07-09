@@ -10,8 +10,8 @@ var Site = require('dw/system/Site');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
-var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
 // Globally scoped variables
 var products;
@@ -290,11 +290,16 @@ function process(product) {
 
             var defaultLocale = Site.getCurrent().getDefaultLocale();
             request.setLocale(defaultLocale);
+            
+            var productTitle = TurnToHelper.sanitizeStr(product.getName(), ' ');
+            productTitle = productTitle.replace("\t", ""); // Remove tabs
+            productTitle = productTitle.replace("\n", ""); // Remove new lines
+            
             // build locale JSON
             var localejson = {
                 sku: TurnToHelper.replaceNull(product.getID(), ''),
                 imageurl: imageURL,
-                title: TurnToHelper.sanitizeStr(product.getName(), ' '),
+                title: productTitle,
                 price: TurnToHelper.replaceNull(priceStr, ''),
                 currency: TurnToHelper.replaceNull(price.getCurrencyCode(), ''),
                 active: product.getAvailabilityModel().isOrderable() ? 'Y' : 'N',

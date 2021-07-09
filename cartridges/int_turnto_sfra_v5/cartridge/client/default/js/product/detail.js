@@ -58,7 +58,7 @@ module.exports = {
                 $('.product-detail:not(".bundle-item")').data('pid', response.data.product.id);
             }
             // eslint-disable-next-line no-undef
-            if (serviceFactory.getUseVaraintsPreference()) {
+            if (serviceFactory.getUseVariantsPreference()) {
                 // Only run if "useVariants" setting is enabled
                 TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
                 teasersModules.loadTeaserCounts(response.data.product.id);
