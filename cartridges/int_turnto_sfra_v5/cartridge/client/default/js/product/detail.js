@@ -63,6 +63,7 @@ module.exports = {
                 TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
                 teasersModules.loadTeaserCounts(response.data.product.id);
                 TurnToCmd('gallery.set', { skus: [response.data.product.id] });
+                TurnToCmd('initialize')
             }
             
         });
