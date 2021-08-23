@@ -88,6 +88,9 @@ var TurnToHelper = {
         var adjustedAllowedLocales = [];
 
         Object.keys(siteAllowedLocales).forEach(function (key) {
+            if (key == "default") {
+                key = "en_US"
+            }
 			// If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
             if (TurnToHelper.hasSiteAndAuthKeyPerLocale(siteAllowedLocales[key])) {
                 adjustedAllowedLocales.push(siteAllowedLocales[key]);
