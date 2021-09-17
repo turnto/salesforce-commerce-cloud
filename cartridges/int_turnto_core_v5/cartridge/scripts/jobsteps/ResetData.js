@@ -5,7 +5,7 @@ var Status = require('dw/system/Status');
 var Transaction = require('dw/system/Transaction');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 
 // Globally scoped variables
 var products;
@@ -62,7 +62,7 @@ function process(product, parameters) {
     if (!empty(product)) {
         var currentProduct = product;
 
-        var logging = parameters.Logging;
+        var logging = parameters.isLoggingEnable;
         // Iterate all locales and reset TurnTo product attributes to an empty string;
         allowedLocales.forEach(function (currentLocale) {
             // set the request to the current locale so localized attributes will be used

@@ -6,7 +6,7 @@ var Encoding = require('dw/crypto/Encoding');
 var Bytes = require('dw/util/Bytes');
 
 /* Script Includes*/
-var turnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var turnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 
 /**
  * @description Encodes a string into URL Base64 safe

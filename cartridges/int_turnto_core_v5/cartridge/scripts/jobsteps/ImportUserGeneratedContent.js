@@ -22,7 +22,7 @@ var Status = require('dw/system/Status');
 var Transaction = require('dw/system/Transaction');
 
 /* Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 
 /**
  * @function
@@ -43,7 +43,7 @@ var run = function run() {
 
         // Load input Parameters
         var importFileName = args.ImportFileName;
-        var logging = args.Logging;
+        var logging = args.isLoggingEnable;
 
         // Test mandatory parameters
         if (empty(importFileName)) {

@@ -45,7 +45,19 @@ describe('int_turnto_sfra_v5/cartridge/models/product/productTile', function () 
         '*/cartridge/scripts/util/promotionCache': {
             promotions: []
         },
-        'dw/catalog/ProductSearchModel': stubSearchModel
+        '*/cartridge/scripts/helpers/productHelpers': {
+            setSearchPhrase: function () {},
+            search: function () {},
+            getProductSearchHit: function () {},
+            getProductSearchHits: function () {
+                return {
+                    next: function () {
+                        return { firstRepresentedProductID: 'someID' };
+                    }
+                };
+            },
+            count: 1
+        }
     });
     var ratingsTurnto = require('../../../../../cartridges/int_turnto_sfra_v5/cartridge/models/product/decorators/ratingsTurnto');
     var productTile = null;

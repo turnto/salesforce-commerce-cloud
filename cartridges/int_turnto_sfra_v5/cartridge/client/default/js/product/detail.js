@@ -1,9 +1,21 @@
 'use strict';
 var base = require('base/product/base');
 var teasersModules = require('../teaser/teasersModules');
-var serviceFactory = require('*/cartridge/scripts/util/ServiceFactory');
+var serviceFactory = require('*/cartridge/scripts/util/serviceFactory')
+
+/**
+ * Enable/disable UI elements
+ * @param {boolean} enableOrDisable - true or false
+ */
+function updateAddToCartEnableDisableOtherElements(enableOrDisable) {
+    $('button.add-to-cart-global').attr('disabled', enableOrDisable);
+}
 
 module.exports = {
+    methods: {
+        updateAddToCartEnableDisableOtherElements: updateAddToCartEnableDisableOtherElements
+    },
+
     availability: base.availability,
 
     addToCart: base.addToCart,
@@ -59,12 +71,10 @@ module.exports = {
             }
             // eslint-disable-next-line no-undef
             if (serviceFactory.getUseVariantsPreference()) {
-                // Only run if "useVariants" setting is enabled
                 TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
                 teasersModules.loadTeaserCounts(response.data.product.id);
                 TurnToCmd('gallery.set', { skus: [response.data.product.id] });
             }
-            
         });
     },
     updateAddToCart: function () {
@@ -76,7 +86,7 @@ module.exports = {
             var enable = $('.product-availability').toArray().every(function (item) {
                 return $(item).data('available') && $(item).data('ready-to-order');
             });
-            $('button.add-to-cart-global').attr('disabled', !enable);
+            module.exports.methods.updateAddToCartEnableDisableOtherElements(!enable);
         });
     },
     updateAvailability: function () {
