@@ -10,8 +10,8 @@ var Site = require('dw/system/Site');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
-var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 // Globally scoped variables
 var products;
@@ -147,23 +147,24 @@ function process(product) {
     try {
         // Non-localized data
         // IMAGEURL
-        var image : MediaFile = product.getImage("hi-res", 0);
+        var image = product.getImage('hi-res', 0);
         var imageURL = '';
         if (image == null) {
-            image = product.getImage("large", 0);
+            image = product.getImage('large', 0);
         }
         if (image == null) {
-            image = product.getImage("medium", 0);
+            image = product.getImage('medium', 0);
         }
         if (image == null) {
-            image = product.getImage("small", 0);
+            image = product.getImage('small', 0);
         }
         if (image == null) {
-            image = product.getImage("swatch", 0);
+            image = product.getImage('swatch', 0);
         }
         if (image != null) {
             imageURL = image.getAbsURL().toString();
         }
+
         // PRICE
         var price = product.getPriceModel().getPrice();
         var priceStr = price.getValue().toString();
@@ -281,7 +282,7 @@ function process(product) {
                 request.setLocale(l);
                 var url = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
                 var item = {
-                    title: TurnToHelper.sanitizeStr(product.getName(), ' '),
+                    title: TurnToHelper.sanitizeStr(product.getName()),
                     itemUrl: url,
                     mobileItemUrl: url
                 };
@@ -290,16 +291,11 @@ function process(product) {
 
             var defaultLocale = Site.getCurrent().getDefaultLocale();
             request.setLocale(defaultLocale);
-            
-            var productTitle = TurnToHelper.sanitizeStr(product.getName(), ' ');
-            productTitle = productTitle.replace("\t", ""); // Remove tabs
-            productTitle = productTitle.replace("\n", ""); // Remove new lines
-            
             // build locale JSON
             var localejson = {
                 sku: TurnToHelper.replaceNull(product.getID(), ''),
                 imageurl: imageURL,
-                title: productTitle,
+                title: TurnToHelper.sanitizeStr(product.getName()),
                 price: TurnToHelper.replaceNull(priceStr, ''),
                 currency: TurnToHelper.replaceNull(price.getCurrencyCode(), ''),
                 active: product.getAvailabilityModel().isOrderable() ? 'Y' : 'N',

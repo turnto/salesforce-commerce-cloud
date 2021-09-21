@@ -47,9 +47,9 @@ var TurnToHelper = {
 	 * @name getLocalizedSitePreferenceFromRequestLocale
 	 * @return {string} The localized value of the Site Preference specified by the preferenceName parameter
 	 */
-	getLocalizedSitePreferenceFromRequestLocale: function () {
-		return TurnToHelper.getLocalizedTurnToPreferenceValue(request.locale);
-	},
+    getLocalizedSitePreferenceFromRequestLocale: function () {
+        return TurnToHelper.getLocalizedTurnToPreferenceValue(request.locale);
+    },
 
 	/**
 	 * @function
@@ -117,10 +117,12 @@ var TurnToHelper = {
 	 * @param {string} replace - The string to use as a replacement
 	 * @returns {string} - replace if str is null, otherwise str
 	 */
-    sanitizeStr: function (str, replace) {
+    sanitizeStr: function (str, replace = '') {
+        // If string is null, return empty string
         var clnStr = TurnToHelper.replaceNull(str, '');
-        var replaceStr = replace || '';
-        return clnStr.replace(/\s+/g, replaceStr);
+        // Replace any whitespaces with the given string
+        clnStr = clnStr.replace(/\s+/g, replace)
+        return clnStr;
     },
 
 	/**

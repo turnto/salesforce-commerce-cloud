@@ -17,9 +17,9 @@ var Logger = require('dw/system/Logger');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
-var FeedUploadService = require('*/cartridge/scripts/service/FeedUploadService');
-var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
+var FeedUploadService = require('*/cartridge/scripts/service/feedUploadService');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 /**
  * @function
@@ -40,7 +40,7 @@ var run = function run() {
         var postFileLocation = args.PostFileLocation;
         var filePattern = args.FilePattern;
         var noFilesFoundStatus = args.NoFileFoundStatus;
-        var logging = args.Logging;
+        var logging = args.isLoggingEnable;
 
         // Test mandatory parameters
         if (empty(serviceID) || empty(postFileLocation) || empty(filePattern)) {

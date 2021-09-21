@@ -21,7 +21,7 @@ var Transaction = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 
 /**
  * @function
@@ -35,7 +35,6 @@ var run = function run() {
     var error = false;
 
     try {
-        var error = false;
         var args = arguments[0];
 
         if (args.IsDisabled) {
@@ -45,7 +44,7 @@ var run = function run() {
         // Load input Parameters
         var importFileName = args.ImportFileName;
         var productNotFoundStatus = args.ProductNotFoundStatus;
-        var logging = args.Logging;
+        var logging = args.isLoggingEnable;
 
         // Test mandatory parameters
         if (empty(importFileName)) {
@@ -53,66 +52,63 @@ var run = function run() {
         }
 
         // Create archive directory if it does not exist
-        var turntoDir = new File(File.IMPEX + File.SEPARATOR + "TurnTo");
+        var turntoDir = new File(File.IMPEX + File.SEPARATOR + 'TurnTo');
         var archiveFile = new File(turntoDir.fullPath + File.SEPARATOR + 'Archive');
 
         if (!archiveFile.exists()) {
             archiveFile.mkdirs();
         }
 
-        //loop through all allowed locales per site
+        // loop through all allowed locales per site
         TurnToHelper.getAllowedLocales().forEach(function (currentLocale) {
             var importfile = null;
             try {
-                var importfile = new File(File.IMPEX + File.SEPARATOR + "TurnTo" + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName);//"turnto-skuaveragerating.xml");
-                
+                importfile = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName); // "turnto-skuaveragerating.xml");
+
                 if (importfile.exists()) {
                     // set the request to the current locale so localized attributes will be used
                     request.setLocale(currentLocale);
-        
+
                     fileReader = new FileReader(importfile, 'UTF-8');
                     xmlStreamReader = new XMLStreamReader(fileReader);
-    
+
                     while (xmlStreamReader.hasNext()) {
                         var element = xmlStreamReader.next();
-                        if (element == XMLStreamConstants.START_ELEMENT) {
+                        if (element === XMLStreamConstants.START_ELEMENT) {
                             var localElementName = xmlStreamReader.getLocalName();
-                            if (localElementName == "product") {
+                            if (localElementName === 'product') {
+                                var product = null;
                                 try {
                                     var productNode = xmlStreamReader.readXMLObject();
-                                    var product = ProductMgr.getProduct(productNode.attribute('sku'));
-                                    if(product != null) {
+                                    product = ProductMgr.getProduct(productNode.attribute('sku'));
+                                    if (product != null) {
                                         if (logging) {
-                                            dw.system.Logger.info('INFO product is found, product id = {0}', product.ID);
+                                            Logger.info('INFO product is found, product id = {0}', product.ID);
                                         }
                                         var reviewCount = parseInt(productNode.attribute('review_count'), 10);
                                         var relatedReviewCount = parseInt(productNode.attribute('related_review_count'), 10);
                                         var commentCount = parseInt(productNode.attribute('comment_count'), 10);
-                                        //Round the rating to the nearest 0.5
+                                        // Round the rating to the nearest 0.5
                                         var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
                                         rating = rating.toString();
                                         var decimal = parseInt(rating.substring(2, 3), 10);
-                                        rating = rating.substring(0, 1) + "." + (decimal >= 5 ? '5' : '0');
-                                    
-                                        Transaction.wrap(function(){
+                                        rating = rating.substring(0, 1) + '.' + (decimal >= 5 ? '5' : '0');
+
+                                        // eslint-disable-next-line no-loop-func
+                                        Transaction.wrap(function () {
                                             product.custom.turntoAverageRating = rating;
                                             product.custom.turntoReviewCount = reviewCount;
                                             product.custom.turntoRelatedReviewCount = relatedReviewCount;
                                             product.custom.turntoCommentCount = commentCount;
                                         });
-    
-                                    } else {
-                                        if (productNotFoundStatus == 'ERROR') {
-                                            if (logging) {
-                                                dw.system.Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
-                                            }
-                                        } else {
-                                            if (logging) {
-                                                dw.system.Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));
-                                            }
+                                    } else if (productNotFoundStatus === 'ERROR') {
+                                        if (logging) {
+                                            Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
                                         }
+                                    } else if (logging) {
+                                        Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));
                                     }
-                                } catch ( e ) {
+                                } catch (e) {
                                     error = true;
                                     if (logging) {
                                         Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
@@ -154,4 +150,3 @@ var run = function run() {
 };
 
 exports.Run = run;
-

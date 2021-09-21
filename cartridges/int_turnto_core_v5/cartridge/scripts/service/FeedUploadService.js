@@ -9,7 +9,7 @@
 var LocalServiceRegistry = require('dw/svc/LocalServiceRegistry');
 
 /* Script Modules */
-var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 /* Constants */
 var serviceName = ServiceFactory.SERVICES.UPLOAD;
