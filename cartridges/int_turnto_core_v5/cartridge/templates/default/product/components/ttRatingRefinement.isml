@@ -2,7 +2,7 @@
 <ul <isif condition="${Refinements.getAllRefinementValues(RefinementDefinition).size() > RefinementDefinition.cutoffThreshold}">class="scrollable"</isif>>
 	<iscomment>render the refinement values as simple list</iscomment>
 	<isloop items="${Refinements.getAllRefinementValues(RefinementDefinition)}" var="RefinementValue">
-		<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/turnToHelperUtil')}" scope="page"/>
+		<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 		<isset name="turntoStarClass" value="${TurnToHelper.getTurnToStarClass(RefinementValue.getPresentationID())}" scope="page"/>
 		
 		<isif condition="${pdict.ProductSearchResult.isRefinedByAttributeValue(RefinementDefinition.attributeID,RefinementValue.value)}">
