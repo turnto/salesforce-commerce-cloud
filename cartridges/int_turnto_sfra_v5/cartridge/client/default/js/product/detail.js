@@ -1,7 +1,7 @@
 'use strict';
 var base = require('base/product/base');
 var teasersModules = require('../teaser/teasersModules');
-var serviceFactory = require('*/cartridge/scripts/util/serviceFactory')
+var serviceFactory = require('*/cartridge/scripts/util/ServiceFactory')
 
 /**
  * Enable/disable UI elements
