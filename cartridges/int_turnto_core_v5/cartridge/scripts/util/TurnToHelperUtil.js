@@ -120,7 +120,7 @@ var TurnToHelper = {
      sanitizeStr: function (str, replace) {
         // If string is null, return empty string
         var clnStr = TurnToHelper.replaceNull(str, '');
-        var replaceStr = replace || '';
+        var replaceStr = replace || ' ';
         // Replace any whitespaces with the given string
         return clnStr.replace(/\s+/g, replaceStr);
     },
