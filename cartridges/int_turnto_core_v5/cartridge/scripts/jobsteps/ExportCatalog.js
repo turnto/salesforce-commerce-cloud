@@ -32,6 +32,9 @@ function beforeStep(parameters) {
 
     try {
         hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+        if (!hashMapOfKeys) {
+            return new Status(Status.ERROR, 'ERROR', 'Did not find SiteAuthKeyJSON value for site');
+        }
         allowedLocales = TurnToHelper.getAllowedLocales();
 
         // instantiate new hash map to store the locale file writers

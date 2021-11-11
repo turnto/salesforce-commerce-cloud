@@ -71,10 +71,10 @@ function process(product, parameters) {
                 Transaction.begin();
                 // dataType is either "ratings" or "ugc"
                 if (parameters.DataType === 'ratings') {
-                    currentProduct.custom.turntoAverageRating = '';
-                    currentProduct.custom.turntoReviewCount = 0;
-                    currentProduct.custom.turntoRelatedReviewCount = 0;
-                    currentProduct.custom.turntoCommentCount = 0;
+                    currentProduct.custom.turntoAverageRating = 0.00;
+                    currentProduct.custom.turntoReviewCount = 0.00;
+                    currentProduct.custom.turntoRelatedReviewCount = 0.00;
+                    currentProduct.custom.turntoCommentCount = 0.00;
                 } else {
                     currentProduct.custom.turntoUserGeneratedContent = '';
                 }

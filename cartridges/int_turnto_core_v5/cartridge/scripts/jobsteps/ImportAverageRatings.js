@@ -89,10 +89,9 @@ var run = function run() {
                                         var relatedReviewCount = parseInt(productNode.attribute('related_review_count'), 10);
                                         var commentCount = parseInt(productNode.attribute('comment_count'), 10);
                                         // Round the rating to the nearest 0.5
-                                        var rating = Math.round((parseFloat(productNode.toString()) + 0.25) * 100.0) / 100.0;
-                                        rating = rating.toString();
-                                        var decimal = parseInt(rating.substring(2, 3), 10);
-                                        rating = rating.substring(0, 1) + '.' + (decimal >= 5 ? '5' : '0');
+                                        var rating = Math.round((parseFloat(productNode.toString())) * 100.0) / 100.0;
+
+                                        Logger.info('INFO setting rating {0}', rating);
 
                                         // eslint-disable-next-line no-loop-func
                                         Transaction.wrap(function () {
@@ -104,6 +103,7 @@ var run = function run() {
                                     } else if (productNotFoundStatus === 'ERROR') {
                                         if (logging) {
                                             Logger.error('ERROR product is NULL, product id = {0}', productNode.attribute('sku'));
+                                            return new Status(Status.ERROR, 'ERROR', 'Product is NULL, product id = {0}', productNode.attribute('sku'));
                                         }
                                     } else if (logging) {
                                         Logger.info('INFO product is NULL, product id = {0}', productNode.attribute('sku'));

@@ -16,7 +16,7 @@ var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 var OrderWriterHelper = {
 	/**
 	 * @function
-	 * @name getLocalizedTurnToPreferenceValue
+	 * @name writeOrderData
 	 * @param {dw.order.Order} order - order
 	 * @param {dw.io.FileWriter} fileWriter - file writer
 	 * @param {string} currentLocale - The name of the localized

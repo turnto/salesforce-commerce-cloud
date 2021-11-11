@@ -58,6 +58,9 @@ var run = function run() {
 
         // Retrieve HashMap of Keys which contain auth and site keys
         var siteAndAuthKeys = TurnToHelper.getHashMapOfKeys();
+        if (!siteAndAuthKeys) {
+            return new Status(Status.ERROR, 'ERROR', 'Did not find SiteAuthKeyJSON value for site');
+        }
 
         // Loop through all allowed locales per site
         var allowedLocales = TurnToHelper.getAllowedLocales();
