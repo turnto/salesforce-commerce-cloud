@@ -118,7 +118,7 @@ var TurnToHelper = {
 	 * @returns {string} - replace if str is null, otherwise str
 	 */
     sanitizeStr: function (str, replace) {
-        var clnStr = TurnToHelper.replaceNull(str, '');
+        var clnStr = TurnToHelper.replaceNull(str, ' ');
         var replaceStr = replace || '';
         return clnStr.replace(/\s+/g, replaceStr);
     },

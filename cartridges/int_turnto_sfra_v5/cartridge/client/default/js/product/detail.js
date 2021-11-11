@@ -69,9 +69,12 @@ module.exports = {
                 $('.product-detail:not(".bundle-item")').data('pid', response.data.product.id);
             }
             // eslint-disable-next-line no-undef
-            TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
-            teasersModules.loadTeaserCounts(response.data.product.id);
-            // TurnToCmd('gallery.set', { skus: [response.data.product.id] });
+            // Only run if client has variant products enabled
+            if (serviceFactory.getUseVariantsPreference()) { 
+                TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
+                teasersModules.loadTeaserCounts(response.data.product.id);
+                TurnToCmd('gallery.set', { skus: [response.data.product.id] });
+            }
         });
     },
     updateAddToCart: function () {
