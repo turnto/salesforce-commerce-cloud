@@ -1,7 +1,6 @@
 'use strict';
 var base = require('base/product/base');
 var teasersModules = require('../teaser/teasersModules');
-var serviceFactory = require('*/cartridge/scripts/util/ServiceFactory')
 
 /**
  * Enable/disable UI elements
@@ -70,11 +69,9 @@ module.exports = {
                 $('.product-detail:not(".bundle-item")').data('pid', response.data.product.id);
             }
             // eslint-disable-next-line no-undef
-            if (serviceFactory.getUseVariantsPreference()) {
-                TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
-                teasersModules.loadTeaserCounts(response.data.product.id);
-                TurnToCmd('gallery.set', { skus: [response.data.product.id] });
-            }
+            TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
+            teasersModules.loadTeaserCounts(response.data.product.id);
+            // TurnToCmd('gallery.set', { skus: [response.data.product.id] });
         });
     },
     updateAddToCart: function () {

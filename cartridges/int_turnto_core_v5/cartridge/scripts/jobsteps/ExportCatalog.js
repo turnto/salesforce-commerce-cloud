@@ -10,8 +10,8 @@ var Site = require('dw/system/Site');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
-var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
 
 // Globally scoped variables
 var products;
@@ -282,7 +282,7 @@ function process(product) {
                 request.setLocale(l);
                 var url = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
                 var item = {
-                    title: TurnToHelper.sanitizeStr(product.getName()),
+                    title: TurnToHelper.sanitizeStr(product.getName(), ' '),
                     itemUrl: url,
                     mobileItemUrl: url
                 };
@@ -295,7 +295,7 @@ function process(product) {
             var localejson = {
                 sku: TurnToHelper.replaceNull(product.getID(), ''),
                 imageurl: imageURL,
-                title: TurnToHelper.sanitizeStr(product.getName()),
+                title: TurnToHelper.sanitizeStr(product.getName(), ' '),
                 price: TurnToHelper.replaceNull(priceStr, ''),
                 currency: TurnToHelper.replaceNull(price.getCurrencyCode(), ''),
                 active: product.getAvailabilityModel().isOrderable() ? 'Y' : 'N',
@@ -303,7 +303,7 @@ function process(product) {
                 category: '', // Leaving blank because CATEGORYPATHJSON is populated
                 keywords: TurnToHelper.sanitizeStr(keywords, ' '),
                 instock: product.getOnlineFlag() ? 'Y' : 'N',
-                virtualparentcode: product.isVariant() ? product.masterProduct.ID : product.ID,
+                virtualparentcode: product.isVariant() ? product.masterProduct.ID : '',
                 categorypathjson: categoryPathJSON || '',
                 members: TurnToHelper.replaceNull(bundledProductsArray, ''),
                 brand: product.getBrand() ? product.getBrand() : '',

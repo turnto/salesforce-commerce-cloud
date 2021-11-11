@@ -2,7 +2,7 @@
 NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
 
-<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
+<isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/turnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
 <isif condition="${pageID == 'pdp-page'}">

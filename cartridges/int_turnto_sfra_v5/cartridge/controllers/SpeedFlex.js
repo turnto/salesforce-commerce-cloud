@@ -4,7 +4,7 @@ var server = require('server');
 
 server.post('UserData', server.middleware.https, function (req, res, next) {
     var URLUtils = require('dw/web/URLUtils');
-    var authHelper = require('*/cartridge/scripts/util/AuthHelper');
+    var authHelper = require('*/cartridge/scripts/util/authHelper');
 
     var target = request.getHttpReferer();
     var redirectUrl = URLUtils.url('Login-Show', 'rurl', target).toString();
@@ -23,7 +23,7 @@ server.post('UserData', server.middleware.https, function (req, res, next) {
 });
 
 server.post('LoggedInData', server.middleware.https, function (req, res, next) {
-    var authHelper = require('*/cartridge/scripts/util/AuthHelper');
+    var authHelper = require('*/cartridge/scripts/util/authHelper');
 
     var customer = session.getCustomer();
     var userAuthToken = session.getSessionID();

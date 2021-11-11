@@ -117,11 +117,9 @@ var TurnToHelper = {
 	 * @param {string} replace - The string to use as a replacement
 	 * @returns {string} - replace if str is null, otherwise str
 	 */
-     sanitizeStr: function (str, replace) {
-        // If string is null, return empty string
+    sanitizeStr: function (str, replace) {
         var clnStr = TurnToHelper.replaceNull(str, '');
-        var replaceStr = replace || ' ';
-        // Replace any whitespaces with the given string
+        var replaceStr = replace || '';
         return clnStr.replace(/\s+/g, replaceStr);
     },
 

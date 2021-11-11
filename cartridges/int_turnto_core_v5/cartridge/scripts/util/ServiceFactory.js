@@ -12,7 +12,7 @@ var ProductMgr = require('dw/catalog/ProductMgr');
 var HTTPRequestPart = require('dw/net/HTTPRequestPart');
 
 /* Script Modules*/
-var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 
 // Public
 var ServiceFactory = {
