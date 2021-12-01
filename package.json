@@ -1,6 +1,6 @@
 {
   "name": "int_turnto_sfra_v5",
-  "version": "21.1.0",
+  "version": "21.1.1",
   "description": "TornTo LINK cartridge",
   "main": "index.js",
   "scripts": {
@@ -83,7 +83,7 @@
     "cleave.js": "^1.5.3",
     "flag-icon-css": "^2.9.0",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.5.0"
+    "jquery": "^3.5.1"
   },
   "browserslist": [
     "last 2 versions",

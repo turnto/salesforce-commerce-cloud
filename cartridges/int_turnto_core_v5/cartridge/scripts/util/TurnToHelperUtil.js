@@ -12,6 +12,7 @@ var Site = require('dw/system/Site');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var HashMap = require('dw/util/HashMap');
 var Logger = require('dw/system/Logger');
+var Status = require('dw/system/Status');
 
 var TurnToHelper = {
 	/**
@@ -23,6 +24,10 @@ var TurnToHelper = {
     getLocalizedTurnToPreferenceValue: function (locale) {
         var preferenceValue = {};
         var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+        if (!hashMapOfKeys) {
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', 'Found no SiteAuthKeyJSON for site');
+            return null;
+        }
         try {
             var setOfPreference = hashMapOfKeys.entrySet().iterator();
             while (setOfPreference.hasNext()) {
@@ -37,7 +42,7 @@ var TurnToHelper = {
                 }
             }
         } catch (e) {
-            TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', e.message);
         }
         return preferenceValue;
     },
@@ -59,6 +64,10 @@ var TurnToHelper = {
 	 */
     hasSiteAndAuthKeyPerLocale: function (locale) {
         var hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+        if (!hashMapOfKeys) {
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', 'Found no SiteAuthKeyJSON for site');
+            return false;
+        }
 
         try {
             var setOfPreference = hashMapOfKeys.entrySet().iterator();
@@ -69,7 +78,7 @@ var TurnToHelper = {
                 }
             }
         } catch (e) {
-            TurnToHelper.getLogger().error('TurnToHelperUtil.js error:' + e.message);
+            TurnToHelper.getLogger().error('TurnToHelperUtil.js error: {0}', e.message);
         }
 
         return false;
@@ -88,6 +97,7 @@ var TurnToHelper = {
         var adjustedAllowedLocales = [];
 
         Object.keys(siteAllowedLocales).forEach(function (key) {
+
 			// If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
             if (TurnToHelper.hasSiteAndAuthKeyPerLocale(siteAllowedLocales[key])) {
                 adjustedAllowedLocales.push(siteAllowedLocales[key]);
@@ -118,7 +128,7 @@ var TurnToHelper = {
 	 * @returns {string} - replace if str is null, otherwise str
 	 */
     sanitizeStr: function (str, replace) {
-        var clnStr = TurnToHelper.replaceNull(str, '');
+        var clnStr = TurnToHelper.replaceNull(str, ' ');
         var replaceStr = replace || '';
         return clnStr.replace(/\s+/g, replaceStr);
     },
@@ -127,10 +137,13 @@ var TurnToHelper = {
 	 * @function
 	 * @name getHashMapOfKeys
 	 * @description Function to get map of TurnTo keys with locales, authKey from custom prefernce
-	 * @returns {string} - Return map of TurnTo keys with locales, authKey
+	 * @returns Return map of TurnTo keys with locales, authKey
 	 */
     getHashMapOfKeys: function () {
         var TurnToSiteAuthKey = Site.getCurrent().getCustomPreferenceValue('turntoSiteAuthKeyJSON');
+        if (!TurnToSiteAuthKey) {
+            return null;
+        }
         var rg = new RegExp('\\s+', 'gm');
         var result = JSON.parse(TurnToSiteAuthKey.replace(rg, ''));
         var hashMapOfKeys = new HashMap();

@@ -16,7 +16,7 @@ var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
 var OrderWriterHelper = {
 	/**
 	 * @function
-	 * @name getLocalizedTurnToPreferenceValue
+	 * @name writeOrderData
 	 * @param {dw.order.Order} order - order
 	 * @param {dw.io.FileWriter} fileWriter - file writer
 	 * @param {string} currentLocale - The name of the localized
@@ -30,7 +30,7 @@ var OrderWriterHelper = {
         for (var i = 0; i < products.size(); i++) {
             var productLineItem = products[i];
             var product = productLineItem.getProduct();
-            if (product !== null) {
+            if (!empty(product)) {
                 if (product.isVariant() && !useVariants) {
                     product = product.getVariationModel().getMaster();
                 }
@@ -83,7 +83,10 @@ var OrderWriterHelper = {
                 fileWriter.write('\t');
 
 				// ITEMIMAGEURL
-                var image = product.getImage('large', 0);
+                var image = product.getImage('hi-res', 0);
+                if (image == null) {
+                    image = product.getImage('large', 0);
+                }
                 if (image == null) {
                     image = product.getImage('medium', 0);
                 }
@@ -106,6 +109,12 @@ var OrderWriterHelper = {
                 fileWriter.write('\t');
 
 				// DELIVERYDATE
+                var shipment = productLineItem.getShipment();
+                if (shipment) {
+                    var deliveryDate = shipment.getCreationDate();
+                    var deliveryDateString = StringUtils.formatCalendar(new Calendar(deliveryDate), 'yyyy-MM-dd hh:mm:ss');
+                    fileWriter.write(deliveryDateString);
+                }
                 fileWriter.write('\t');
 
 				// NICKNAME

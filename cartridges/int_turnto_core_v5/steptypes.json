@@ -99,6 +99,14 @@
 							"@type": "boolean",
 							"@required": "false",
 							"@trim": "true"
+						},
+						{
+							"@name": "isLoggingEnable",
+							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true,
+							"default-value": true
 						}
 					]
 				},
@@ -216,6 +224,27 @@
 							"@type": "boolean",
 							"@required": "false",
 							"@trim": "true"
+						},
+						{
+							"@name": "ProductNotFoundStatus",
+							"@type": "string",
+							"@required": true,
+							"@trim": true,
+							"enum-values": {
+								"value": [
+									"OK",
+									"ERROR"
+								]
+							},
+							"description": "No product found exit code"
+						},
+						{
+							"@name": "isLoggingEnable",
+							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true,
+							"default-value": true
 						}
 					]
 				},
@@ -255,6 +284,14 @@
 							"@type": "boolean",
 							"@required": "false",
 							"@trim": "true"
+						},
+						{
+							"@name": "isLoggingEnable",
+							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true,
+							"default-value": true
 						}
 					]
 				},
@@ -352,6 +389,14 @@
 							"@type": "boolean",
 							"@required": "false",
 							"@trim": "true"
+						},
+						{
+							"@name": "isLoggingEnable",
+							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
+							"@type": "boolean",
+							"@required": false,
+							"@trim": true,
+							"default-value": true
 						}
 					]
 				},

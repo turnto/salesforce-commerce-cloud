@@ -24,7 +24,7 @@ function beforeStep(parameters) {
     var result = null;
     products = ProductMgr.queryAllSiteProducts();
 
-	// Check mandatory parameters
+    // Check mandatory parameters
     if (empty(parameters.DataType) || (parameters.DataType !== 'ratings' && parameters.DataType !== 'ugc')) {
         result = new Status(Status.ERROR, 'ERROR', 'Data Type is missing or value is invalid. Current data type: ' + parameters.DataType);
     }
@@ -62,18 +62,19 @@ function process(product, parameters) {
     if (!empty(product)) {
         var currentProduct = product;
 
-		// Iterate all locales and reset TurnTo product attributes to an empty string;
+        var logging = parameters.isLoggingEnable;
+        // Iterate all locales and reset TurnTo product attributes to an empty string;
         allowedLocales.forEach(function (currentLocale) {
-			// set the request to the current locale so localized attributes will be used
+            // set the request to the current locale so localized attributes will be used
             request.setLocale(currentLocale);
             try {
                 Transaction.begin();
-				// dataType is either "ratings" or "ugc"
+                // dataType is either "ratings" or "ugc"
                 if (parameters.DataType === 'ratings') {
-                    currentProduct.custom.turntoAverageRating = '';
-                    currentProduct.custom.turntoReviewCount = 0;
-                    currentProduct.custom.turntoRelatedReviewCount = 0;
-                    currentProduct.custom.turntoCommentCount = 0;
+                    currentProduct.custom.turntoAverageRating = 0.00;
+                    currentProduct.custom.turntoReviewCount = 0.00;
+                    currentProduct.custom.turntoRelatedReviewCount = 0.00;
+                    currentProduct.custom.turntoCommentCount = 0.00;
                 } else {
                     currentProduct.custom.turntoUserGeneratedContent = '';
                 }
@@ -81,7 +82,9 @@ function process(product, parameters) {
                 Transaction.commit();
             } catch (e) {
                 Transaction.rollback();
-                TurnToHelper.getLogger().error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+                if (logging) {
+                    TurnToHelper.getLogger().error('Product SKU {0} failed to reset due to {1}', product.ID, e.message);
+                }
             }
         });
     }

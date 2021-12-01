@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html lang="${require('dw/util/Locale').getLocale(request.getLocale()).getLanguage()}">
     <head>
+        <iscomment>TurnTo JS Include</iscomment>
+        <isinclude template="turnto/productPageAssets"/>
         <!--[if gt IE 9]><!-->
             <isinclude sf-toolkit="off" template="/common/scripts" />
         <!--<![endif]-->
@@ -21,8 +23,7 @@
         <iscomment>TurnTo Includes</iscomment>
         <isinclude template="turnto/htmlHeadGlobalInclude"/>
 
-        <iscomment>TurnTo JS Include</iscomment>
-        <isinclude template="turnto/productPageAssets"/>
+        
 
         <div class="page" data-action="${pdict.action}" data-querystring="${pdict.queryString}" >
             <isinclude template="/components/header/pageHeader" />

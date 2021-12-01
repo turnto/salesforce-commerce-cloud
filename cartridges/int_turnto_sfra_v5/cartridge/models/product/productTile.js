@@ -2,6 +2,7 @@
 
 var base = module.superModule;
 var ratingsDecorator = require('*/cartridge/models/product/decorators/ratingsTurnto');
+var Logger = require('dw/system/Logger');
 
 /**
  * Decorate product with product tile information
@@ -12,7 +13,9 @@ var ratingsDecorator = require('*/cartridge/models/product/decorators/ratingsTur
  * @returns {Object} - Decorated product model
  */
 module.exports = function productTile(product, apiProduct, productType) {
+    Logger.info('INFO - TTTEST - in productTile');
     base.call(this, product, apiProduct, productType);
+    Logger.info('INFO - TTTEST - in productTile2');
     ratingsDecorator(product, apiProduct);
     return product;
 };

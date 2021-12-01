@@ -41,15 +41,16 @@ var run = function run() {
             return new Status(Status.OK, 'OK', 'Step disabled, skip it...');
         }
 
-		// Load input Parameters
+        // Load input Parameters
         var importFileName = args.ImportFileName;
+        var logging = args.isLoggingEnable;
 
-		// Test mandatory parameters
+        // Test mandatory parameters
         if (empty(importFileName)) {
             return new Status(Status.ERROR, 'ERROR', 'One or more mandatory parameters are missing. Import File Name = (' + importFileName + ')');
         }
 
-		// loop through all allowed locales per site
+        // loop through all allowed locales per site
         TurnToHelper.getAllowedLocales().forEach(function (currentLocale) {
             try {
                 var importfile = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName);
@@ -58,7 +59,7 @@ var run = function run() {
                     throw new Error('FAILED: File not found. File Name: ' + importfile.fullPath);
                 }
 
-				// set the request to the current locale so localized attributes will be used
+                // set the request to the current locale so localized attributes will be used
                 request.setLocale(currentLocale);
 
                 fileReader = new FileReader(importfile, 'UTF-8');
@@ -110,7 +111,9 @@ var run = function run() {
                         } catch (e) {
                             Transaction.rollback();
                             error = true;
-                            Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
+                            if (logging) {
+                                Logger.error('Product SKU {0} failed to update due to {1}', product.ID, e.message);
+                            }
                         }
                     }
                 }
@@ -126,7 +129,7 @@ var run = function run() {
     } catch (exception) {
         return new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import user generated content. Error message: ' + exception.message);
     } finally {
-		// check all readers are closed in case catch block is hit
+        // check all readers are closed in case catch block is hit
         if (xmlStreamReader != null) {
             xmlStreamReader.close();
         }
@@ -136,8 +139,8 @@ var run = function run() {
     }
 
     return (error)
-		? new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import ONE or MORE user generated content, please see prior error messages for details of individual product update errors.')
-		: new Status(Status.OK, 'OK', 'Import User Generated Content was successful.');
+        ? new Status(Status.ERROR, 'ERROR', 'FAILED An exception occurred while attempting to import ONE or MORE user generated content, please see prior error messages for details of individual product update errors.')
+        : new Status(Status.OK, 'OK', 'Import User Generated Content was successful.');
 };
 
 exports.Run = run;

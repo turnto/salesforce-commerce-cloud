@@ -1,1 +1,5 @@
-{}
+{
+    "paths": [{
+        "base": "../app_storefront_base"
+    }]
+}
