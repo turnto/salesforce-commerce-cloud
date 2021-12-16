@@ -19,6 +19,7 @@ var ProductMgr = require('dw/catalog/ProductMgr');
 var Logger = require('dw/system/Logger');
 var Transaction = require('dw/system/Transaction');
 var Status = require('dw/system/Status');
+var Site = require('dw/system/Site');
 
 /* Script Modules */
 var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
@@ -42,6 +43,7 @@ var run = function run() {
 
 		// Load input Parameters
         var importFileName = args.ImportFileName;
+        var siteName = Site.getCurrent().getName();
 
 		// Test mandatory parameters
         if (empty(importFileName)) {
@@ -60,7 +62,7 @@ var run = function run() {
         TurnToHelper.getAllowedLocales().forEach(function (currentLocale) {
             var importfile = null;
             try {
-                importfile = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + currentLocale + File.SEPARATOR + importFileName); // "turnto-skuaveragerating.xml");
+                importfile = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + currentLocale + File.SEPARATOR + siteName + File.SEPARATOR + importFileName); // "turnto-skuaveragerating.xml");
 
                 if (importfile.exists()) {
 					// set the request to the current locale so localized attributes will be used

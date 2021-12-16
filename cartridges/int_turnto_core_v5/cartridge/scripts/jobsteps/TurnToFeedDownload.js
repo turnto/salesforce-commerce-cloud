@@ -13,6 +13,8 @@
 
 var File = require('dw/io/File');
 var Status = require('dw/system/Status');
+var Site = require('dw/system/Site');
+
 
 /* Script Modules */
 var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
@@ -35,6 +37,8 @@ var run = function run() {
 
 		// Load input Parameter
         var xmlName = args.XMLName;
+        var siteName = Site.getCurrent().getName();
+
 
 		// Test mandatory parameter
         if (empty(xmlName)) {
@@ -53,13 +57,13 @@ var run = function run() {
         var locales = TurnToHelper.getAllowedLocales();
         for (var i = 0; i < locales.length; i++) {
             // Create a directory for current Locale if one doesn't already exist
-            var currentLocaleDir = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i]);
+            var currentLocaleDir = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i] + File.SEPARATOR + siteName);
             if (!currentLocaleDir.exists()) {
                 currentLocaleDir.mkdir();
             }
 
 			// "turnto-skuaveragerating.xml" OR "turnto-ugc.xml"
-            var file = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i] + File.SEPARATOR + xmlName);
+            var file = new File(File.IMPEX + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locales[i] + File.SEPARATOR + siteName + File.SEPARATOR + xmlName);
 
 			// If the file exists, replace it
             if (file.exists()) {
