@@ -8,7 +8,7 @@
 
 var guard = require('*/cartridge/scripts/guard');
 var Response = require('*/cartridge/scripts/util/Response');
-var authHelper = require('*/cartridge/scripts/util/authHelper');
+var authHelper = require('*/cartridge/scripts/util/AuthHelper');
 
 var userData = function () {
     var URLUtils = require('dw/web/URLUtils');

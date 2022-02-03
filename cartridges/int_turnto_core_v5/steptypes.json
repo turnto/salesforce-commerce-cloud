@@ -3,7 +3,7 @@
 		"script-module-step": [{
 				"@type-id": "custom.TurnToFeedDownload_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/turnToFeedDownload.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/TurnToFeedDownload.js",
 				"description": "Download files from the TurnTo SFTP to the local IMPEX.",
 				"function": "Run",
 				"parameters": {
@@ -55,7 +55,7 @@
 			{
 				"@type-id": "custom.TurnToFeedUpload_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/turnToFeedUpload.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/TurnToFeedUpload.js",
 				"description": "Uploads files from the local IMPEX to the TurnTo SFTP.",
 				"function": "Run",
 				"parameters": {
@@ -129,7 +129,7 @@
 			{
 				"@type-id": "custom.TurnToExportOrderFeedOngoing_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/exportHistoricalOrders.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ExportHistoricalOrders.js",
 				"description": "Exports order data from one or more site locales to the local IMPEX.",
 				"function": "Run",
 				"parameters": {
@@ -168,7 +168,7 @@
 			{
 				"@type-id": "custom.TurnToExportOrderFeedSpecificDate_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/exportHistoricalOrdersByDate.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ExportHistoricalOrdersByDate.js",
 				"description": "Exports order data from a specific date from one or more site locales to the local IMPEX.",
 				"function": "Run",
 				"parameters": {
@@ -207,7 +207,7 @@
 			{
 				"@type-id": "custom.TurnToImportRatingsFeed_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/importAverageRatings.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ImportAverageRatings.js",
 				"description": "Imports product average star ratings from a TurnTo feed.",
 				"function": "Run",
 				"parameters": {
@@ -267,7 +267,7 @@
 			{
 				"@type-id": "custom.TurnToImportUGCFeed_v5",
 				"@supports-site-context": "true",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/importUserGeneratedContent.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ImportUserGeneratedContent.js",
 				"description": "Imports product average star ratings from a TurnTo feed.",
 				"function": "Run",
 				"parameters": {
@@ -318,7 +318,7 @@
 				"@supports-site-context": "true",
 				"@supports-organization-context": "false",
 				"description": "Exports catalog from one or more site locales to the local IMPEX.",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/exportCatalog.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ExportCatalog.js",
 				"before-step-function": "beforeStep",
 				"total-count-function": "getTotalCount",
 				"before-chunk-function": "",
@@ -364,7 +364,7 @@
 				"@supports-site-context": "true",
 				"@supports-organization-context": "false",
 				"description": "Exports catalog from one or more site locales to the local IMPEX.",
-				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/resetData.js",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ResetData.js",
 				"before-step-function": "beforeStep",
 				"total-count-function": "getTotalCount",
 				"before-chunk-function": "",

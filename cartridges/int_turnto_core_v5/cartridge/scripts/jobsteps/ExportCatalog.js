@@ -10,8 +10,8 @@ var Site = require('dw/system/Site');
 var Status = require('dw/system/Status');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
-var ServiceFactory = require('*/cartridge/scripts/util/serviceFactory');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
+var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
 // Globally scoped variables
 var products;
