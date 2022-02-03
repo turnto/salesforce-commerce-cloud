@@ -11,7 +11,7 @@ var Calendar = require('dw/util/Calendar');
 var StringUtils = require('dw/util/StringUtils');
 
 /* Script Modules */
-var TurnToHelper = require('*/cartridge/scripts/util/turnToHelperUtil');
+var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 
 var OrderWriterHelper = {
 	/**
