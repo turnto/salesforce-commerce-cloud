@@ -10,5 +10,5 @@
 	    assets.addCss('/css/teasers.css');
 	</isscript>
 	
-	<div id="tt-teaser" class="TTteaser"></div>
+	<div id="tt-teaser-widget"></div>
 </isif>
