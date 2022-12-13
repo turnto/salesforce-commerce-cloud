@@ -174,7 +174,13 @@ function process(product) {
 
         // CATEGORYPATHJSON
         var categoryPathJSON = null;
-        if (product.getPrimaryCategory() != null) {
+        var currentCategory = product.getPrimaryCategory() !== null ?
+            product.getPrimaryCategory() :
+            (product.getPrimaryCategory() == null &&
+                product.isVariant() &&
+                product.masterProduct.getPrimaryCategory() != null) ?
+            product.masterProduct.getPrimaryCategory() : null;
+        if (currentCategory != null) {
             categoryPathJSON = [];
             var currentCategory = product.getPrimaryCategory();
             var categoryArray = [];
@@ -345,7 +351,7 @@ function write(json) {
             var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
 
             if (localeFileWriter) {
-            // each JSON Object "jsonObj" is a reference to a product
+                // each JSON Object "jsonObj" is a reference to a product
                 Object.keys(json).forEach(function (property) {
                     var jsonObj = json[property];
                     if (!empty(jsonObj)) {
