@@ -25,33 +25,33 @@ var allowedLocales;
  * @param {Object} parameters - job parametrs
  * @returns {dw.system.Status} - completion status
  */
-function beforeStep(parameters) {
+async function beforeStep(parameters) {
     if (parameters.IsDisabled) {
         return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
     }
 
     try {
-        hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
+        const hashMapOfKeys = await TurnToHelper.getHashMapOfKeys();
         if (!hashMapOfKeys) {
             return new Status(Status.ERROR, 'ERROR', 'Did not find SiteAuthKeyJSON value for site');
         }
-        allowedLocales = TurnToHelper.getAllowedLocales();
+        const allowedLocales = await TurnToHelper.getAllowedLocales();
 
-        // instantiate new hash map to store the locale file writers
-        hashMapOfFileWriters = new HashMap();
+        // instantiate new object to store the locale file writers
+        const hashMapOfFileWriters = {};
 
-        var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+        const impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 
         // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
-        var areAllowedLocales = false;
+        let areAllowedLocales = false;
 
-        hashMapOfKeys.values().toArray().forEach(function (key) {
+        for (const key of hashMapOfKeys.values()) {
             // create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
-            var locales = key.locales.replace(' ', '').split(',');
-            var isAllowedLocale = true;
-            var locale = null;
+            const locales = key.locales.replace(' ', '').split(',');
+            let isAllowedLocale = true;
+            let locale = null;
 
-            for (var i = 0; i < locales.length; i++) {
+            for (let i = 0; i < locales.length; i++) {
                 // check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
                 locale = locales[i];
                 if (allowedLocales.indexOf(locales[i]) <= -1) {
@@ -65,24 +65,23 @@ function beforeStep(parameters) {
                 areAllowedLocales = true;
 
                 // create a folder with one or more locales
-                var folderAndFilePatternName = locales.join().replace(',', '_');
-                var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locale);
+                const folderAndFilePatternName = locales.join().replace(',', '_');
+                const turntoDir = new File(`${impexPath}/${File.SEPARATOR}/TurnTo/${locale}`);
 
                 if (!turntoDir.exists()) {
                     turntoDir.mkdirs();
                 }
 
                 // Initialize a file writer for output with the current key
-                var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
+                const catalogExportFileWrite = new File(`${turntoDir.getFullPath()}/${parameters.ExportFileName}_${folderAndFilePatternName}_${Site.getCurrent().ID}.txt`);
                 catalogExportFileWrite.createNewFile();
 
-                var currentFileWriter = new FileWriter(catalogExportFileWrite);
-
+                const currentFileWriter = new FileWriter(catalogExportFileWrite);
                 // write header text
                 currentFileWriter.writeLine('SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA');
                 hashMapOfFileWriters.put(key.locales, currentFileWriter);
             }
-        });
+        };
 
         // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
         if (!areAllowedLocales) {
@@ -174,12 +173,10 @@ function process(product) {
 
         // CATEGORYPATHJSON
         var categoryPathJSON = null;
-        var currentCategory = product.getPrimaryCategory() !== null ?
-            product.getPrimaryCategory() :
-            (product.getPrimaryCategory() == null &&
-                product.isVariant() &&
-                product.masterProduct.getPrimaryCategory() != null) ?
-            product.masterProduct.getPrimaryCategory() : null;
+        var currentCategory =
+            product.getPrimaryCategory() ||
+            (product.isVariant() && product.masterProduct.getPrimaryCategory()) ||
+            null;
         if (currentCategory != null) {
             categoryPathJSON = [];
             var currentCategory = product.getPrimaryCategory();
