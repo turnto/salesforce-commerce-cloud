@@ -175,7 +175,7 @@ function process(product) {
         var categoryPathJSON = null;
         var currentCategory =
             product.getPrimaryCategory() ||
-            (product.isVariant() && product.masterProduct.getPrimaryCategory()) ||
+            product.isVariant() ? product.masterProduct.getPrimaryCategory() : null ||
             null;
         if (currentCategory != null) {
             categoryPathJSON = [];
