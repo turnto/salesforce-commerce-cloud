@@ -1,7 +1,7 @@
 {
   "name": "int_turnto_sfra_v5",
-  "version": "21.1.1",
-  "description": "TornTo LINK cartridge",
+  "version": "22.1.0",
+  "description": "TurnTo's official cartridge for SFRA and SiteGenesis",
   "main": "index.js",
   "scripts": {
     "test": "sgmf-scripts --test test/unit/**/*.js",

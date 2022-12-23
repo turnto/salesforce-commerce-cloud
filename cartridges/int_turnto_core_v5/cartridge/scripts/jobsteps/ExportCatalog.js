@@ -22,36 +22,36 @@ var allowedLocales;
 
 /**
  * Function is executed only ONCE
- * @param {Object} parameters - job parametrs
+ * @param {Object} parameters - job parameters
  * @returns {dw.system.Status} - completion status
  */
-async function beforeStep(parameters) {
+function beforeStep(parameters) {
     if (parameters.IsDisabled) {
         return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
     }
 
     try {
-        const hashMapOfKeys = await TurnToHelper.getHashMapOfKeys();
+        hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
         if (!hashMapOfKeys) {
             return new Status(Status.ERROR, 'ERROR', 'Did not find SiteAuthKeyJSON value for site');
         }
-        const allowedLocales = await TurnToHelper.getAllowedLocales();
+        allowedLocales = TurnToHelper.getAllowedLocales();
 
-        // instantiate new object to store the locale file writers
-        const hashMapOfFileWriters = {};
+        // instantiate new hash map to store the locale file writers
+        hashMapOfFileWriters = new HashMap();
 
-        const impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+        var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
 
         // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
-        let areAllowedLocales = false;
+        var areAllowedLocales = false;
 
-        for (const key of hashMapOfKeys.values()) {
+        hashMapOfKeys.values().toArray().forEach(function (key) {
             // create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
-            const locales = key.locales.replace(' ', '').split(',');
-            let isAllowedLocale = true;
-            let locale = null;
+            var locales = key.locales.replace(' ', '').split(',');
+            var isAllowedLocale = true;
+            var locale = null;
 
-            for (let i = 0; i < locales.length; i++) {
+            for (var i = 0; i < locales.length; i++) {
                 // check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
                 locale = locales[i];
                 if (allowedLocales.indexOf(locales[i]) <= -1) {
@@ -65,23 +65,24 @@ async function beforeStep(parameters) {
                 areAllowedLocales = true;
 
                 // create a folder with one or more locales
-                const folderAndFilePatternName = locales.join().replace(',', '_');
-                const turntoDir = new File(`${impexPath}/${File.SEPARATOR}/TurnTo/${locale}`);
+                var folderAndFilePatternName = locales.join().replace(',', '_');
+                var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locale);
 
                 if (!turntoDir.exists()) {
                     turntoDir.mkdirs();
                 }
 
                 // Initialize a file writer for output with the current key
-                const catalogExportFileWrite = new File(`${turntoDir.getFullPath()}/${parameters.ExportFileName}_${folderAndFilePatternName}_${Site.getCurrent().ID}.txt`);
+                var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
                 catalogExportFileWrite.createNewFile();
 
-                const currentFileWriter = new FileWriter(catalogExportFileWrite);
+                var currentFileWriter = new FileWriter(catalogExportFileWrite);
+
                 // write header text
                 currentFileWriter.writeLine('SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA');
                 hashMapOfFileWriters.put(key.locales, currentFileWriter);
             }
-        };
+        });
 
         // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
         if (!areAllowedLocales) {
@@ -120,7 +121,7 @@ function read() {
         // Return next product
         if (products && products.hasNext()) {
             tempProduct = products.next();
-            // do not return a product if use variants site preference is false and the product is a variant
+            // do not return a product if useVariants site preference is false and the product is a variant
             if (!useVariants && tempProduct.isVariant()) {
                 return '';
             }
@@ -173,13 +174,12 @@ function process(product) {
 
         // CATEGORYPATHJSON
         var categoryPathJSON = null;
-        var currentCategory =
-            product.getPrimaryCategory() ||
-            (product.isVariant() && product.masterProduct.getPrimaryCategory()) ||
-            null;
-        if (currentCategory != null) {
+        var currentCategory = product.getPrimaryCategory() ||
+            (product.isVariant() && product.masterProduct) ?
+                product.masterProduct.getPrimaryCategory()
+                : null;
+        if (currentCategory !== null) {
             categoryPathJSON = [];
-            var currentCategory = product.getPrimaryCategory();
             var categoryArray = [];
             while (currentCategory != null && !currentCategory.isRoot()) {
                 var categoryjson = {
