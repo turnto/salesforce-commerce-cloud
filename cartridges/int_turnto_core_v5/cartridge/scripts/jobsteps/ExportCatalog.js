@@ -22,7 +22,7 @@ var allowedLocales;
 
 /**
  * Function is executed only ONCE
- * @param {Object} parameters - job parametrs
+ * @param {Object} parameters - job parameters
  * @returns {dw.system.Status} - completion status
  */
 function beforeStep(parameters) {
@@ -121,7 +121,7 @@ function read() {
         // Return next product
         if (products && products.hasNext()) {
             tempProduct = products.next();
-            // do not return a product if use variants site preference is false and the product is a variant
+            // do not return a product if useVariants site preference is false and the product is a variant
             if (!useVariants && tempProduct.isVariant()) {
                 return '';
             }
@@ -174,9 +174,12 @@ function process(product) {
 
         // CATEGORYPATHJSON
         var categoryPathJSON = null;
-        if (product.getPrimaryCategory() != null) {
+        var currentCategory = product.getPrimaryCategory() ||
+            (product.isVariant() && product.masterProduct) ?
+                product.masterProduct.getPrimaryCategory()
+                : null;
+        if (currentCategory !== null) {
             categoryPathJSON = [];
-            var currentCategory = product.getPrimaryCategory();
             var categoryArray = [];
             while (currentCategory != null && !currentCategory.isRoot()) {
                 var categoryjson = {
@@ -345,7 +348,7 @@ function write(json) {
             var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
 
             if (localeFileWriter) {
-            // each JSON Object "jsonObj" is a reference to a product
+                // each JSON Object "jsonObj" is a reference to a product
                 Object.keys(json).forEach(function (property) {
                     var jsonObj = json[property];
                     if (!empty(jsonObj)) {
