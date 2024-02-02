@@ -12,10 +12,10 @@ NOTE: The template only features base functionality out of the box, in order to 
         <isset name="productId" value="${pdict.Product.ID}" scope="page" />
     </isif>
     <isset name="product_sku" value="${TurnToHelper.getProductSku(productId)}" scope="page"/>
-    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
+    <script type="text/javascript">var turnToProductSku = <isprint value="${product_sku}" encoding="jsonvalue"/></script>
 <iselse>
     <isset name="product_sku" value="" scope="page"/>
-    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
+    <script type="text/javascript">var turnToProductSku = <isprint value="${product_sku}" encoding="jsonvalue"/></script>
 </isif>
 
 <script type="text/javascript">

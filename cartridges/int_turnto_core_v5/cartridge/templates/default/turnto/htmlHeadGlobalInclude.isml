@@ -6,8 +6,12 @@
 <isset name="siteKey" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}" scope="page" />
 <isset name="turntoUrl" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain}" scope="page" />
 
-<span hidden class="siteKey"><isprint value="${siteKey}"/></span>
-<span hidden class="turntoUrl"><isprint value="${turntoUrl}"/></span>
+<script type="text/javascript">
+	var turnToSiteDataVars = {
+		"siteKey": <isprint value="${siteKey}" encoding="jsonvalue"/>,
+		"turnToUrl": <isprint value="${turntoUrl}" encoding="jsonvalue"/>
+	}
+</script>
 
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoCssOverwrites')}">
 	<link href="${URLUtils.staticURL('/css/turnto.css')}" type="text/css" rel="stylesheet" />

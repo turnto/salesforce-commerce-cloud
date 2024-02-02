@@ -8,38 +8,39 @@
  * @function
  * @description The loadTeaserCounts function first loads the UGC counts maintained by TurnTo and then calls the ​populateTeaser​ function.
  * @name loadTeaserCounts
- * @param {String} sku the product ID 
+ * @param {String} sku the product ID
  */
 function loadTeaserCounts(sku) {
 	var xhr = new XMLHttpRequest();
-	var turntoUrl = $('span.turntoUrl').text();
-	var siteKey = $('span.siteKey').text();
+	/* global turnToSiteDataVars:readonly */
+	var turntoUrl = turnToSiteDataVars.turnToUrl;
+	var siteKey = turnToSiteDataVars.siteKey;
 
-	if(turntoUrl.length == 0 || siteKey.length == 0) {
+	if(turntoUrl.length === 0 || siteKey.length === 0) {
 		return;
 	}
-	
+
 	var ugcCountsUrl = 'https://cdn-ws.' + turntoUrl +'/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
 	xhr.open('GET', ugcCountsUrl, true);
 	xhr.addEventListener('load', function() {
 		/*sample return JSON
 			{
 				"questions": 0,
-				"directQuestions": 0, 
-				"answers": 0, 
-				"directAnswers": 0, 
+				"directQuestions": 0,
+				"answers": 0,
+				"directAnswers": 0,
 				"reviews": 100,
-				"avgRating": 2.91, 
-				"relatedReviews": 0, 
-				"comments": 0, 
+				"avgRating": 2.91,
+				"relatedReviews": 0,
+				"comments": 0,
 				"active": true
 			}
 		*/
-		if (xhr.responseText) { 
+		if (xhr.responseText) {
 			populateTeaser(JSON.parse(xhr.responseText));
-		} 
+		}
 	});
-	xhr.send(); 
+	xhr.send();
 }
 
 /**
@@ -49,9 +50,9 @@ function loadTeaserCounts(sku) {
  * @param {Object} counts response from ugc counts URL
  */
 function populateTeaser(counts) {
-	var fragment = document.createDocumentFragment(); 
+	var fragment = document.createDocumentFragment();
 	if (counts.reviews > 0) { // has reviews
-		fragment.appendChild(generateTeaserStars(counts.avgRating)); 
+		fragment.appendChild(generateTeaserStars(counts.avgRating));
 		fragment.appendChild(generateReadReviews(counts.reviews));
 
 		if (counts.questions > 0) {
@@ -60,17 +61,17 @@ function populateTeaser(counts) {
 		}
 		if (counts.comments > 0) {
 			fragment.appendChild(document.createTextNode(' | '));
-			fragment.appendChild(generateReadComments(counts.comments)); 
+			fragment.appendChild(generateReadComments(counts.comments));
 		}
 		fragment.appendChild(document.createTextNode(' or '));
-		fragment.appendChild(generateWriteReview('Write a Review')); 
+		fragment.appendChild(generateWriteReview('Write a Review'));
 	} else { // no reviews
 		if (counts.questions > 0) {
 			fragment.appendChild(generateQuestions(counts.questions, counts.answers));
 			fragment.appendChild(document.createTextNode(' or '));
-		} 
+		}
 		if (counts.comments > 0) {
-			fragment.appendChild(generateReadComments(counts.comments)); 
+			fragment.appendChild(generateReadComments(counts.comments));
 			fragment.appendChild(document.createTextNode(' or '));
 		}
 		fragment.appendChild(generateWriteReview('Be the first to write a review'));
@@ -81,7 +82,7 @@ function populateTeaser(counts) {
 	}
 	teaserElem.textContent = '';
 	teaserElem.appendChild(fragment);
-	// add event listener to handle click to open the write a review screen 
+	// add event listener to handle click to open the write a review screen
 	document.querySelector('.TTteaser__write-review').addEventListener('click', function(e) {
 		TurnToCmd('reviewsList.writeReview');
 	});
@@ -101,7 +102,7 @@ function populateTeaser(counts) {
  * @description This is a helper function used by other functions to open a tab on the PDP page
  * @param {String} tag type of tab to open
  */
-function showTab() { 
+function showTab() {
 	$('.tabs .reviews input').click();
 }
 
@@ -114,13 +115,13 @@ function showTab() {
  * @param {String} text value to be added to the element
  * @return {Object} el DOM object
  */
-function createTeaserElement(tag, className, text) { 
-	var el = document.createElement(tag); 
+function createTeaserElement(tag, className, text) {
+	var el = document.createElement(tag);
 	el.setAttribute('class', className);
 	if (text) {
-		el.innerText = text; 
+		el.innerText = text;
 	}
-	return el; 
+	return el;
 }
 
 /**
@@ -131,7 +132,7 @@ function createTeaserElement(tag, className, text) {
  * @return {Object} DOM object
  */
 function generateWriteReview(text) {
-	return createTeaserElement('button', 'TTteaser__write-review', text); 
+	return createTeaserElement('button', 'TTteaser__write-review', text);
 }
 
 /**
@@ -146,7 +147,7 @@ function generateReadComments(numComments) {
 	var text = numComments + ' Buyer Comment' + (numComments > 1 ? 's' : '');
 	var el = createTeaserElement('a', 'TTteaser__read-comments', text);
 	el.setAttribute('href', '#tt-chatter-widget');
-	return el; 
+	return el;
 }
 
 /**
@@ -159,18 +160,18 @@ function generateReadComments(numComments) {
 function generateQuestions(num_questions, num_answers) {
 	// Populate 'x Questions' text with the number of questions
 	var text = num_questions + ' Question' + (num_questions > 1 ? 's' : '');
-	
+
 	// then populate the number of answers
 	if (num_answers > 0) {
 	 text = text + ', ' + num_answers + ' Answer' + (num_answers > 1 ? 's' : '');
 	}
-	
+
 	var el = createTeaserElement('a', 'TTteaser__read-qa', text);
 	 el.setAttribute('href', '#tt-instant-answers-widget');
-	
+
 	//For the Q&A list widget set to the following
 	el.setAttribute('href', '#tt-qa-list');
-	
+
 	return el;
 }
 
@@ -200,7 +201,7 @@ function generateReadReviews(numReviews) {
  * @param {String} starType
  * @return {Object} el DOM object
  */
-function generateTeaserStar(starType) { 
+function generateTeaserStar(starType) {
 	var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	svgEl.setAttribute('class', 'TTteaser__icon--' + starType);
 	useEl = document.createElementNS('http://www.w3.org/2000/svg', 'use');
@@ -254,9 +255,10 @@ function generateTeaserStars(rating) {
 }
 
 // Javascript to load on page load
+/* global turnToProductSku:readonly */
 $(document).ready(function () {
 	// PDP teasers only
-    if ($('span.productsku').text().length) {
-		loadTeaserCounts($('span.productsku').text());
+    if (turnToProductSku.length) {
+		loadTeaserCounts(turnToProductSku);
     }
 });
