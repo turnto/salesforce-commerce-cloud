@@ -8,8 +8,8 @@
 
 <script type="text/javascript">
 	var turnToSiteDataVars = {
-		"siteKey": <isprint value="${siteKey}" encoding="jsonvalue"/>,
-		"turnToUrl": <isprint value="${turntoUrl}" encoding="jsonvalue"/>
+		"siteKey": '<isprint value="${siteKey}" encoding="jshtml"/>',
+		"turnToUrl": '<isprint value="${turntoUrl}" encoding="jshtml"/>'
 	}
 </script>
 

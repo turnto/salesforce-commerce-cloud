@@ -1,4 +1,4 @@
-<iscomment>This template includes the turnToConfig obejct configuration for dynamic page IDs.
+<iscomment>This template includes the turnToConfig object configuration for dynamic page IDs.
 NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
 
@@ -12,10 +12,10 @@ NOTE: The template only features base functionality out of the box, in order to 
         <isset name="productId" value="${pdict.Product.ID}" scope="page" />
     </isif>
     <isset name="product_sku" value="${TurnToHelper.getProductSku(productId)}" scope="page"/>
-    <script type="text/javascript">var turnToProductSku = <isprint value="${product_sku}" encoding="jsonvalue"/></script>
+    <script type="text/javascript">var turnToProductSku = '<isprint value="${product_sku}" encoding="jsonvalue"/>'</script>
 <iselse>
     <isset name="product_sku" value="" scope="page"/>
-    <script type="text/javascript">var turnToProductSku = <isprint value="${product_sku}" encoding="jsonvalue"/></script>
+    <script type="text/javascript">var turnToProductSku = '<isprint value="${product_sku}" encoding="jsonvalue"/>'</script>
 </isif>
 
 <script type="text/javascript">
@@ -65,9 +65,9 @@ NOTE: The template only features base functionality out of the box, in order to 
 		sfccPlatform: "${Resource.msg('turnTo.version.sfccPlatform','turnTo','')}",
 		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}",
 	};
-
-	if('${pageID}' == 'pdp-page') {
-		var turnToConfig = {
+    var turnToConfig = {}
+	if('${pageID}' === 'pdp-page') {
+		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "pdp-page",
 				sku: "${product_sku}",
@@ -79,7 +79,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				topComments: {
 					// tags: [],
 					// onFinish: function() {}
-				}, 
+				},
 				//optional comments display feature, refer to "v5 Comments Display"
 				chatter: {
 					// onFinish: function() {}
@@ -88,7 +88,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				sso: ssoConfig
 			};
 	} else if ('${pageID}' == 'order-confirmation-page') {
-		var turnToConfig = {
+		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "order-confirmation-page",
 				sku: "${product_sku}",
@@ -96,7 +96,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				sso: ssoConfig
 			}
 	} else if ('${pageID}' == 'search-page') {
-		var turnToConfig = {
+		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "search-page",
 				commentsPinboardTeaser: {
@@ -110,7 +110,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				sso: ssoConfig
 			}
 	} else if ('${pageID}' == 'pinboard-page') {
-		var turnToConfig = {
+		turnToConfig = {
 			locale: "${request.getLocale()}",
 			pageId: "vc-pinboard-page",
 			vcPinboard: {
@@ -120,14 +120,14 @@ NOTE: The template only features base functionality out of the box, in order to 
 			sso: ssoConfig
 		};
 	} else if ('${pageID}' == 'landing-page') {
-        var turnToConfig = {
+        turnToConfig = {
             locale: "${request.getLocale()}",
             pageId: "email-landing-page",
             extensionVersion: extensionVersion,
             sso: ssoConfig
         };
     } else {
-		var turnToConfig = {
+		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "non-defined-page",
 				commentsPinboard: {
@@ -139,6 +139,6 @@ NOTE: The template only features base functionality out of the box, in order to 
 				extensionVersion: extensionVersion,
 				sso: ssoConfig
 			};
-	} 
+	}
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push(arguments)};
 </script>
