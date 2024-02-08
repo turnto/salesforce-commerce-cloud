@@ -198,7 +198,6 @@ function populateTeaser(counts) {
     teaserElem.textContent = '';
     teaserElem.appendChild(fragment);
 	// add event listener to handle click to open the write a review screen
-    /* global TurnToCmd:readonly */
     document.querySelector('.TTteaser__write-review').addEventListener('click', function () {
         TurnToCmd('reviewsList.writeReview'); // eslint-disable-line new-cap
     });
@@ -212,7 +211,6 @@ function populateTeaser(counts) {
  */
 function loadTeaserCounts(sku) {
     var xhr = new XMLHttpRequest();
-    /* global turnToSiteDataVars:readonly */
     var turntoUrl = turnToSiteDataVars.turnToUrl;
     var siteKey = turnToSiteDataVars.siteKey;
 
@@ -220,7 +218,6 @@ function loadTeaserCounts(sku) {
         return;
     }
 
-    /* global turnToConfig:readonly */
     var ugcCountsUrl = 'https://cdn-ws.' + turntoUrl + '/v5/sitedata/' + siteKey + '/' + sku + '/d/ugc/counts/' + turnToConfig.locale;
     xhr.open('GET', ugcCountsUrl, true);
     xhr.addEventListener('load', function () {

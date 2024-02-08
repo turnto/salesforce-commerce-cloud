@@ -1,3 +1,4 @@
+<!--suppress CheckEmptyScriptTag -->
 <iscomment>This template includes the turnToConfig object configuration for dynamic page IDs.
 NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
@@ -5,7 +6,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
-<isif condition="${pageID == 'pdp-page'}">
+<isif condition="${pageID === 'pdp-page'}">
     <isif condition="${Resource.msg('turnTo.isSFRA','turnTo','false') === 'true'}">
         <isset name="productId" value="${product.id}" scope="page" />
     <iselse>
@@ -18,6 +19,12 @@ NOTE: The template only features base functionality out of the box, in order to 
     <script type="text/javascript">var turnToProductSku = '<isprint value="${product_sku}" encoding="jsonvalue"/>'</script>
 </isif>
 
+<isset name="ServiceFactory" value="${require('*/cartridge/scripts/util/ServiceFactory')}" scope="page"/>
+<script type="text/javascript">
+    var useVariantsPreference = <isprint value="${ServiceFactory.getUseVariantsPreference()}" encoding="jshtml"/>
+</script>
+
+<isset name="baseSiteVer" value="${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}" scope="page"/>
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
@@ -59,13 +66,12 @@ NOTE: The template only features base functionality out of the box, in order to 
 			}
 		};
 
-	<isset name="baseSiteVer" value="${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}" scope="page"/>
 	var extensionVersion = {
-		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','') + ' ' + baseSiteVer}",
-		sfccPlatform: "${Resource.msg('turnTo.version.sfccPlatform','turnTo','')}",
-		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}",
+		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','')}",
+		sfccPlatform: "${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}",
+		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}"
 	};
-    var turnToConfig = {}
+    var turnToConfig;
 	if('${pageID}' === 'pdp-page') {
 		turnToConfig = {
 				locale: "${request.getLocale()}",
@@ -87,7 +93,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				extensionVersion: extensionVersion,
 				sso: ssoConfig
 			};
-	} else if ('${pageID}' == 'order-confirmation-page') {
+	} else if ('${pageID}' === 'order-confirmation-page') {
 		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "order-confirmation-page",
@@ -95,7 +101,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				extensionVersion: extensionVersion,
 				sso: ssoConfig
 			}
-	} else if ('${pageID}' == 'search-page') {
+	} else if ('${pageID}' === 'search-page') {
 		turnToConfig = {
 				locale: "${request.getLocale()}",
 				pageId: "search-page",
@@ -109,7 +115,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 				extensionVersion: extensionVersion,
 				sso: ssoConfig
 			}
-	} else if ('${pageID}' == 'pinboard-page') {
+	} else if ('${pageID}' === 'pinboard-page') {
 		turnToConfig = {
 			locale: "${request.getLocale()}",
 			pageId: "vc-pinboard-page",
@@ -119,7 +125,7 @@ NOTE: The template only features base functionality out of the box, in order to 
 			extensionVersion: extensionVersion,
 			sso: ssoConfig
 		};
-	} else if ('${pageID}' == 'landing-page') {
+	} else if ('${pageID}' === 'landing-page') {
         turnToConfig = {
             locale: "${request.getLocale()}",
             pageId: "email-landing-page",

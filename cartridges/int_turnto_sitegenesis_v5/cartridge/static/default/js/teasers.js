@@ -12,7 +12,6 @@
  */
 function loadTeaserCounts(sku) {
 	var xhr = new XMLHttpRequest();
-	/* global turnToSiteDataVars:readonly */
 	var turntoUrl = turnToSiteDataVars.turnToUrl;
 	var siteKey = turnToSiteDataVars.siteKey;
 
@@ -100,7 +99,6 @@ function populateTeaser(counts) {
  * @function
  * @name showTab
  * @description This is a helper function used by other functions to open a tab on the PDP page
- * @param {String} tag type of tab to open
  */
 function showTab() {
 	$('.tabs .reviews input').click();
@@ -154,7 +152,8 @@ function generateReadComments(numComments) {
  * @function
  * @name generateQuestions
  * @description This function is called by the populateTeaser function to generate the read questions
- * @param {Number} numQuestions
+ * @param {Number} num_questions
+ * @param {Number} num_answers
  * @return {Object} el DOM object
  */
 function generateQuestions(num_questions, num_answers) {
@@ -255,7 +254,6 @@ function generateTeaserStars(rating) {
 }
 
 // Javascript to load on page load
-/* global turnToProductSku:readonly */
 $(document).ready(function () {
 	// PDP teasers only
     if (turnToProductSku.length) {
