@@ -71,80 +71,57 @@ NOTE: The template only features base functionality out of the box, in order to 
 		sfccPlatform: "${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}",
 		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}"
 	};
-    var turnToConfig;
+
+    var turnToConfig = {
+        locale: "${request.getLocale()}",
+        extensionVersion: extensionVersion,
+        sso: ssoConfig
+    };
+
 	if('${pageID}' === 'pdp-page') {
-		turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "pdp-page",
-				sku: "${product_sku}",
-				gallery: {
-					// Add one or more SKUs as an array.
-					// skus: []
-				},
-				//optional top comments feature, refer to "v5 Top Comment Widget"
-				topComments: {
-					// tags: [],
-					// onFinish: function() {}
-				},
-				//optional comments display feature, refer to "v5 Comments Display"
-				chatter: {
-					// onFinish: function() {}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			};
+        turnToConfig.pageId = "pdp-page";
+        turnToConfig.sku = "${product_sku}";
+        /* Optional: "Gallery Row Widget" - Add one or more SKUs as an array */
+        // turnToConfig.gallery = {
+        //     skus: []
+        // };
+        /* Optional: "Top Comment Widget" */
+        // turnToConfig.topComments = {
+        //     tags: [],
+        //     onFinish: function() {}
+        // };
+        /* Optional: "Comments Display Widget" */
+        // turnToConfig.chatter = {
+        //     onFinish: function() {}
+        // };
 	} else if ('${pageID}' === 'order-confirmation-page') {
-		turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "order-confirmation-page",
-				sku: "${product_sku}",
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			}
+        turnToConfig.pageId = "order-confirmation-page";
+        turnToConfig.sku = "${product_sku}";
 	} else if ('${pageID}' === 'search-page') {
-		turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "search-page",
-				commentsPinboardTeaser: {
-					// promoButtonUrl: ""
-					// skus: [],
-					// tags: [],
-					// brands: [],
-					// onFinish: function(){}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			}
+        turnToConfig.pageId = "search-page";
+        /* Optional: "Comments Pinboard Teaser" */
+        // turnToConfig.commentsPinboardTeaser = {
+        //     promoButtonUrl: "",
+        //     skus: [],
+        //     tags: [],
+        //     brands: [],
+        //     onFinish: function() {}
+        // }
 	} else if ('${pageID}' === 'pinboard-page') {
-		turnToConfig = {
-			locale: "${request.getLocale()}",
-			pageId: "vc-pinboard-page",
-			vcPinboard: {
-				// Add SKUs, tags, brands, or any combination.
-			},
-			extensionVersion: extensionVersion,
-			sso: ssoConfig
-		};
+        turnToConfig.pageId = "vc-pinboard-page";
+        /* Optional: "Visual Content Pinboard" - Add SKUs, tags, brands, or any combination. */
+        // turnToConfig.vcPinboard = {};
 	} else if ('${pageID}' === 'landing-page') {
-        turnToConfig = {
-            locale: "${request.getLocale()}",
-            pageId: "email-landing-page",
-            extensionVersion: extensionVersion,
-            sso: ssoConfig
-        };
+        turnToConfig.pageId = "email-landing-page";
     } else {
-		turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "non-defined-page",
-				commentsPinboard: {
-					// skus: [],
-					// tags: [],
-					// brands: [],
-					// onFinish: function(){}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			};
+		turnToConfig.pageId = "non-defined-page";
+        /* Optional: "Comments Pinboard" */
+        // turnToConfig.commentsPinboard = {
+        //     skus: [],
+        //     tags: [],
+        //     brands: [],
+        //     onFinish: function(){}
+        // };
 	}
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push(arguments)};
 </script>
