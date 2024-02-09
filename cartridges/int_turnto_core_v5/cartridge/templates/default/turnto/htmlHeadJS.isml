@@ -1,23 +1,30 @@
-<iscomment>This template includes the turnToConfig obejct configuration for dynamic page IDs.
+<!--suppress CheckEmptyScriptTag -->
+<iscomment>This template includes the turnToConfig object configuration for dynamic page IDs.
 NOTE: The template only features base functionality out of the box, in order to get advanced features you will need to configure via the following code, other installation code and TurnTo dashboard, see documentation for further details.
 </iscomment>
 
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 <isset name="pageID" value="${TurnToHelper.getPageID()}" scope="page"/>
 
-<isif condition="${pageID == 'pdp-page'}">
+<isif condition="${pageID === 'pdp-page'}">
     <isif condition="${Resource.msg('turnTo.isSFRA','turnTo','false') === 'true'}">
         <isset name="productId" value="${product.id}" scope="page" />
     <iselse>
         <isset name="productId" value="${pdict.Product.ID}" scope="page" />
     </isif>
     <isset name="product_sku" value="${TurnToHelper.getProductSku(productId)}" scope="page"/>
-    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
+    <script type="text/javascript">var turnToProductSku = '<isprint value="${product_sku}" encoding="jsonvalue"/>'</script>
 <iselse>
     <isset name="product_sku" value="" scope="page"/>
-    <span hidden class="productsku"><isprint value="${product_sku}"/></span>
+    <script type="text/javascript">var turnToProductSku = '<isprint value="${product_sku}" encoding="jsonvalue"/>'</script>
 </isif>
 
+<isset name="ServiceFactory" value="${require('*/cartridge/scripts/util/ServiceFactory')}" scope="page"/>
+<script type="text/javascript">
+    var useVariantsPreference = <isprint value="${ServiceFactory.getUseVariantsPreference()}" encoding="jshtml"/>
+</script>
+
+<isset name="baseSiteVer" value="${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}" scope="page"/>
 <script type="text/javascript">
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
@@ -59,86 +66,62 @@ NOTE: The template only features base functionality out of the box, in order to 
 			}
 		};
 
-	<isset name="baseSiteVer" value="${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}" scope="page"/>
 	var extensionVersion = {
-		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','') + ' ' + baseSiteVer}",
-		sfccPlatform: "${Resource.msg('turnTo.version.sfccPlatform','turnTo','')}",
-		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}",
+		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','')}",
+		sfccPlatform: "${Resource.msg('global.version.number','version', Resource.msg('revisioninfo.revisionnumber','revisioninfo','unknown version'))}",
+		turnToCartridge: "${Resource.msg('turnTo.version.turnToCartridge','turnTo','')}"
 	};
 
-	if('${pageID}' == 'pdp-page') {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "pdp-page",
-				sku: "${product_sku}",
-				gallery: {
-					// Add one or more SKUs as an array.
-					// skus: []
-				},
-				//optional top comments feature, refer to "v5 Top Comment Widget"
-				topComments: {
-					// tags: [],
-					// onFinish: function() {}
-				}, 
-				//optional comments display feature, refer to "v5 Comments Display"
-				chatter: {
-					// onFinish: function() {}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			};
-	} else if ('${pageID}' == 'order-confirmation-page') {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "order-confirmation-page",
-				sku: "${product_sku}",
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			}
-	} else if ('${pageID}' == 'search-page') {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "search-page",
-				commentsPinboardTeaser: {
-					// promoButtonUrl: ""
-					// skus: [],
-					// tags: [],
-					// brands: [],
-					// onFinish: function(){}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			}
-	} else if ('${pageID}' == 'pinboard-page') {
-		var turnToConfig = {
-			locale: "${request.getLocale()}",
-			pageId: "vc-pinboard-page",
-			vcPinboard: {
-				// Add SKUs, tags, brands, or any combination.
-			},
-			extensionVersion: extensionVersion,
-			sso: ssoConfig
-		};
-	} else if ('${pageID}' == 'landing-page') {
-        var turnToConfig = {
-            locale: "${request.getLocale()}",
-            pageId: "email-landing-page",
-            extensionVersion: extensionVersion,
-            sso: ssoConfig
-        };
+    var turnToConfig = {
+        locale: "${request.getLocale()}",
+        extensionVersion: extensionVersion,
+        sso: ssoConfig
+    };
+
+	if('${pageID}' === 'pdp-page') {
+        turnToConfig.pageId = "pdp-page";
+        turnToConfig.sku = "${product_sku}";
+        /* Optional: "Gallery Row Widget" - Add one or more SKUs as an array */
+        // turnToConfig.gallery = {
+        //     skus: []
+        // };
+        /* Optional: "Top Comment Widget" */
+        // turnToConfig.topComments = {
+        //     tags: [],
+        //     onFinish: function() {}
+        // };
+        /* Optional: "Comments Display Widget" */
+        // turnToConfig.chatter = {
+        //     onFinish: function() {}
+        // };
+	} else if ('${pageID}' === 'order-confirmation-page') {
+        turnToConfig.pageId = "order-confirmation-page";
+        turnToConfig.sku = "${product_sku}";
+	} else if ('${pageID}' === 'search-page') {
+        turnToConfig.pageId = "search-page";
+        /* Optional: "Comments Pinboard Teaser" */
+        // turnToConfig.commentsPinboardTeaser = {
+        //     promoButtonUrl: "",
+        //     skus: [],
+        //     tags: [],
+        //     brands: [],
+        //     onFinish: function() {}
+        // }
+	} else if ('${pageID}' === 'pinboard-page') {
+        turnToConfig.pageId = "vc-pinboard-page";
+        /* Optional: "Visual Content Pinboard" - Add SKUs, tags, brands, or any combination. */
+        // turnToConfig.vcPinboard = {};
+	} else if ('${pageID}' === 'landing-page') {
+        turnToConfig.pageId = "email-landing-page";
     } else {
-		var turnToConfig = {
-				locale: "${request.getLocale()}",
-				pageId: "non-defined-page",
-				commentsPinboard: {
-					// skus: [],
-					// tags: [],
-					// brands: [],
-					// onFinish: function(){}
-				},
-				extensionVersion: extensionVersion,
-				sso: ssoConfig
-			};
-	} 
+		turnToConfig.pageId = "non-defined-page";
+        /* Optional: "Comments Pinboard" */
+        // turnToConfig.commentsPinboard = {
+        //     skus: [],
+        //     tags: [],
+        //     brands: [],
+        //     onFinish: function(){}
+        // };
+	}
 	window.TurnToCmd=window.TurnToCmd||function(){(TurnToCmd.q=TurnToCmd.q||[]).push(arguments)};
 </script>
