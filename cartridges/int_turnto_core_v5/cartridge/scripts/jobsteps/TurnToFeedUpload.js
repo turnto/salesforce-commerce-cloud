@@ -9,7 +9,9 @@
  *   PostFileLocation : String location to post file on the SFTP
  *   FilePattern : String regular Expression of Files to Upload
  *   NoFileFoundStatus: String The status to fire when no files are found in the local directory.
- *   IsDisabled : Boolean Mark the step as disabled. This will skip the step and returns a OK status
+ *   isLoggingEnable : Boolean enable logging
+ *   FeedStyle : String feed style for the request
+ *   IsDisabled : Boolean Mark the step as disabled. This will skip the step and returns an OK status
  */
 
 var File = require('dw/io/File');
@@ -41,6 +43,7 @@ var run = function run() {
         var filePattern = args.FilePattern;
         var noFilesFoundStatus = args.NoFileFoundStatus;
         var logging = args.isLoggingEnable;
+        var feedStyle = args.FeedStyle;
 
         // Test mandatory parameters
         if (empty(serviceID) || empty(postFileLocation) || empty(filePattern)) {
@@ -98,7 +101,7 @@ var run = function run() {
                             Logger.error('FAILED Site and/or Auth key or domain is missing: Site Key -> ' + siteKey + ' Auth Key -> ' + authKey + ' Export File Name -> ' + file.name + ' domain -> ' + domain);
                         } else {
                             // feedUploadService
-                            var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain);
+                            var requestDataContainer = ServiceFactory.buildFeedUploadRequestContainer(postFileLocation, file, siteKey, authKey, domain, feedStyle);
                             if (logging) {
                                 Logger.info('Post file location: ' + postFileLocation);
                                 Logger.info('Export file: ' + file);
