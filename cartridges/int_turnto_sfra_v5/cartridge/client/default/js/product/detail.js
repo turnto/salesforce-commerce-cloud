@@ -66,14 +66,13 @@ module.exports = {
                 response.container.find('.product-id').text(response.data.product.id);
             } else {
                 $('.product-id').text(response.data.product.id);
-                $('.product-detail:not(".bundle-item")').data('pid', response.data.product.id);
+                $('.product-detail').not('.bundle-item').data('pid', response.data.product.id);
             }
-            // eslint-disable-next-line no-undef
             // Only run if client has variant products enabled
-            if (serviceFactory.getUseVariantsPreference()) { 
+            if (useVariantsPreference) {
                 TurnToCmd('set', { sku: response.data.product.id }); // eslint-disable-line new-cap
                 teasersModules.loadTeaserCounts(response.data.product.id);
-                TurnToCmd('gallery.set', { skus: [response.data.product.id] });
+                TurnToCmd('gallery.set', { skus: [response.data.product.id] });// eslint-disable-line new-cap
             }
         });
     },
@@ -97,15 +96,16 @@ module.exports = {
 
             $('.availability-msg', response.$productContainer)
                 .empty().html(response.message);
-
-            if ($('.global-availability').length) {
-                var allAvailable = $('.product-availability').toArray()
+            var $globalAvailabilityEl = $('.global-availability');
+            if ($globalAvailabilityEl.length) {
+                var $productAvailabilityEl = $('.product-availability');
+                var allAvailable = $productAvailabilityEl.toArray()
                     .every(function (item) { return $(item).data('available'); });
 
-                var allReady = $('.product-availability').toArray()
+                var allReady = $productAvailabilityEl.toArray()
                     .every(function (item) { return $(item).data('ready-to-order'); });
 
-                $('.global-availability')
+                $globalAvailabilityEl
                     .data('ready-to-order', allReady)
                     .data('available', allAvailable);
 
@@ -143,12 +143,13 @@ module.exports = {
         $('body').on('click', '#fa-link', function () {
             event.preventDefault();
             var $temp = $('<input>');
+            var $messageEl = $('.copy-link-message');
             $('body').append($temp);
             $temp.val($('#shareUrl').val()).select();
             document.execCommand('copy');
             $temp.remove();
-            $('.copy-link-message').attr('role', 'alert');
-            $('.copy-link-message').removeClass('d-none');
+            $messageEl.attr('role', 'alert');
+            $messageEl.removeClass('d-none');
             setTimeout(function () {
                 $('.copy-link-message').addClass('d-none');
             }, 3000);

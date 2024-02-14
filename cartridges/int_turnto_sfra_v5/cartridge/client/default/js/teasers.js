@@ -6,6 +6,6 @@ var teasersModules = require('./teaser/teasersModules');
 $(document).ready(function () {
 	// PDP teasers only
     if ($('span.product-id').text().length) {
-        teasersModules.loadTeaserCounts($('span.productsku').text());
+        teasersModules.loadTeaserCounts(turnToProductSku);
     }
 });

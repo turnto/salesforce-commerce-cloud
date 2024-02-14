@@ -1,6 +1,6 @@
 {
   "name": "int_turnto_sfra_v5",
-  "version": "22.1.0",
+  "version": "24.1.0",
   "description": "TurnTo's official cartridge for SFRA and SiteGenesis",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:SalesforceCommerceCloud/link_turnto.git"
+    "url": "https://github.com/turnto/salesforce-commerce-cloud"
   },
   "license": "ISC",
   "devDependencies": {

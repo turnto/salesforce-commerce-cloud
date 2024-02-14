@@ -127,6 +127,37 @@ var OrderWriterHelper = {
             }
         }
         return;
+    },
+
+    /**
+     * @function
+     * @name writeCancelledOrderData
+     * @param {dw.order.Order} order - order
+     * @param {dw.io.FileWriter} fileWriter - file writer
+     */
+    writeCancelledOrderData: function (order, fileWriter) {
+        // Get all product line items for the order
+        var products = order.getAllProductLineItems();
+
+        var useVariants = Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') === true;
+
+        for (var i = 0; i < products.size(); i++) {
+            var productLineItem = products[i];
+            var product = productLineItem.getProduct();
+            if (!empty(product)) {
+                if (product.isVariant() && !useVariants) {
+                    product = product.getVariationModel().getMaster();
+                }
+
+                // ORDERID
+                fileWriter.write(order.getOrderNo());
+                fileWriter.write('\t');
+
+                // SKU
+                fileWriter.write(TurnToHelper.replaceNull(product.getID(), ''));
+                fileWriter.write('\n');
+            }
+        }
     }
 };
 

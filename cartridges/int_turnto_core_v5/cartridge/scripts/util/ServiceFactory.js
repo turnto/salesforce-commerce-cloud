@@ -88,7 +88,7 @@ var ServiceFactory = {
     getProduct: function (pid) {
         var product = ProductMgr.getProduct(pid);
         var useVariants = ServiceFactory.getUseVariantsPreference();
-        var resultPid = null;
+        var resultPid;
         if (product.isMaster() && useVariants) {
             resultPid = product.getVariationModel().defaultVariant.ID;
         } else {
@@ -114,22 +114,20 @@ var ServiceFactory = {
         var siteKey = ServiceFactory.getLocalizedSiteKeyPreference(currentLocale);
         var authKey = ServiceFactory.getLocalizedAuthKeyPreference(currentLocale);
 
-		// If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
+		// Skip locales without keys configured
         if (empty(siteKey) || empty(authKey)) {
             return false;
         }
 
-		// Distinguish two different download URLs (Example for UGC http://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml)
-		// "/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-        var url = 'http://www.' + ServiceFactory.getLocalizedDomainURLPreference(currentLocale) + File.SEPARATOR + 'static' + File.SEPARATOR + 'export' + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
+		// Distinguish two different download URLs "/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
+		// Example for UGC: https://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml
+        var url = 'https://www.' + ServiceFactory.getLocalizedDomainURLPreference(currentLocale) + File.SEPARATOR + 'static' + File.SEPARATOR + 'export' + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
 
-        var requestDataContainer = {
+        return {
             requestMethod: 'GET',
             path: url,
             outfile: file
         };
-
-        return requestDataContainer;
     },
 
 	/**
@@ -140,10 +138,11 @@ var ServiceFactory = {
 	 * @param {string} siteKey -
 	 * @param {string} authKey -
 	 * @param {string} domain -
+	 * @param {string} feedStyle -
 	 * @returns {Object} -
 	 */
-    buildFeedUploadRequestContainer: function (postFileLocation, file, siteKey, authKey, domain) {
-		// If turntoAuthKey and turntoSiteKey values are not defined for a particular locale the job should skip the locale.
+    buildFeedUploadRequestContainer: function (postFileLocation, file, siteKey, authKey, domain, feedStyle) {
+		// Skip locales without keys configured
         if (empty(siteKey) || empty(authKey) || empty(domain)) {
             return false;
         }
@@ -153,18 +152,16 @@ var ServiceFactory = {
         arrayOfRequestParts.push(new HTTPRequestPart('file', file));
         arrayOfRequestParts.push(new HTTPRequestPart('siteKey', siteKey));
         arrayOfRequestParts.push(new HTTPRequestPart('authKey', authKey));
-        arrayOfRequestParts.push(new HTTPRequestPart('feedStyle', 'tab-style.1'));
+        arrayOfRequestParts.push(new HTTPRequestPart('feedStyle', feedStyle));
 
-        var url = 'http://' + domain + postFileLocation;
+        var url = 'https://' + domain + postFileLocation;
 
-        var requestDataContainer = {
+        return {
             requestMethod: 'POST',
             path: url,
             outfile: file,
             args: arrayOfRequestParts
         };
-
-        return requestDataContainer;
     }
 
 };
