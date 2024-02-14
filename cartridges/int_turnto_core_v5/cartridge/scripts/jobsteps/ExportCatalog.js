@@ -113,7 +113,7 @@ function getTotalCount() {
 /**
  * The read function returns either one item or nothing.
  * It returns nothing if there are no more items available
- * @returns {number} - completion status
+ * @returns {Object} - completion status
  */
 function read() {
     try {
@@ -136,7 +136,7 @@ function read() {
 /**
  * It receives the item returned by the read function, performs a process, and returns one item
  * @param {*} product -
- * @returns {number} - completion status
+ * @returns {Object} - completion status
  */
 function process(product) {
     if (empty(product)) {
@@ -174,20 +174,27 @@ function process(product) {
 
         // CATEGORYPATHJSON
         var categoryPathJSON = null;
-        var currentCategory = product.getPrimaryCategory() ||
-            (product.isVariant() && product.masterProduct) ?
-                product.masterProduct.getPrimaryCategory()
-                : null;
+        var currentCategory = product.getPrimaryCategory();
+        if (currentCategory === null) {
+            try {
+                if (product.isVariant() && !product.isMaster()) {
+                    currentCategory = product.masterProduct.getPrimaryCategory();
+                }
+            } catch (e) {
+                Logger.warn(e.message);
+            }
+        }
         if (currentCategory !== null) {
             categoryPathJSON = [];
             var categoryArray = [];
+            var categoryJson;
             while (currentCategory != null && !currentCategory.isRoot()) {
-                var categoryjson = {
+                categoryJson = {
                     id: currentCategory.getID(),
                     name: TurnToHelper.replaceNull(currentCategory.getDisplayName()),
                     url: URLUtils.http('Search-Show', 'cgid', currentCategory.getID()).toString()
                 };
-                categoryArray.push(JSON.stringify(categoryjson));
+                categoryArray.push(JSON.stringify(categoryJson));
                 currentCategory = currentCategory.getParent();
             }
             categoryArray.reverse();
@@ -287,28 +294,27 @@ function process(product) {
             localesArray.forEach(function (l) {
                 request.setLocale(l);
                 var url = URLUtils.http('Product-Show', 'pid', product.getID()).toString();
-                var item = {
+                localeData[l] = {
                     title: TurnToHelper.sanitizeStr(product.getName(), ' '),
                     itemUrl: url,
                     mobileItemUrl: url
                 };
-                localeData[l] = item;
             });
 
             var defaultLocale = Site.getCurrent().getDefaultLocale();
             request.setLocale(defaultLocale);
             // build locale JSON
-            var localejson = {
+            json[locales] = {
                 sku: TurnToHelper.replaceNull(product.getID(), ''),
                 imageurl: imageURL,
                 title: TurnToHelper.sanitizeStr(product.getName(), ' '),
                 price: TurnToHelper.replaceNull(priceStr, ''),
                 currency: TurnToHelper.replaceNull(price.getCurrencyCode(), ''),
-                active: product.getAvailabilityModel().isOrderable() ? 'Y' : 'N',
+                active: product.isOnline() ? 'Y' : 'N',
                 itemurl: URLUtils.http('Product-Show', 'pid', product.getID()).toString(),
                 category: '', // Leaving blank because CATEGORYPATHJSON is populated
                 keywords: TurnToHelper.sanitizeStr(keywords, ' '),
-                instock: product.getOnlineFlag() ? 'Y' : 'N',
+                instock: product.getAvailabilityModel().isOrderable() ? 'Y' : 'N',
                 virtualparentcode: product.isVariant() ? product.masterProduct.ID : product.ID,
                 categorypathjson: categoryPathJSON || '',
                 members: TurnToHelper.replaceNull(bundledProductsArray, ''),
@@ -322,11 +328,9 @@ function process(product) {
                 mobileitemurl: '',
                 localedata: JSON.stringify(localeData)
             };
-
-            json[locales] = localejson;
         });
     } catch (e) {
-        Logger.error('exportCatalog.js has failed on the process step with the following error: {0}', e.message);
+        Logger.error('exportCatalog.js has failed on the process step with the following error: {0}\n{1}', e.message, e.stack);
     }
     return json;
 }
@@ -367,7 +371,7 @@ function write(json) {
             }
         });
     } catch (e) {
-        Logger.error('exportCatalog.js has failed on the write step with the following error: {0}', e.message);
+        Logger.error('exportCatalog.js has failed on the write step with the following error: {0}\n{1}', e.message, e.stack);
     }
 }
 
