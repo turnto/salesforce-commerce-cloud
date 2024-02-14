@@ -1,6 +1,7 @@
 {
 	"step-types": {
-		"script-module-step": [{
+		"script-module-step": [
+			{
 				"@type-id": "custom.TurnToFeedDownload_v5",
 				"@supports-site-context": "true",
 				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/TurnToFeedDownload.js",
@@ -59,7 +60,8 @@
 				"description": "Uploads files from the local IMPEX to the TurnTo SFTP.",
 				"function": "Run",
 				"parameters": {
-					"parameter": [{
+					"parameter": [
+						{
 							"@name": "ServiceID",
 							"@type": "string",
 							"@required": "true",
@@ -104,9 +106,22 @@
 							"@name": "isLoggingEnable",
 							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
 							"@type": "boolean",
-							"@required": false,
-							"@trim": true,
-							"default-value": true
+							"@required": "false",
+							"@trim": "true",
+							"default-value": "true"
+						},
+						{
+							"@name": "FeedStyle",
+							"description": "FeedStyle used in export request",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"enum-values": {
+								"value": [
+									"tab-style.1",
+									"cancelled-order.txt"
+								]
+							}
 						}
 					]
 				},
@@ -151,6 +166,47 @@
 				},
 				"status-codes": {
 					"status": [{
+							"@code": "ERROR",
+							"description": "Used when an error occurred."
+						},
+						{
+							"@code": "OK",
+							"description": "Used when execution was successful."
+						},
+						{
+							"@code": "NO_FILE_FOUND",
+							"description": "Used when no file could be found in the source directory."
+						}
+					]
+				}
+			},
+			{
+				"@type-id": "custom.TurnToExportCancelledOrderFeedOngoing_v5",
+				"@supports-site-context": "true",
+				"module": "int_turnto_core_v5/cartridge/scripts/jobsteps/ExportCancelledOrders.js",
+				"description": "Exports cancelled order data from one or more site locales to the local IMPEX.",
+				"function": "Run",
+				"parameters": {
+					"parameter": [
+						{
+							"@name": "ExportFileName",
+							"@type": "string",
+							"@required": "true",
+							"@trim": "true",
+							"description": "File name of the file to be exported to TurnTo"
+						},
+						{
+							"@name": "IsDisabled",
+							"description": "Mark the step as disabled. This will skip the step and returns an OK status",
+							"@type": "boolean",
+							"@required": "false",
+							"@trim": "true"
+						}
+					]
+				},
+				"status-codes": {
+					"status": [
+						{
 							"@code": "ERROR",
 							"description": "Used when an error occurred."
 						},
@@ -228,8 +284,8 @@
 						{
 							"@name": "ProductNotFoundStatus",
 							"@type": "string",
-							"@required": true,
-							"@trim": true,
+							"@required": "true",
+							"@trim": "true",
 							"enum-values": {
 								"value": [
 									"OK",
@@ -242,9 +298,9 @@
 							"@name": "isLoggingEnable",
 							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
 							"@type": "boolean",
-							"@required": false,
-							"@trim": true,
-							"default-value": true
+							"@required": "false",
+							"@trim": "true",
+							"default-value": "true"
 						}
 					]
 				},
@@ -289,9 +345,9 @@
 							"@name": "isLoggingEnable",
 							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
 							"@type": "boolean",
-							"@required": false,
-							"@trim": true,
-							"default-value": true
+							"@required": "false",
+							"@trim": "true",
+							"default-value": "true"
 						}
 					]
 				},
@@ -312,7 +368,8 @@
 				}
 			}
 		],
-		"chunk-script-module-step": [{
+		"chunk-script-module-step": [
+			{
 				"@type-id": "custom.TurnToExportCatalogFeed_v5",
 				"@supports-parallel-execution": "false",
 				"@supports-site-context": "true",
@@ -394,9 +451,9 @@
 							"@name": "isLoggingEnable",
 							"description": "Whether or not additional logging should be used. Critical errors are always logged.",
 							"@type": "boolean",
-							"@required": false,
-							"@trim": true,
-							"default-value": true
+							"@required": "false",
+							"@trim": "true",
+							"default-value": "true"
 						}
 					]
 				},
