@@ -5,27 +5,30 @@
 
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
 	<script type="text/javascript">
-		//use site key only if client has multiple stores *uncomment the following line and the siteKey attribute of the order data items JSON below if client has multiple stores*
-		//var siteKey = ${siteKey};
-		var jsOrderFeed = {
-				orderId: '${pdict.Order.getOrderNo()}',
-				email: '${pdict.Order.getCustomerEmail()}',
-				postalCode: '${pdict.Order.getBillingAddress().getPostalCode()}',
-				firstName: '${pdict.Order.getBillingAddress().getFirstName()}',
-				lastName: '${pdict.Order.getBillingAddress().getLastName()}',
-				nickName: '',
-				items: [
-					<isloop items="${pdict.Order.getProductLineItems()}" var="item" status="itemStatus">
-						{
-							//siteKey: ${siteKey},
-							title: '${item.getProduct().getName().replace(/'/g, "\\'")}', 
-							url:'${URLUtils.http('Product-Show', 'pid', TurnToHelper.getProductSku(item.getProduct().getID()))}', 
-							sku:'${TurnToHelper.getProductSku(item.getProduct().getID())}',
-						}<isif condition="${!itemStatus.last}">,</isif>
-					</isloop>
-				]
-			};
-		TurnToCmd('feed.send', jsOrderFeed);
+		var orderData = {
+			orderId: "${pdict.Order.getOrderNo()}",
+			email: "${pdict.Order.getCustomerEmail()}",
+			postalCode: "${pdict.Order.getBillingAddress().getPostalCode()}",
+			firstName: "${pdict.Order.getBillingAddress().getFirstName()}",
+			lastName: "${pdict.Order.getBillingAddress().getLastName()}",
+			nickName: "",
+			total: ${pdict.Order.getTotalGrossPrice().getDecimalValue()},
+			currency: "${pdict.Order.getCurrencyCode()}",
+			items: [
+			<isloop items="${pdict.Order.getProductLineItems()}" var="item" status="itemStatus">
+				{
+					/* Uncomment the siteKey if multiple stores are configured in turntoSiteAuthKeyJSON */
+					// siteKey: ${siteKey},
+					title: "${item.getProduct().getName().replace(/'/g, "\\'")}",
+					url: "${URLUtils.http('Product-Show', 'pid', TurnToHelper.getProductSku(item.getProduct().getID()))}",
+					sku: "${TurnToHelper.getProductSku(item.getProduct().getID())}",
+					price: ${item.getPriceValue()},
+					qty: ${item.getQuantityValue()}
+				}<isif condition="${!itemStatus.last}">,</isif>
+			</isloop>
+			]
+		}
+		TurnToCmd('feed.send', orderData);
 	</script>
 </isif>
 

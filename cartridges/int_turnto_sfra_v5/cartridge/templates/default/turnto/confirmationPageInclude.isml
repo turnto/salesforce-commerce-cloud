@@ -4,30 +4,32 @@
 <isset name="TurnToHelper" value="${require('*/cartridge/scripts/util/TurnToHelperUtil')}" scope="page"/>
 
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoJSFeed')}">
+    <isset name="currentOrder" value="${dw.order.OrderMgr.getOrder(pdict.order.orderNumber)}" scope="page"/>
     <script type="text/javascript">
-        //use site key only if client has multiple stores *uncomment the following line and the siteKey attribute of the order data items JSON below if client has multiple stores*
-        //var siteKey = ${siteKey};
-        var jsOrderFeed = {
-                orderId: '${pdict.order.orderNumber}',
-                email: '${pdict.order.orderEmail}',
-                postalCode: '${pdict.order.billing.billingAddress.address.postalCode}',
-                firstName: '${pdict.order.billing.billingAddress.address.firstName}',
-                lastName: '${pdict.order.billing.billingAddress.address.lastName}',
-                nickName: '',
-                items: [
-                    <isloop items="${pdict.order.shipping}" var="shippingModel">
-                        <isloop items="${shippingModel.productLineItems.items}" var="item" status="itemStatus">
-                            {
-                                //siteKey: ${siteKey},
-                                title: '${item.productName.replace(/'/g, "\\'")}', 
-                                url:'${URLUtils.http("Product-Show", "pid", TurnToHelper.getProductSku(item.id))}', 
-                                sku:'${TurnToHelper.getProductSku(item.id)}',
-                            }<isif condition="${!itemStatus.last}">,</isif>
-                        </isloop>
-                    </isloop>
-                ]
-            };
-        TurnToCmd('feed.send', jsOrderFeed);
+        var orderData = {
+            orderId: "${pdict.order.orderNumber}",
+            email: "${pdict.order.orderEmail}",
+            postalCode: "${pdict.order.billing.billingAddress.address.postalCode}",
+            firstName: "${pdict.order.billing.billingAddress.address.firstName}",
+            lastName: "${pdict.order.billing.billingAddress.address.lastName}",
+            nickName: "",
+            total: ${currentOrder.getTotalGrossPrice().getDecimalValue()},
+            currency: "${currentOrder.getCurrencyCode()}",
+            items: [
+            <isloop items="${currentOrder.getProductLineItems()}" var="item" status="itemStatus">
+                {
+                    /* Uncomment the siteKey if multiple stores are configured in turntoSiteAuthKeyJSON */
+                    // siteKey: "${siteKey}",
+                    title: "${item.getProductName().replace(/'/g, "\\'")}",
+                    url: "${URLUtils.http('Product-Show', 'pid', TurnToHelper.getProductSku(item.getProductID()))}",
+                    sku: "${TurnToHelper.getProductSku(item.getProductID())}",
+                    price: ${item.getPriceValue()},
+                    qty: ${item.getQuantityValue()}
+                }<isif condition="${!itemStatus.last}">,</isif>
+            </isloop>
+            ]
+        }
+        TurnToCmd('feed.send', orderData);
     </script>
 </isif>
 
