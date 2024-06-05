@@ -13,11 +13,12 @@
 var Site = require('dw/system/Site');
 var File = require('dw/io/File');
 var FileWriter = require('dw/io/FileWriter');
+var Order = require('dw/order/Order');
 var OrderMgr = require('dw/order/OrderMgr');
 var Calendar = require('dw/util/Calendar');
 var Status = require('dw/system/Status');
 
-/* Script Modules*/
+/* Script Modules */
 var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var OrderWriterHelper = require('*/cartridge/scripts/util/OrderWriterHelper');
 
@@ -59,8 +60,15 @@ var run = function run() {
                 var dateLimit = new Calendar();
                 dateLimit.add(Calendar.DAY_OF_YEAR, historicalOrderDays * -1);
 
-                var query = 'creationDate >= {0} AND customerLocaleID = {1}';
-                var orders = OrderMgr.searchOrders(query, 'creationDate asc', dateLimit.getTime(), currentLocale);
+                var query = 'creationDate >= {0} AND customerLocaleID = {1} AND status != {2} AND status != {3}';
+                var orders = OrderMgr.searchOrders(
+                    query,
+                    'creationDate asc',
+                    dateLimit.getTime(),
+                    currentLocale,
+                    Order.ORDER_STATUS_CANCELLED,
+                    Order.ORDER_STATUS_FAILED
+                );
 
                 if (orders.count !== 0) {
                     // Create a TurnTo directory if one doesn't already exist
@@ -86,9 +94,7 @@ var run = function run() {
                             OrderWriterHelper.writeOrderData(order, fileWriter, currentLocale);
                         }
                     } finally {
-                        if (orders != null) {
-                            orders.close();
-                        }
+                        orders.close();
                     }
                 }
             } catch (e) {
