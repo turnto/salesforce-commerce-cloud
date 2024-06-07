@@ -13,6 +13,7 @@
 var Site = require('dw/system/Site');
 var File = require('dw/io/File');
 var FileWriter = require('dw/io/FileWriter');
+var Order = require('dw/order/Order');
 var OrderMgr = require('dw/order/OrderMgr');
 var Status = require('dw/system/Status');
 
@@ -60,9 +61,15 @@ var run = function run() {
 
             try {
                 // query orders by order system attribute "customerLocaleID" and specify creation date
-                var query = 'creationDate >= {0} AND customerLocaleID = {1}';
-                var orders = OrderMgr.searchOrders(query, 'creationDate asc', historicalOrderDate, currentLocale);
-
+                var query = 'creationDate >= {0} AND customerLocaleID = {1} AND status != {2} AND status != {3}';
+                var orders = OrderMgr.searchOrders(
+                    query,
+                    'creationDate asc',
+                    historicalOrderDate,
+                    currentLocale,
+                    Order.ORDER_STATUS_CANCELLED,
+                    Order.ORDER_STATUS_FAILED
+                );
                 if (orders.count !== 0) {
                     // Create a TurnTo directory if one doesn't already exist
                     var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + currentLocale);
@@ -87,9 +94,7 @@ var run = function run() {
                             OrderWriterHelper.writeOrderData(order, fileWriter, currentLocale);
                         }
                     } finally {
-                        if (orders != null) {
-                            orders.close();
-                        }
+                        orders.close();
                     }
                 }
             } finally {
