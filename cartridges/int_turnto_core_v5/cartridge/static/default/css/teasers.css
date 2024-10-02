@@ -1,20 +1,20 @@
 .TTteaser {
 	font-size: 1rem;
-	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 .TTteaser__rating {
-	display: inline-block; 
-	vertical-align: middle; 
-	margin-right: 0.5em;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 0;
 }
 
 .TTteaser__star svg {
 	width: 1em;
-	height: 1em; 
+	height: 1em;
 }
 
-.TTteaser__icon--full { 
+.TTteaser__icon--full {
 	fill: #000;
 }
 
@@ -25,20 +25,20 @@
 }
 
 .TTteaser__icon--empty {
-	stroke: #000; 
+	stroke: #000;
 }
 
 .TTteaser__read-qa, .TTteaser__read-comments, .TTteaser__read-reviews, .TTteaser__write-review {
 	font-size: 1rem;
 	font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	color: #000;
-	Text-decoration: underline; 
+	Text-decoration: underline;
 }
 
-.TTteaser__write-review { 
+.TTteaser__write-review {
 	border: none;
 	text-decoration: underline;
 	background: transparent;
 	padding: 0;
-	cursor: pointer; 
+	cursor: pointer;
 }
