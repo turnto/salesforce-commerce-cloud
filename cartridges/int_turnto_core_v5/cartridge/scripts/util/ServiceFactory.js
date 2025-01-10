@@ -11,23 +11,23 @@ var File = require('dw/io/File');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var HTTPRequestPart = require('dw/net/HTTPRequestPart');
 
-/* Script Modules*/
+/* Script Modules */
 var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 
 // Public
 var ServiceFactory = {
 
-	// Service IDs
+    // Service IDs
     SERVICES: {
         IMPORT: 'turnto.http.import.get',
         UPLOAD: 'turnto.http.upload.get'
     },
 
-	/** ***************************************************
+    /** ***************************************************
 	 * Preferences
-	 ****************************************************/
+	 *************************************************** */
 
-	/**
+    /**
 	 * @name getLocalizedSiteKeyPreference
 	 * @desc returns the site key custom site preference using the parameter locale
 	 * @param {string} currentLocale - current Site locale
@@ -37,7 +37,7 @@ var ServiceFactory = {
         return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).turntoSiteKey;
     },
 
-	/**
+    /**
 	 * @name getLocalizedAuthKeyPreference
 	 * @desc returns the auth key custom site preference using the parameter locale
 	 * @param {string} currentLocale - current Site locale
@@ -47,7 +47,7 @@ var ServiceFactory = {
         return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).turntoAuthKey;
     },
 
-	/**
+    /**
 	 * @name getUseVariantsPreference
 	 * @desc returns the use variants custom site preference
 	 * @returns {boolean} - TurnTo use variants
@@ -56,7 +56,7 @@ var ServiceFactory = {
         return Site.getCurrent().getCustomPreferenceValue('turntoUseVariants');
     },
 
-	/**
+    /**
 	 * @name getLocalizedDomainURLPreference
 	 * @desc returns the localized domain URL
 	 * @param {string} currentLocale - current Site locale
@@ -66,11 +66,11 @@ var ServiceFactory = {
         return TurnToHelper.getLocalizedTurnToPreferenceValue(currentLocale).domain;
     },
 
-	/** ***************************************************
+    /** ***************************************************
 	 * Other Getters
-	 ****************************************************/
+	 *************************************************** */
 
-	/**
+    /**
 	 * @name getLogger
 	 * @desc returns the logger
 	 * @returns {dw.system.Log} - TurnTo Logger
@@ -79,7 +79,7 @@ var ServiceFactory = {
         return Logger.getLogger('int_turnto_core_v5');
     },
 
-	/**
+    /**
 	 * @name getProduct
 	 * @desc returns the product ID
 	 * @param {string} pid - Product ID
@@ -98,11 +98,11 @@ var ServiceFactory = {
     },
 
 
-	/** ***************************************************
+    /** ***************************************************
 	 * Request Data Containers
-	 ****************************************************/
+	 *************************************************** */
 
-	/**
+    /**
 	 * @function
 	 * @name buildFeedDownloadRequestContainer
 	 * @param {string} xmlName -
@@ -114,14 +114,14 @@ var ServiceFactory = {
         var siteKey = ServiceFactory.getLocalizedSiteKeyPreference(currentLocale);
         var authKey = ServiceFactory.getLocalizedAuthKeyPreference(currentLocale);
 
-		// Skip locales without keys configured
+        // Skip locales without keys configured
         if (empty(siteKey) || empty(authKey)) {
             return false;
         }
 
-		// Distinguish two different download URLs "/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
-		// Example for UGC: https://www.turnto.com/static/export/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml
-        var url = 'https://www.' + ServiceFactory.getLocalizedDomainURLPreference(currentLocale) + File.SEPARATOR + 'static' + File.SEPARATOR + 'export' + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
+        // Distinguish two different download URLs "/turnto-skuaveragerating.xml" OR "/turnto-ugc.xml"
+        // Example for UGC: https://export.turnto.com/YOURSITEKEY/YOURAUTHKEY/turnto-ugc.xml
+        var url = 'https://export.' + ServiceFactory.getLocalizedDomainURLPreference(currentLocale) + File.SEPARATOR + siteKey + File.SEPARATOR + authKey + xmlName;
 
         return {
             requestMethod: 'GET',
@@ -130,7 +130,7 @@ var ServiceFactory = {
         };
     },
 
-	/**
+    /**
 	 * @function
 	 * @name buildFeedUploadRequestContainer
 	 * @param {string} postFileLocation -
@@ -142,12 +142,12 @@ var ServiceFactory = {
 	 * @returns {Object} -
 	 */
     buildFeedUploadRequestContainer: function (postFileLocation, file, siteKey, authKey, domain, feedStyle) {
-		// Skip locales without keys configured
+        // Skip locales without keys configured
         if (empty(siteKey) || empty(authKey) || empty(domain)) {
             return false;
         }
 
-		// Create array of request parts to add to request
+        // Create array of request parts to add to request
         var arrayOfRequestParts = [];
         arrayOfRequestParts.push(new HTTPRequestPart('file', file));
         arrayOfRequestParts.push(new HTTPRequestPart('siteKey', siteKey));
