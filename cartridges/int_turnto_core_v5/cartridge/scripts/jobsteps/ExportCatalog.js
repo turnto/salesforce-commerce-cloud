@@ -32,6 +32,8 @@ var fileNumber = 0;
 var createFiles = true;
 /** @type {number} fileProductCount - Track number of products written to current file to compare to max number allowed */
 var fileProductCount;
+/** @type {number} maxProductsPerFile - Max number of products allowed in a file */
+var maxProductsPerFile = 200000
 
 /**
  * Get all products to be exported
@@ -96,7 +98,7 @@ function beforeChunk(parameters) {
                     return allowedLocales.indexOf(loc) > -1;
                 });
 
-                // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
+                // if there are no allowed locales for the site/auth key configuration then do not export a catalog
                 if (isAllowedLocale) {
                     // create a folder with one or more locales
                     var folderAndFilePatternName = locales.join().replace(',', '_');
@@ -416,7 +418,7 @@ function afterChunk(success, parameters) {
     }
     try {
         // If the file product count is greater than the max file product count, close the file writers to open new files
-        createFiles = fileProductCount > 200000;
+        createFiles = fileProductCount > maxProductsPerFile;
         if (createFiles) {
             closeFileWriters();
         }
