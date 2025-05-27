@@ -77,10 +77,10 @@ function beforeChunk(parameters) {
         return;
     }
     try {
-        var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
-        var fileName = parameters.ExportFileName;
-        // Create a new file per locale to export to Emplifi if no files are open
         if (createFiles) {
+            var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+            var fileName = parameters.ExportFileName;
+            // Create a new file per locale to export to Emplifi if no files are open
             Logger.info('ExportCatalog.js: beforeChunk() - create files');
             fileNumber++;
             fileProductCount = 0;
@@ -397,7 +397,6 @@ function closeFileWriters() {
         // retrieve the current file writer
         var fileWriter = hashMapOfFileWriters.get(currentLocale);
         if (fileWriter) {
-            Logger.info('ExportCatalog.js: closeFileWriters()');
             fileWriter.close();
         }
     });
@@ -417,9 +416,8 @@ function afterChunk(success, parameters) {
     }
     try {
         // If the file product count is greater than the max file product count, close the file writers to open new files
-        createFiles = fileProductCount > 10000;
+        createFiles = fileProductCount > 200000;
         if (createFiles) {
-            Logger.info('ExportCatalog.js: afterChunk closeFileWriters()');
             closeFileWriters();
         }
     } catch (e) {
