@@ -30,4 +30,4 @@ Please follow the below steps to validate that you have successfully installed t
   * Confirm the review can now be seen on the PDP page of the product in the storefront
 
 ## Platform
-Emplifi Ratings & Reviews platform documentation can be found at [https://docs.emplifi.io](https://docs.emplifi.io/platform/latest/home/ratings-and-reviews).
+Emplifi Ratings & Reviews platform documentation can be found at [https://docs.emplifi.io](https://docs.emplifi.io/platform/latest/home/e-commerce-platforms).
