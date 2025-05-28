@@ -7,95 +7,50 @@ var URLUtils = require('dw/web/URLUtils');
 var HashMap = require('dw/util/HashMap');
 var Logger = require('dw/system/Logger');
 var Site = require('dw/system/Site');
-var Status = require('dw/system/Status');
 
 /* Script Modules */
 var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
+/**
+ * @typedef {HashMap} JobParameters - job parameters
+ * @property {boolean} IsDisabled - job disabled status
+ * @property {string} ExportFileName - job export file name
+ */
 // Globally scoped variables
+/** @type {dw.util.SeekableIterator<Product>} products */
 var products;
-var tempProduct;
+/** @type {HashMap} hashMapOfFileWriters - Map of file writers by locale */
 var hashMapOfFileWriters;
-var hashMapOfKeys = new HashMap();
+/** @type {SiteKeysJson} siteKeys */
+var siteKeys;
+/** @type {Array} allowedLocales - SiteKeysJson locales allowed in store */
 var allowedLocales;
+/** @type {number} fileNumber - Track current file number */
+var fileNumber = 0;
+/** @type {boolean} createFiles - Flag to create new files or continue writing to current file */
+var createFiles = true;
+/** @type {number} fileProductCount - Track number of products written to current file to compare to max number allowed */
+var fileProductCount;
+/** @type {number} maxProductsPerFile - Max number of products allowed in a file */
+var maxProductsPerFile = 200000
 
 /**
+ * Get all products to be exported
+ *
  * Function is executed only ONCE
- * @param {Object} parameters - job parameters
- * @returns {dw.system.Status} - completion status
+ * @param {JobParameters} parameters - job parameters
  */
 function beforeStep(parameters) {
     if (parameters.IsDisabled) {
-        return new Status(Status.OK, 'OK', 'Export Catalog job step is disabled.');
+        return;
     }
-
-    try {
-        hashMapOfKeys = TurnToHelper.getHashMapOfKeys();
-        if (!hashMapOfKeys) {
-            return new Status(Status.ERROR, 'ERROR', 'Did not find SiteAuthKeyJSON value for site');
-        }
-        allowedLocales = TurnToHelper.getAllowedLocales();
-
-        // instantiate new hash map to store the locale file writers
-        hashMapOfFileWriters = new HashMap();
-
-        var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
-
-        // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
-        var areAllowedLocales = false;
-
-        hashMapOfKeys.values().toArray().forEach(function (key) {
-            // create an array of locales since some keys have multiple locales (replace whitespace with no whitespace to prevent invalid folders in the IMPEX)
-            var locales = key.locales.replace(' ', '').split(',');
-            var isAllowedLocale = true;
-            var locale = null;
-
-            for (var i = 0; i < locales.length; i++) {
-                // check if locale is allowed on the site, if it is not allowed, mark the variable as false and break out of the loop to continue to the next key
-                locale = locales[i];
-                if (allowedLocales.indexOf(locales[i]) <= -1) {
-                    isAllowedLocale = false;
-                    break;
-                }
-            }
-
-            // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
-            if (isAllowedLocale) {
-                areAllowedLocales = true;
-
-                // create a folder with one or more locales
-                var folderAndFilePatternName = locales.join().replace(',', '_');
-                var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locale);
-
-                if (!turntoDir.exists()) {
-                    turntoDir.mkdirs();
-                }
-
-                // Initialize a file writer for output with the current key
-                var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + parameters.ExportFileName + '_' + folderAndFilePatternName + '_' + Site.getCurrent().ID + '.txt');
-                catalogExportFileWrite.createNewFile();
-
-                var currentFileWriter = new FileWriter(catalogExportFileWrite);
-
-                // write header text
-                currentFileWriter.writeLine('SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA');
-                hashMapOfFileWriters.put(key.locales, currentFileWriter);
-            }
-        });
-
-        // if there are no allowed locales for the site/auth key configuration then do not export a catalog and return an error
-        if (!areAllowedLocales) {
-            return new Status(Status.ERROR, 'ERROR', 'There are no allowed locales for a catalog export, check the site/auth keys configuration and the site level allowed locales.');
-        }
-
-        // query all site products
-        products = catalog.ProductMgr.queryAllSiteProductsSorted();
-    } catch (e) {
-        Logger.error('exportCatalog.js has failed on the beforeStep step with the following error: ' + e.message);
-        return new Status(Status.ERROR, 'ERROR', 'There are no allowed locales for a catalog export, check the site/auth keys configuration and the site level allowed locales.');
+    siteKeys = TurnToHelper.getSiteKeys();
+    if (empty(siteKeys)) {
+        return;
     }
-    return null;
+    allowedLocales = TurnToHelper.getAllowedLocales();
+    products = catalog.ProductMgr.queryAllSiteProductsSorted();
 }
 
 /**
@@ -103,25 +58,87 @@ function beforeStep(parameters) {
  * this function is called by the framework exactly once before chunk processing begins.
  * A known total count allows better monitoring.
  * For example, to show that 50 of 100 items have already been processed.
- * @returns {number} - completion status
+ * @param {JobParameters} parameters - job parameters
+ * @returns {number} - total number of products
  */
-function getTotalCount() {
-    // Return product count
-    return !empty(products) ? products.count : 0;
+function getTotalCount(parameters) {
+    if (parameters.IsDisabled || empty(siteKeys) || empty(products)) {
+        return 0;
+    }
+
+    return products.count;
 }
 
 /**
- * The read function returns either one item or nothing.
- * It returns nothing if there are no more items available
- * @returns {Object} - completion status
+ * Create new files for each locale for initial chunk and whenever the files have been close because the file product
+ * count exceeds the max file product count
+ * @param {JobParameters} parameters - job parameters
  */
-function read() {
+function beforeChunk(parameters) {
+    if (parameters.IsDisabled || empty(siteKeys) || empty(products)) {
+        return;
+    }
+    try {
+        if (createFiles) {
+            var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
+            var fileName = parameters.ExportFileName;
+            // Create a new file per locale to export to Emplifi if no files are open
+            Logger.info('ExportCatalog.js: beforeChunk() - create files');
+            fileNumber++;
+            fileProductCount = 0;
+            // new map of file writers for each locale per chunk
+            hashMapOfFileWriters = new HashMap();
+            Object.keys(siteKeys).forEach(function (key) {
+                var siteKeyJson = siteKeys[key]
+                // create an array of locales since some keys have multiple locales
+                var locales = siteKeyJson.locales.split(',');
+                var locale = null;
+                var isAllowedLocale = locales.every(function (loc) {
+                    locale = loc;
+                    return allowedLocales.indexOf(loc) > -1;
+                });
+
+                // if there are no allowed locales for the site/auth key configuration then do not export a catalog
+                if (isAllowedLocale) {
+                    // create a folder with one or more locales
+                    var folderAndFilePatternName = locales.join().replace(',', '_');
+                    var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + locale);
+
+                    if (!turntoDir.exists()) {
+                        turntoDir.mkdirs();
+                    }
+
+                    // Initialize a file writer for output with the current key
+                    var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + fileName + '_' +
+                        folderAndFilePatternName + '_' + Site.getCurrent().ID + '_' + fileNumber + '.txt');
+                    catalogExportFileWrite.createNewFile();
+
+                    var currentFileWriter = new FileWriter(catalogExportFileWrite);
+
+                    // write header text
+                    currentFileWriter.writeLine('SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA');
+                    hashMapOfFileWriters.put(siteKeyJson.locales, currentFileWriter);
+                }
+            });
+        }
+    } catch (e) {
+        Logger.error('exportCatalog.js has failed on the beforeStep step with the following error: ' + e.message);
+    }
+}
+
+/**
+ * Returns one item or null if there are no more items.
+ * @param {JobParameters} parameters - job parameters
+ * @returns {dw.catalog.Product|string|null} - product to process; empty string if skipping product; null if no more products
+ */
+function read(parameters) {
+    if (parameters.IsDisabled || empty(siteKeys) || empty(products)) {
+        return null;
+    }
     try {
         var useVariants = ServiceFactory.getUseVariantsPreference();
-        // Return next product
-        if (products && products.hasNext()) {
-            tempProduct = products.next();
-            // do not return a product if useVariants site preference is false and the product is a variant
+        if (products.hasNext()) {
+            var tempProduct = products.next();
             if (!useVariants && tempProduct.isVariant()) {
                 return '';
             }
@@ -134,19 +151,23 @@ function read() {
 }
 
 /**
- * It receives the item returned by the read function, performs a process, and returns one item
- * @param {*} product -
- * @returns {Object} - completion status
+ * The product param is the returned object from the read function. The logic will be skipped if the product is empty
+ * but not null. This will be skipped and job will end after completing other methods if product is null.
+ *
+ * It receives the item returned by the read function, performs a process, and returns one item. If the process function
+ * returns nothing, then the read function item is filtered and doesn't appear in the list of items to be written later.
+ * @param {dw.catalog.Product} product - product
+ * @param {JobParameters} parameters - job parameters
+ * @returns {json} - completion status
  */
-function process(product) {
-    if (empty(product)) {
-        return '';
+function process(product, parameters) {
+    if (parameters.IsDisabled || empty(siteKeys) || empty(product)) {
+        return null;
     }
 
     // Generate and return a simple mapping object with locale
     // and formatted output such as ```{ "en_us": "Row data for English US", ...}```
     var json = {};
-
     try {
         // Non-localized data
         // IMAGEURL
@@ -191,7 +212,7 @@ function process(product) {
             while (currentCategory != null && !currentCategory.isRoot()) {
                 categoryJson = {
                     id: currentCategory.getID(),
-                    name: TurnToHelper.replaceNull(currentCategory.getDisplayName()),
+                    name: TurnToHelper.replaceNull(currentCategory.getDisplayName(), currentCategory.getPageTitle()),
                     url: URLUtils.http('Search-Show', 'cgid', currentCategory.getID()).toString()
                 };
                 categoryArray.push(JSON.stringify(categoryJson));
@@ -247,32 +268,21 @@ function process(product) {
             if (product.getManufacturerSKU()) {
                 mpn = product.getManufacturerSKU();
             }
-
-            // ISBN
-            isbn = '';
-
             // UPC
             if (product.getUPC()) {
                 upc = product.getUPC();
             }
-
             // EAN
             if (product.getEAN()) {
                 ean = product.getEAN();
             }
-
-            // JAN
-            jan = '';
-
-            // ASIN
-            asin = '';
         }
 
         // Iterate all locales, generate and return a simple mapping object with locale
         // and formatted output such as ```{ "en_us": "Row data for English US", ...}```
-        var keyValues = hashMapOfKeys.values().toArray();
-        keyValues.forEach(function (key) {
-            var locales = key.locales;
+        Object.keys(siteKeys).forEach(function (key) {
+            var siteKeyJson = siteKeys[key];
+            var locales = siteKeyJson.locales;
             // CATEGORY
             // Leaving blank because CATEGORYPATHJSON is populated
 
@@ -332,6 +342,8 @@ function process(product) {
     } catch (e) {
         Logger.error('exportCatalog.js has failed on the process step with the following error: {0}\n{1}', e.message, e.stack);
     }
+    fileProductCount++;
+
     return json;
 }
 
@@ -340,14 +352,17 @@ function process(product) {
  * The list size matches the chunk size or smaller, if the number of items in the last available chunk is smaller.
  * The write function returns nothing
  * @param {Object} json - save json object
+ * @param {JobParameters} parameters - job parameters
  */
-function write(json) {
+function write(json, parameters) {
+    if (parameters.IsDisabled || empty(siteKeys) || empty(json)) {
+        return;
+    }
     try {
         // Iterate chunks, with each chunk being a mapping object from the process step.
         // Iterate mapped locales and write formatted data to applicable files.
-        var keyValues = hashMapOfKeys.values().toArray();
-        keyValues.forEach(function (keyVal) {
-            var currentLocale = keyVal.locales;
+        Object.keys(siteKeys).forEach(function (keyVal) {
+            var currentLocale = siteKeys[keyVal].locales;
             // retrieve the current file writer
             var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
 
@@ -376,23 +391,57 @@ function write(json) {
 }
 
 /**
- * Function is executed only ONCE
+ * Close file writers
  */
-function afterStep() {
-    try {
-        // close product seekable iterators
-        products.close();
-        // loop through all the locales and close each corresponding file writer
-        var keyValues = hashMapOfKeys.values().toArray();
-        keyValues.forEach(function (keyVal) {
-            var currentLocale = keyVal.locales;
-            // retrieve the current file writer
-            var localeFileWriter = hashMapOfFileWriters.get(currentLocale);
+function closeFileWriters() {
+    Object.keys(siteKeys).forEach(function (key) {
+        var currentLocale = siteKeys[key].locales;
+        // retrieve the current file writer
+        var fileWriter = hashMapOfFileWriters.get(currentLocale);
+        if (fileWriter) {
+            fileWriter.close();
+        }
+    });
+}
 
-            if (localeFileWriter) {
-                localeFileWriter.close();
-            }
-        });
+/**
+ * Close file after chunk of products
+ * @param {boolean} success - success status
+ * @param {JobParameters} parameters - job parameters
+ */
+function afterChunk(success, parameters) {
+    if (parameters.IsDisabled) {
+        return;
+    }
+    if (!success) {
+        Logger.error('ExportCatalog.js: Exporting catalog afterChunk failed');
+    }
+    try {
+        // If the file product count is greater than the max file product count, close the file writers to open new files
+        createFiles = fileProductCount > maxProductsPerFile;
+        if (createFiles) {
+            closeFileWriters();
+        }
+    } catch (e) {
+        Logger.error('exportCatalog.js has failed on the afterChunk step with the following error: {0}', e.message);
+    }
+}
+
+/**
+ * Function is executed only ONCE
+ * @param {boolean} success - success status
+ * @param {JobParameters} parameters - job parameters
+ */
+function afterStep(success, parameters) {
+    if (parameters.IsDisabled) {
+        return;
+    }
+    if (!success) {
+        Logger.error('ExportCatalog.js: Exporting catalog afterStep failed');
+    }
+    try {
+        closeFileWriters();
+        products.close();
     } catch (e) {
         Logger.error('exportCatalog.js has failed on the afterStep step with the following error: {0}', e.message);
     }
@@ -401,8 +450,10 @@ function afterStep() {
 module.exports = {
     beforeStep: beforeStep,
     getTotalCount: getTotalCount,
+    beforeChunk: beforeChunk,
     read: read,
     process: process,
     write: write,
+    afterChunk: afterChunk,
     afterStep: afterStep
 };
