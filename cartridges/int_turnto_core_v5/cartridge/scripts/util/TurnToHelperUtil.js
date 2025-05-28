@@ -104,7 +104,7 @@ var TurnToHelper = {
 	 * @function
 	 * @name replaceNull
 	 * @description Replaces null with the specified replacement string.
-	 * @param {string} str The string to replace if null
+	 * @param {string|Array} str The string to replace if null
 	 * @param {string} replace The string to use as a replacement
 	 * @returns {string} - replace if str is null, otherwise str
 	 */
@@ -124,6 +124,43 @@ var TurnToHelper = {
         var clnStr = TurnToHelper.replaceNull(str, ' ');
         var replaceStr = replace || '';
         return clnStr.replace(/\s+/g, replaceStr);
+    },
+
+    /**
+     * Site Key JSON object from custom preference
+     * {
+     *    "siteKeyA": {
+     *      "locales": "en_US,en_CA",
+     *      "domain": "turnto.com",
+     *      "authKey": "authKeyA"
+     *    },
+     *    "siteKeyB": {
+     *      "locales": "en_GB,fr_FR",
+     *      "domain": "turnto.eu",
+     *      "authKey": "authKeyB"
+     *    }
+     * }
+     * @typedef {Object} SiteKeysJson - JSON object from custom preference
+     * @property {AuthKeyJson} siteKey - Object with Site Key as key
+     */
+
+    /**
+     * @typedef {Object} AuthKeyJson - JSON object with Auth Key for site
+     * @property {string} siteKey.locales - Comma separated list of locales
+     * @property {string} siteKey.domain - TurnTo domain "turnto.com" or "turnto.eu"
+     * @property {string} siteKey.authKey - Site's Auth Key
+     */
+
+    /**
+     * @returns {SiteKeysJson|null} Site Key JSON object
+     */
+    getSiteKeys: function () {
+        var TurnToSiteAuthKey = Site.getCurrent().getCustomPreferenceValue('turntoSiteAuthKeyJSON');
+        if (empty(TurnToSiteAuthKey)) {
+            return null;
+        }
+
+        return JSON.parse(TurnToSiteAuthKey.replace(/\s+/gm, ''));
     },
 
     /**
