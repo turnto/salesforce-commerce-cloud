@@ -1,6 +1,6 @@
 {
   "name": "int_turnto_sfra_v5",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Emplifi's Ratings & Reviews cartridge for SFCC SFRA and SiteGenesis",
   "main": "index.js",
   "engines": {
