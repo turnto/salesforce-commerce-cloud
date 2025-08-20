@@ -1,11 +1,7 @@
 <isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('turntoTeasersEnabled')}">
-	<iscomment>TurnTo Teasers</iscomment>
-	
-	<iscomment>Star SVGs</iscomment>
-	<isinclude template="product/components/starsvgs" />
-	
-	<iscomment>Teasers CSS</iscomment>
-	<link rel="stylesheet" href="${URLUtils.staticURL('/css/teasers.css')}" />
-	
-	<div id="tt-teaser" class="TTteaser"></div>
+    <iscomment>TurnTo Teasers</iscomment>
+	<div id="tt-teaser-widget"></div>
+    <script>
+        TurnToCmd('initialize', 'teaser'); // when selecting a variant, this template reloads so widget must be re-initialized
+    </script>
 </isif>
