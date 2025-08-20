@@ -57,6 +57,15 @@ var ServiceFactory = {
     },
 
     /**
+	 * @name getCatalogExportDaysPreference
+	 * @desc returns the catalog export days custom site preference
+	 * @returns {number} - Number of days back to filter products by last modified date (0 = all products)
+	 */
+    getCatalogExportDaysPreference: function () {
+        return Site.getCurrent().getCustomPreferenceValue('turntoCatalogExportDays') || 0;
+    },
+
+    /**
 	 * @name getLocalizedDomainURLPreference
 	 * @desc returns the localized domain URL
 	 * @param {string} currentLocale - current Site locale

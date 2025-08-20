@@ -33,7 +33,9 @@ var createFiles = true;
 /** @type {number} fileProductCount - Track number of products written to current file to compare to max number allowed */
 var fileProductCount;
 /** @type {number} maxProductsPerFile - Max number of products allowed in a file */
-var maxProductsPerFile = 200000
+var maxProductsPerFile = 200000;
+/** @type {Date} cutoffDate - Cutoff date for filtering products by last modified date */
+var cutoffDate;
 
 /**
  * Get all products to be exported
@@ -50,6 +52,15 @@ function beforeStep(parameters) {
         return;
     }
     allowedLocales = TurnToHelper.getAllowedLocales();
+
+    // Calculate cutoff date for filtering products by last modified date
+    // If catalog export days is set, "De-activate Missing Catalog Items" must be disabled in R&R account or skipped products will be disabled
+    var exportDays = ServiceFactory.getCatalogExportDaysPreference();
+    if (exportDays > 0) {
+        cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - exportDays);
+        Logger.info('ExportCatalog.js: Filtering products modified since: ' + cutoffDate.toISOString() + ' (Export Days: ' + exportDays + ')');
+    }
     products = catalog.ProductMgr.queryAllSiteProductsSorted();
 }
 
@@ -140,6 +151,9 @@ function read(parameters) {
         if (products.hasNext()) {
             var tempProduct = products.next();
             if (!useVariants && tempProduct.isVariant()) {
+                return '';
+            }
+            if (cutoffDate && tempProduct.getLastModified() < cutoffDate) {
                 return '';
             }
             return tempProduct;
