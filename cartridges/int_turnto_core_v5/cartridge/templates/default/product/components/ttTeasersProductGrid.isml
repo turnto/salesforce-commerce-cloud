@@ -3,8 +3,14 @@
 
 <iscomment>Teasers CSS</iscomment>
 <link rel="stylesheet" href="${URLUtils.staticURL('/css/teasers.css')}" />
-
-<isset name="productID" value="${pdict.Product ? pdict.Product.ID : ''}" scope="page" />
+<isscript>
+    // if there is pdict.Product, assign Product to that
+    // this is mostly to cover the case on Product Detail Page where Product is not null
+    if (pdict.Product) {
+        Product = pdict.Product;
+    }
+</isscript>
+<isset name="productID" value="${Product.ID}" scope="page" />
 
 <iscomment>TurnTo Teasers</iscomment>
-<div id="${productID}" class="TTteaser" data-productid="${productID}" data-starrating="${pdict.Product && 'turntoAverageRating' in pdict.Product.custom ? pdict.Product.custom.turntoAverageRating : ''}"></div>
+<div id="${productID}" class="TTteaser" data-productid="${productID}" data-starrating="${Product && 'turntoAverageRating' in Product.custom ? Product.custom.turntoAverageRating : ''}"></div>
