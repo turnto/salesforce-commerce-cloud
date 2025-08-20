@@ -52,7 +52,9 @@
 	</iscomment>
 
 	<isif condition="${!isQuickView}">
+		<iscomment>TurnTo replace reviewsmini</iscomment>
 		<isinclude template="product/components/ttTeasers"/>
+		<iscomment>TurnTo replace END</iscomment>
 	</isif>
 
 	<iscomment>
@@ -104,6 +106,7 @@
 			<iscomment>TurnTo Top Comment Include</iscomment>
 			<isset name="topCommentSkus" value="${productNumber}" scope="page" />
 			<isinclude template="product/components/ttTopComment"/>
+			<iscomment>TurnTo Top Comment Include END</iscomment>
 
 			<iscomment>
 				product promotions
@@ -223,6 +226,7 @@
 					};
 				</isscript>
 				<input type="hidden" name="pid" id="pid" value="${pid}" />
+				<input type="hidden" name="cgid" id="cgid" value="{pdict.CurrentHttpParameterMap.cgid.value}" />
 				<isif condition="${!disabledAttr}">
 					<button id="add-to-cart" type="submit" title="${buttonTitle}" value="${buttonTitle}" class="button-fancy-large add-to-cart">${buttonTitle}</button>
 					<isapplepay sku="${pdict.Product.ID}"></isapplepay>
@@ -246,7 +250,7 @@
 						}
 						var buttonTitleDisabledSelectVariation = StringUtils.format(Resource.msg('product.missingval','product', null), requiredOptions);
 					</isscript>
-					<button id="add-to-cart" type="button" title="${buttonTitleDisabledSelectVariation}" value="${buttonTitleDisabledSelectVariation}" class="button-fancy-large add-to-cart-disabled"<isprint value="${disabledAttr}" />>${buttonTitle}</button>
+					<button id="add-to-cart" type="button" title="${buttonTitleDisabledSelectVariation}" value="${buttonTitleDisabledSelectVariation}" class="button-fancy-large add-to-cart-disabled"<isprint value="${disabledAttr}" encoding="off"/>>${buttonTitle}</button>
 				</isif>
 				</div><!--  end details block -->
 			</fieldset>
@@ -285,8 +289,10 @@
 </isif>
 <link rel="stylesheet" href="${URLUtils.staticURL('/css/sitegen.css')}" />
 <iscomment>TurnTo script execute</iscomment>
+<isscript>
+    // vars are set in productcontent
+    var sku = dw.system.Site.getCurrent().getCustomPreferenceValue('turntoUseVariants') === true ? product.ID : masterId;
+</isscript>
 <script>
-	TurnToCmd('set', {'sku': '${pdict.Product.ID}'});
+    TurnToCmd('set', {'sku': '${sku}'});
 </script>
-<script src="${URLUtils.staticURL('js/teasers.js')}" async></script>
-<script src="${URLUtils.staticURL('js/teasersProductGrid.js')}" async></script>

@@ -33,5 +33,4 @@ var keywords = "${pdict.CurrentPageMetaData.keywords}";
 <isset name="turntoUrl" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().domain}" scope="page" />
 <isset name="siteKey" value="${TurnToHelper.getLocalizedSitePreferenceFromRequestLocale().turntoSiteKey}" scope="page" />
 <script src="https://widgets.${turntoUrl}/v5/widgets/${siteKey}/js/turnto.js" async></script>
-<script src="${URLUtils.staticURL('js/teasers.js')}" async></script>
 <script src="${URLUtils.staticURL('js/teasersProductGrid.js')}" async></script>
