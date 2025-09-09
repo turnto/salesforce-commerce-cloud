@@ -308,7 +308,6 @@ function process(product, parameters) {
             }
         }
         if (currentCategory !== null) {
-            categoryPathJSON = [];
             var categoryArray = [];
             var categoryJson;
             while (currentCategory != null && !currentCategory.isRoot()) {
@@ -317,11 +316,11 @@ function process(product, parameters) {
                     name: TurnToHelper.replaceNull(currentCategory.getDisplayName(), currentCategory.getPageTitle()),
                     url: URLUtils.http('Search-Show', 'cgid', currentCategory.getID()).toString()
                 };
-                categoryArray.push(JSON.stringify(categoryJson));
+                categoryArray.push(categoryJson);
                 currentCategory = currentCategory.getParent();
             }
             categoryArray.reverse();
-            categoryPathJSON = '[' + TurnToHelper.replaceNull(categoryArray.toString(), '') + ']';
+            categoryPathJSON = JSON.stringify(categoryArray);
         }
 
         // MEMBERS
