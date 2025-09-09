@@ -134,7 +134,7 @@ var TurnToHelper = {
 	 * @returns {string} - The escaped value safe for TSV format
 	 */
     escapeTsvValue: function (value) {
-        if (value == null || value === undefined) {
+        if (value == null) {
             return '';
         }
 
