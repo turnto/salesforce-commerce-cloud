@@ -28,7 +28,7 @@ var MAX_PRODUCTS_PER_FILE = 200000;
 var jobState = {
     /** @type {dw.util.SeekableIterator<Product>} products */
     products: null,
-    /** @type {HashMap} hashMapOfFileWriters - Map of file writers by locale */
+    /** @type {HashMap} hashMapOfFileWriters - Map of file writers by site key */
     hashMapOfFileWriters: null,
     /** @type {SiteKeysJson} validSiteKeys - Preprocessed site keys with only allowed locales */
     validSiteKeys: {},
@@ -109,7 +109,7 @@ function parseLocales(localeString) {
 }
 
 /**
- * Get all locales for a cartridge site configuration json, filtered by SFCC allowed locales
+ * Get all locales from the cartridge turntoSiteAuthKeyJSON, filtered by SFCC allowed locales
  * @param {Object} siteConfig - Site configuration object
  * @returns {Array<string>} - Array of allowed locale codes
  */
@@ -186,8 +186,8 @@ function getTotalCount(parameters) {
 }
 
 /**
- * Job method - Create new files for each locale for initial chunk and whenever the files have been close because the file product
- * count exceeds the max file product count
+ * Job method - Create new files for each site key for initial chunk and whenever the files have been close because the
+ * file product count exceeds the max file product count
  * @param {JobParameters} parameters - job parameters
  */
 function beforeChunk(parameters) {
@@ -198,26 +198,24 @@ function beforeChunk(parameters) {
         if (jobState.shouldCreateFiles()) {
             var impexPath = File.getRootDirectory(File.IMPEX).getFullPath();
             var fileName = parameters.ExportFileName;
-            // Create a new file per locale to export to Emplifi if no files are open
+            // Create a new file per site key to export to Emplifi if no files are open
             Logger.info('ExportCatalog.js: beforeChunk() - create files');
             jobState.startNewFiles();
-            // new map of file writers for each locale per chunk
+            // new map of file writers for each site key per chunk
             jobState.hashMapOfFileWriters = new HashMap();
             Object.keys(jobState.validSiteKeys).forEach(function (siteKey) {
                 var siteConfig = jobState.validSiteKeys[siteKey];
                 var localesArray = siteConfig.localesArray;
 
-                // create a folder with one or more locales
-                var folderAndFilePatternName = siteKey;
+                // create a folder for the first locale for a site key (locale required for TurnToFeedUpload job step)
                 var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + localesArray[0]);
-
                 if (!turntoDir.exists()) {
                     turntoDir.mkdirs();
                 }
 
                 // Initialize a file writer for output with the current key
                 var catalogExportFileWrite = new File(turntoDir.getFullPath() + File.SEPARATOR + fileName + '_' +
-                    folderAndFilePatternName + '_' + Site.getCurrent().ID + '_' + jobState.fileNumber + '.txt');
+                    siteKey + '_' + Site.getCurrent().ID + '_' + jobState.fileNumber + '.txt');
                 catalogExportFileWrite.createNewFile();
 
                 var currentFileWriter = new FileWriter(catalogExportFileWrite);
@@ -274,8 +272,8 @@ function process(product, parameters) {
         return null;
     }
 
-    // Generate and return a simple mapping object with locale
-    // and formatted output such as ```{ "en_us": "Row data for English US", ...}```
+    // Generate and return a simple mapping object of product data for each site key with locale data for each locale
+    // configure for that site
     var json = {};
     try {
         // Non-localized data
@@ -426,9 +424,9 @@ function process(product, parameters) {
 }
 
 /**
- * Write a single product row to the TSV file for a specific locale
- * @param {dw.io.FileWriter} fileWriter - The file writer for the locale
- * @param {Object} productData - Product data for the specific locale
+ * Write a single product row to the TSV file for a specific site key
+ * @param {dw.io.FileWriter} fileWriter - The file writer for the site key
+ * @param {Object} productData - Product data for the specific site key
  */
 function writeProductRow(fileWriter, productData) {
     if (!productData) {
@@ -473,7 +471,7 @@ function writeProductsForSiteKey(siteKey, productsData) {
  * Job method - the write function receives a list of items.
  * The list size matches the chunk size or smaller, if the number of items in the last available chunk is smaller.
  * The write function returns nothing
- * @param {Object} json - save json object containing product data organized by locale
+ * @param {Object} json - save json object containing product data for each site key
  * @param {JobParameters} parameters - job parameters
  */
 function write(json, parameters) {
