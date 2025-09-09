@@ -127,6 +127,37 @@ var TurnToHelper = {
     },
 
     /**
+	 * @function
+	 * @name escapeTsvValue
+	 * @description Properly escape a value for TSV format by handling double quotes
+	 * @param {string} value - The value to escape
+	 * @returns {string} - The escaped value safe for TSV format
+	 */
+    escapeTsvValue: function (value) {
+        if (value == null) {
+            return '';
+        }
+
+        var stringValue = String(value);
+        var wrapString = false;
+        // If the value contains double quotes, escape them by doubling
+        if (stringValue.indexOf('"') !== -1) {
+            stringValue = stringValue.replace(/"/g, '""');
+            // Wrap the entire field in quotes since it contains quotes
+            wrapString = true;
+        }
+        // If the value contains tabs or newlines, wrap in quotes
+        if (stringValue.indexOf('\t') !== -1 || stringValue.indexOf('\n') !== -1 || stringValue.indexOf('\r') !== -1) {
+            wrapString = true;
+        }
+        if (wrapString) {
+            stringValue = '"' + stringValue + '"';
+        }
+
+        return stringValue;
+    },
+
+    /**
      * Site Key JSON object from custom preference
      * {
      *    "siteKeyA": {
