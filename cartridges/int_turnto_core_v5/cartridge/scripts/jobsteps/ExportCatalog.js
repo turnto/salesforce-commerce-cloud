@@ -12,6 +12,9 @@ var Site = require('dw/system/Site');
 var TurnToHelper = require('*/cartridge/scripts/util/TurnToHelperUtil');
 var ServiceFactory = require('*/cartridge/scripts/util/ServiceFactory');
 
+/* Constants */
+var MAX_PRODUCTS_PER_FILE = 200000;
+
 /**
  * @typedef {HashMap} JobParameters - job parameters
  * @property {boolean} IsDisabled - job disabled status
@@ -37,8 +40,6 @@ var jobState = {
     createFiles: true,
     /** @type {number} fileProductCount - Track number of products written to current file to compare to max number allowed */
     fileProductCount: 0,
-    /** @type {number} maxProductsPerFile - Max number of products allowed in a file */
-    maxProductsPerFile: 200000,
     /** @type {Date} cutoffDate - Cutoff date for filtering products by last modified date */
     cutoffDate: null,
 
@@ -88,7 +89,7 @@ var jobState = {
      */
     incrementProductCount: function() {
         this.fileProductCount++;
-        if (this.fileProductCount > this.maxProductsPerFile) {
+        if (this.fileProductCount > MAX_PRODUCTS_PER_FILE) {
             this.createFiles = true;
         }
     }
