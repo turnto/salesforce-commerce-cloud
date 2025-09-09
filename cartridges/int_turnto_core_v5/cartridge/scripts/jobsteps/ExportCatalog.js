@@ -109,7 +109,7 @@ function parseLocales(localeString) {
 }
 
 /**
- * Get all locales for a site configuration, filtered by allowed locales
+ * Get all locales for a cartridge site configuration json, filtered by SFCC allowed locales
  * @param {Object} siteConfig - Site configuration object
  * @returns {Array<string>} - Array of allowed locale codes
  */
@@ -119,40 +119,6 @@ function allowedSiteLocales(siteConfig) {
     return parsedLocales.filter(function(locale) {
         return locale.length > 0 && jobState.allowedLocales.indexOf(locale) > -1;
     });
-}
-
-/**
- * Create a simple hash from a string for use in shortened identifiers
- * @param {string} str - String to hash
- * @returns {string} - Short hash string (base36)
- */
-function hashString(str) {
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
-        hash = ((hash * 31) + char) % 2147483647;
-    }
-    return Math.abs(hash).toString(36);
-}
-
-/**
- * Create locales ID with maximum of 6 locales before hashing
- * @param {Array<string>} localesArray - Array of locale codes
- * @returns {string} - Locales ID (up to 6 locales, then hash for more)
- */
-function createLocalesId(localesArray) {
-    var MAX_LOCALES = 6;
-
-    // If 6 or fewer locales, use them all
-    if (localesArray.length <= MAX_LOCALES) {
-        return localesArray.join('_');
-    }
-
-    // More than 6 locales: use first 6 + hash of all
-    var firstSixLocales = localesArray.slice(0, MAX_LOCALES).join('_');
-    var fullHash = hashString(localesArray.join('_'));
-
-    return firstSixLocales + '_' + fullHash;
 }
 
 /**
@@ -175,12 +141,12 @@ function beforeStep(parameters) {
     }
     jobState.allowedLocales = TurnToHelper.getAllowedLocales();
 
-    // Preprocess site keys to filter out invalid locales and create localesId
+    // Preprocess site keys to filter out invalid locales
     Object.keys(siteKeys).forEach(function (siteKey) {
         var siteConfig = siteKeys[siteKey];
         var localesArray = allowedSiteLocales(siteConfig);
 
-        // Only include sites that have at least one allowed locale
+        // Skip site keys with no valid locale codes
         if (empty(localesArray)) {
             Logger.warn('ExportCatalog.js: Site key {0} has no valid locales configured. Skipping.', siteKey);
             return;
@@ -189,7 +155,6 @@ function beforeStep(parameters) {
         // Create enhanced site config that mirrors original structure with added properties
         jobState.validSiteKeys[siteKey] = siteConfig;
         jobState.validSiteKeys[siteKey].localesArray = localesArray;
-        jobState.validSiteKeys[siteKey].localesId = createLocalesId(localesArray);
     });
 
     // Calculate cutoff date for filtering products by last modified date
@@ -241,10 +206,9 @@ function beforeChunk(parameters) {
             Object.keys(jobState.validSiteKeys).forEach(function (siteKey) {
                 var siteConfig = jobState.validSiteKeys[siteKey];
                 var localesArray = siteConfig.localesArray;
-                var localesId = siteConfig.localesId;
 
                 // create a folder with one or more locales
-                var folderAndFilePatternName = localesId;
+                var folderAndFilePatternName = siteKey;
                 var turntoDir = new File(impexPath + File.SEPARATOR + 'TurnTo' + File.SEPARATOR + localesArray[0]);
 
                 if (!turntoDir.exists()) {
@@ -260,7 +224,7 @@ function beforeChunk(parameters) {
 
                 // write header text
                 currentFileWriter.writeLine('SKU\tIMAGEURL\tTITLE\tPRICE\tCURRENCY\tACTIVE\tITEMURL\tCATEGORY\tKEYWORDS\tINSTOCK\tVIRTUALPARENTCODE\tCATEGORYPATHJSON\tMEMBERS\tBRAND\tMPN\tISBN\tUPC\tEAN\tJAN\tASIN\tMOBILEITEMURL\tLOCALEDATA');
-                jobState.hashMapOfFileWriters.put(localesId, currentFileWriter);
+                jobState.hashMapOfFileWriters.put(siteKey, currentFileWriter);
             });
         }
     } catch (e) {
@@ -407,7 +371,6 @@ function process(product, parameters) {
         Object.keys(jobState.validSiteKeys).forEach(function (siteKey) {
             var siteConfig = jobState.validSiteKeys[siteKey];
             var localesArray = siteConfig.localesArray;
-            var localesId = siteConfig.localesId;
 
             // KEYWORDS
             var keywords = '';
@@ -430,7 +393,7 @@ function process(product, parameters) {
             var defaultLocale = Site.getCurrent().getDefaultLocale();
             request.setLocale(defaultLocale);
             // build product data for this specific site key
-            json[localesId] = {
+            json[siteKey] = {
                 sku: TurnToHelper.replaceNull(product.getID(), ''),
                 imageurl: imageURL,
                 title: TurnToHelper.sanitizeStr(product.getName(), ' '),
@@ -489,20 +452,20 @@ function writeProductRow(fileWriter, productData) {
 
 /**
  * Write all products for a specific site key to its designated file
- * @param {string} localesId - The locale code for the file
+ * @param {string} siteKey - The site key for the file
  * @param {Object} productsData - All products data from the chunk
  */
-function writeProductsForLocale(localesId, productsData) {
-    var fileWriter = jobState.hashMapOfFileWriters.get(localesId);
+function writeProductsForSiteKey(siteKey, productsData) {
+    var fileWriter = jobState.hashMapOfFileWriters.get(siteKey);
     if (!fileWriter) {
-        Logger.warn('ExportCatalog.js: No file writer found for localesId: {0}', localesId);
+        Logger.warn('ExportCatalog.js: No file writer found for siteKey: {0}', siteKey);
         return;
     }
     // Process each product in the chunk
     Object.keys(productsData).forEach(function (productIndex) {
         var productJson = productsData[productIndex];
-        if (!empty(productJson) && productJson[localesId]) {
-            writeProductRow(fileWriter, productJson[localesId]);
+        if (!empty(productJson) && productJson[siteKey]) {
+            writeProductRow(fileWriter, productJson[siteKey]);
         }
     });
 }
@@ -522,9 +485,7 @@ function write(json, parameters) {
     try {
         // Process each configured site key
         Object.keys(jobState.validSiteKeys).forEach(function (siteKey) {
-            var localesId = jobState.validSiteKeys[siteKey].localesId;
-
-            writeProductsForLocale(localesId, json);
+            writeProductsForSiteKey(siteKey, json);
         });
     } catch (e) {
         Logger.error('exportCatalog.js has failed on the write step with the following error: {0}\n{1}', e.message, e.stack);
@@ -539,8 +500,7 @@ function closeFileWriters() {
         return;
     }
     Object.keys(jobState.validSiteKeys).forEach(function (siteKey) {
-        var localesId = jobState.validSiteKeys[siteKey].localesId;
-        var fileWriter = jobState.hashMapOfFileWriters.get(localesId);
+        var fileWriter = jobState.hashMapOfFileWriters.get(siteKey);
         if (fileWriter) {
             fileWriter.close();
         }
