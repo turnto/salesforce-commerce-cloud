@@ -29,42 +29,74 @@ NOTE: The template only features base functionality out of the box, in order to 
 	//NOTE: The following conditionals are examples, please adjust as necessary for your implementation
 	//NOTE: These can be modified if you need more or less defined page IDs. Be sure to also modify the page IDs in 'TurnToHelperUtil.js', function 'getPageID'
 	var ssoConfig = {
-			userDataFn: function(contextObj) {
-				$.ajax({
-        			url: "${URLUtils.url('SpeedFlex-UserData')}",
-        			type: 'post',
-                	dataType: 'json',
-            		success: function (data) {
-						if (data.isUserLoggedIn) {
-							TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
-						} else {
-							window.location.href = data.redirectUrl;
-						}
-			        },
-            		error: function (err) {}
-	            });
-			},
-			loggedInDataFn: function(contextObj) {
-				$.ajax({
-                	url: "${URLUtils.url('SpeedFlex-LoggedInData')}",
-            		type: 'post',
-                	dataType: 'json',
-            		success: function (data) {
-						TurnToCmd('loggedInDataFnDone', { context: contextObj, loggedInData: data.userDataToken });
-			        },
-                	error: function (err) {}
-			    });
-			},
-			logout: function() {
-				$.ajax({
-                	url: "${URLUtils.url('SpeedFlex-LoggedOut')}",
-            		type: 'get',
-                	dataType: 'json',
-            		success: function (data) {},
-                	error: function (err) {}
-			    });
-			}
-		};
+        userDataFn: function(contextObj) {
+            $.ajax({
+                url: "${URLUtils.url('SpeedFlex-UserData')}",
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.isUserLoggedIn) {
+                        TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
+                    } else {
+                        window.sessionStorage.setItem('ttContextObj', contextObj)
+                        window.location.href = data.redirectUrl;
+                    }
+                },
+                error: function (err) {}
+            });
+        },
+        loggedInDataFn: function(contextObj) {
+            $.ajax({
+                url: "${URLUtils.url('SpeedFlex-LoggedInData')}",
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    TurnToCmd('loggedInDataFnDone', { context: contextObj, loggedInData: data.userDataToken });
+                },
+                error: function (err) {}
+            });
+        },
+        logout: function() {
+            $.ajax({
+                url: "${URLUtils.url('SpeedFlex-LoggedOut')}",
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {},
+                error: function (err) {}
+            });
+        }
+    };
+
+    function ssoRegistered() {
+        if(window.sessionStorage.getItem('ttContextObj')){
+            // jQuery may not be loaded
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "${URLUtils.url('SpeedFlex-UserData')}");
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onload = function() {
+                try {
+                    if (xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.isUserLoggedIn) {
+                            var contextObj = window.sessionStorage.getItem('ttContextObj');
+                            TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing response:", e);
+                }
+                window.sessionStorage.removeItem('ttContextObj');
+            };
+
+            xhr.onerror = function() {
+                console.error("Error in ssoRegistered AJAX request");
+                window.sessionStorage.removeItem('ttContextObj');
+            };
+
+            xhr.send();
+        }
+    }
 
 	var extensionVersion = {
 		architecture: "${Resource.msg('turnTo.version.architecture','turnTo','')}",
@@ -94,6 +126,7 @@ NOTE: The template only features base functionality out of the box, in order to 
         // turnToConfig.chatter = {
         //     onFinish: function() {}
         // };
+        ssoRegistered()
 	} else if ('${pageID}' === 'order-confirmation-page') {
         turnToConfig.pageId = "order-confirmation-page";
         turnToConfig.sku = "${product_sku}";
