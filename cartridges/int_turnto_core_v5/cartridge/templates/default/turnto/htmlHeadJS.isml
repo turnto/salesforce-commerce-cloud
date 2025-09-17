@@ -35,14 +35,23 @@ NOTE: The template only features base functionality out of the box, in order to 
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
+                    if (data.error) {
+                        console.error('SpeedFlex SSO Error:', data.errorMessage);
+                        return;
+                    }
+
                     if (data.isUserLoggedIn) {
                         TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
-                    } else {
+                    } else if (data.redirectUrl) {
                         window.sessionStorage.setItem('ttContextObj', contextObj)
                         window.location.href = data.redirectUrl;
+                    } else {
+                        console.error('SpeedFlex SSO Error: No redirect URL provided');
                     }
                 },
-                error: function (err) {}
+                error: function (err) {
+                    console.error('SpeedFlex SSO AJAX Error:', err);
+                }
             });
         },
         loggedInDataFn: function(contextObj) {
@@ -53,7 +62,9 @@ NOTE: The template only features base functionality out of the box, in order to 
                 success: function (data) {
                     TurnToCmd('loggedInDataFnDone', { context: contextObj, loggedInData: data.userDataToken });
                 },
-                error: function (err) {}
+                error: function (err) {
+                    console.error('SpeedFlex SSO AJAX Error:', err);
+                }
             });
         },
         logout: function() {
@@ -62,7 +73,9 @@ NOTE: The template only features base functionality out of the box, in order to 
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {},
-                error: function (err) {}
+                error: function (err) {
+                    console.error('SpeedFlex SSO AJAX Error:', err);
+                }
             });
         }
     };
@@ -78,19 +91,25 @@ NOTE: The template only features base functionality out of the box, in order to 
                 try {
                     if (xhr.status === 200) {
                         var data = JSON.parse(xhr.responseText);
+
+                        if (data.error) {
+                            console.error('SpeedFlex SSO Error in ssoRegistered:', data.errorMessage);
+                            return;
+                        }
+
                         if (data.isUserLoggedIn) {
                             var contextObj = window.sessionStorage.getItem('ttContextObj');
                             TurnToCmd('ssoRegDone', { context: contextObj, userDataToken: data.userDataToken });
                         }
                     }
                 } catch (e) {
-                    console.error("Error parsing response:", e);
+                    console.error("Error parsing response in ssoRegistered:", e);
                 }
                 window.sessionStorage.removeItem('ttContextObj');
             };
 
             xhr.onerror = function() {
-                console.error("Error in ssoRegistered AJAX request");
+                console.error('SpeedFlex SSO AJAX Error:', xhr.status);
                 window.sessionStorage.removeItem('ttContextObj');
             };
 
