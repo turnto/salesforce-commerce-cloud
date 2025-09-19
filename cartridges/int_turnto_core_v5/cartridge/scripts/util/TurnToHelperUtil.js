@@ -9,6 +9,7 @@ var Site = require('dw/system/Site');
 var ProductMgr = require('dw/catalog/ProductMgr');
 var HashMap = require('dw/util/HashMap');
 var Logger = require('dw/system/Logger');
+var URLUtils = require('dw/web/URLUtils');
 
 var TurnToHelper = {
     /**
@@ -318,6 +319,118 @@ var TurnToHelper = {
     getProductSku: function (lookupId) {
         var useVariants = Boolean(Site.getCurrent().getCustomPreferenceValue('turntoUseVariants'));
         return useVariants ? lookupId : TurnToHelper.getParentSku(lookupId);
+    },
+
+    /**
+     * Validates parameter values to prevent script injection
+     * @param {string} value - The parameter value to validate
+     * @returns {boolean} - True if value is safe
+     */
+    isValidParameterValue: function (value) {
+        if (!value) {
+            return true; // Empty values are safe
+        }
+
+        // Decode URL-encoded value to check actual content
+        var decodedValue = decodeURIComponent(value);
+
+        var dangerousPatterns = [
+            /</,                 // Any HTML tags (no legitimate use in URL params)
+            />/,                 // Closing HTML tags
+            /javascript:/i,      // JavaScript protocol
+            /vbscript:/i,        // VBScript protocol
+            /data:/i,            // Data URLs (can contain scripts)
+            /expression\s*\(/i   // CSS expressions
+        ];
+
+        // Check if value contains any dangerous patterns
+        var isDangerous = dangerousPatterns.some(function(pattern) {
+            return pattern.test(decodedValue);
+        });
+
+        if (isDangerous) {
+            TurnToHelper.getLogger().warn('TurnTo blocked dangerous parameter value: {0}', value);
+            return false;
+        }
+
+        if (decodedValue.length > 500) {
+            TurnToHelper.getLogger().warn('TurnTo blocked oversized parameter value: {0} chars', decodedValue.length);
+            return false;
+        }
+
+        return true;
+    },
+
+    /**
+     * Validates and sanitizes a redirect URL to prevent open redirect vulnerabilities
+     * @param {string} url - The URL to validate
+     * @returns {string|null} - Validated URL or null if invalid
+     */
+    validateRedirectUrl: function (url) {
+        if (!url) {
+            return null;
+        }
+
+        try {
+            // only allow HTTP/HTTPS
+            if (!url.match(/^https?:\/\//)) {
+                TurnToHelper.getLogger().warn('TurnTo blocked non-HTTP(S) protocol: {0}', url);
+                return null;
+            }
+
+            var currentSiteUrl = URLUtils.home().toString();
+            var currentDomainMatch = currentSiteUrl.match(/https?:\/\/([^/]+)/);
+            var currentDomain = currentDomainMatch ? currentDomainMatch[1] : null;
+
+            var targetDomainMatch = url.match(/https?:\/\/([^/]+)/);
+            var targetDomain = targetDomainMatch ? targetDomainMatch[1] : null;
+
+            // Domain validation
+            if (!currentDomain || !targetDomain || currentDomain !== targetDomain) {
+                TurnToHelper.getLogger().warn('TurnTo external redirect domain: {0}', targetDomain);
+                return null;
+            }
+
+            // Path extraction and validation
+            var pathMatch = url.match(/https?:\/\/[^/]+([^?]*)/);
+            if (!pathMatch) {
+                TurnToHelper.getLogger().warn('TurnTo invalid URL format: {0}', url);
+                return null;
+            }
+
+            // Sanitize query parameters - remove potentially dangerous
+            var baseUrl = url.split('?')[0];
+            var queryString = url.indexOf('?') > -1 ? url.split('?')[1] : '';
+
+            if (queryString) {
+                var safeParams = [];
+                var params = queryString.split('&');
+
+                // Whitelist of safe query parameters
+                var allowedParams = ['pid', 'lang', 'dwvar_', 'cgid', 'pmin', 'pmax', 'srule', 'sz'];
+
+                params.forEach(function(param) {
+                    var keyValue = param.split('=');
+                    var key = keyValue[0];
+                    var value = keyValue[1] || '';
+
+                    var isAllowed = allowedParams.some(function(allowedParam) {
+                        return key === allowedParam || key.indexOf(allowedParam) === 0;
+                    });
+
+                    if (isAllowed && TurnToHelper.isValidParameterValue(value)) {
+                        safeParams.push(param);
+                    }
+                });
+
+                return baseUrl + (safeParams.length > 0 ? '?' + safeParams.join('&') : '');
+            }
+
+            return url;
+        } catch (e) {
+            TurnToHelper.getLogger().error('Error validating redirect URL: {0}', e.message);
+            return null;
+        }
     }
 };
 
