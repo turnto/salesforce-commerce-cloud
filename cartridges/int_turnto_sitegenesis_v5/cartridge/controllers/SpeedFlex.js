@@ -73,15 +73,19 @@ var userData = function () {
     }
 };
 
-var loginRedirect = function () {
+var getRedictUrl = function () {
     var refererUrl = request.getHttpReferer();
     var redirectUrl = TurnToHelper.validateRedirectUrl(refererUrl);
     if (!redirectUrl) {
-        redirectUrl = URLUtils.home().toString();
+        redirectUrl = URLUtils.home();
     }
 
+    return redirectUrl;
+}
+
+var loginRedirect = function () {
     if (!customer.authenticated) {
-        session.custom.TargetLocation = redirectUrl;
+        session.custom.TargetLocation = getRedictUrl();
         response.redirect(URLUtils.https('Login-Show'));
     } else {
         var targetLocation = session.custom.TargetLocation;
@@ -97,6 +101,7 @@ var loginRedirect = function () {
                 response.redirect(URLUtils.home());
             }
         } else {
+            var redirectUrl = getRedictUrl();
             Logger.warn('No stored target, using validated PDP URL: {0}', redirectUrl);
             response.redirect(redirectUrl);
         }
